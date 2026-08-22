@@ -1,12 +1,15 @@
 package handlers
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"golang.org/x/crypto/bcrypt"
 
@@ -39,7 +42,11 @@ func (h *AuthHandler) Register(c *gin.Context) {
 		req.Username, string(hash),
 	).Scan(&user.UserID, &user.Username, &user.CreatedAt)
 	if err != nil {
-		c.JSON(http.StatusConflict, gin.H{"error": "username already exists"})
+		if strings.Contains(err.Error(), "unique") || strings.Contains(err.Error(), "duplicate") {
+			c.JSON(http.StatusConflict, gin.H{"error": "username already exists"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "registration failed"})
+		}
 		return
 	}
 
@@ -65,7 +72,11 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		req.Username,
 	).Scan(&user.UserID, &user.Username, &user.PasswordHash)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid credentials"})
+		if errors.Is(err, pgx.ErrNoRows) {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid credentials"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "login failed"})
+		}
 		return
 	}
 
@@ -85,7 +96,11 @@ func (h *AuthHandler) Login(c *gin.Context) {
 
 func (h *AuthHandler) Refresh(c *gin.Context) {
 	userID := c.GetString("user_id")
-	id, _ := strconv.ParseInt(userID, 10, 64)
+	id, err := strconv.ParseInt(userID, 10, 64)
+	if err != nil || id <= 0 {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid user identity in token"})
+		return
+	}
 
 	token, expiresAt, err := h.issueToken(id)
 	if err != nil {

@@ -1,11 +1,13 @@
 package handlers
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	"go-price-api/internal/models"
@@ -58,6 +60,10 @@ func (h *GroupHandler) List(c *gin.Context) {
 		}
 		groups = append(groups, g)
 	}
+	if err := rows.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "query interrupted"})
+		return
+	}
 
 	c.JSON(http.StatusOK, models.PaginatedResponse{
 		Data:       groups,
@@ -77,7 +83,11 @@ func (h *GroupHandler) Get(c *gin.Context) {
 		`SELECT group_id, name, abbr, is_current FROM groups WHERE group_id = $1`, id,
 	).Scan(&g.GroupID, &g.Name, &g.Abbr, &g.IsCurrent)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "group not found"})
+		if errors.Is(err, pgx.ErrNoRows) {
+			c.JSON(http.StatusNotFound, gin.H{"error": "group not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "query failed"})
+		}
 		return
 	}
 
@@ -126,6 +136,10 @@ func (h *GroupHandler) Products(c *gin.Context) {
 			return
 		}
 		products = append(products, p)
+	}
+	if err := rows.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "query interrupted"})
+		return
 	}
 
 	c.JSON(http.StatusOK, models.PaginatedResponse{

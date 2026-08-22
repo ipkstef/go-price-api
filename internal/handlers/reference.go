@@ -31,6 +31,10 @@ func (h *ReferenceHandler) Conditions(c *gin.Context) {
 		}
 		items = append(items, v)
 	}
+	if err := rows.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "query interrupted"})
+		return
+	}
 
 	c.JSON(http.StatusOK, items)
 }
@@ -52,6 +56,10 @@ func (h *ReferenceHandler) Languages(c *gin.Context) {
 			return
 		}
 		items = append(items, v)
+	}
+	if err := rows.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "query interrupted"})
+		return
 	}
 
 	c.JSON(http.StatusOK, items)
@@ -75,6 +83,10 @@ func (h *ReferenceHandler) Printings(c *gin.Context) {
 		}
 		items = append(items, v)
 	}
+	if err := rows.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "query interrupted"})
+		return
+	}
 
 	c.JSON(http.StatusOK, items)
 }
@@ -96,6 +108,10 @@ func (h *ReferenceHandler) Rarities(c *gin.Context) {
 			return
 		}
 		items = append(items, v)
+	}
+	if err := rows.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "query interrupted"})
+		return
 	}
 
 	c.JSON(http.StatusOK, items)

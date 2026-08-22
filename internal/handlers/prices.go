@@ -81,12 +81,16 @@ func (h *PriceHandler) BulkLatest(c *gin.Context) {
 		}
 		prices = append(prices, p)
 	}
+	if err := rows.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "query interrupted"})
+		return
+	}
 
 	c.JSON(http.StatusOK, prices)
 }
 
 func (h *PriceHandler) Movers(c *gin.Context) {
-	limit, _ := parsePagination(c)
+	limit, offset := parsePagination(c)
 	direction := c.DefaultQuery("direction", "up")
 	sortBy := c.DefaultQuery("sort_by", "cents")
 
@@ -102,8 +106,6 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 	ctx := c.Request.Context()
 	var fromSnap, toSnap time.Time
 
-	// Date resolution: YYYY-MM-DD means "latest completed snapshot
-	// whose timestamp falls before midnight UTC of the following day"
 	if v := c.Query("from"); v != "" {
 		fromDate, err := time.Parse(time.DateOnly, v)
 		if err != nil {
@@ -138,7 +140,7 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 		}
 	}
 
-	if fromSnap.IsZero() || toSnap.IsZero() {
+	if fromSnap.IsZero() && toSnap.IsZero() {
 		rows, err := h.DB.Query(ctx,
 			`SELECT DISTINCT snapshot_at FROM ingestion_runs
 			 WHERE status = 'complete'
@@ -163,11 +165,25 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 			c.JSON(http.StatusOK, make([]models.PriceMover, 0))
 			return
 		}
-		if toSnap.IsZero() {
-			toSnap = snaps[0]
+		toSnap = snaps[0]
+		fromSnap = snaps[1]
+	} else if fromSnap.IsZero() {
+		err := h.DB.QueryRow(ctx,
+			`SELECT snapshot_at FROM ingestion_runs
+			 WHERE status = 'complete' AND snapshot_at < $1
+			 ORDER BY snapshot_at DESC LIMIT 1`, toSnap).Scan(&fromSnap)
+		if err != nil {
+			c.JSON(http.StatusOK, make([]models.PriceMover, 0))
+			return
 		}
-		if fromSnap.IsZero() {
-			fromSnap = snaps[1]
+	} else if toSnap.IsZero() {
+		err := h.DB.QueryRow(ctx,
+			`SELECT snapshot_at FROM ingestion_runs
+			 WHERE status = 'complete'
+			 ORDER BY snapshot_at DESC LIMIT 1`).Scan(&toSnap)
+		if err != nil {
+			c.JSON(http.StatusOK, make([]models.PriceMover, 0))
+			return
 		}
 	}
 
@@ -176,12 +192,11 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 		return
 	}
 
-	// Optional change_type filter (comma-separated)
-	var changeTypeFilter string
+	var changeTypes []string
 	if v := c.Query("change_type"); v != "" {
 		valid := map[string]bool{"changed": true, "new": true, "removed": true, "price_added": true, "price_removed": true}
-		types := strings.Split(v, ",")
-		for _, t := range types {
+		changeTypes = strings.Split(v, ",")
+		for _, t := range changeTypes {
 			if !valid[t] {
 				c.JSON(http.StatusBadRequest, gin.H{
 					"error":       "invalid change_type value: " + t,
@@ -190,11 +205,6 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 				return
 			}
 		}
-		quoted := make([]string, len(types))
-		for i, t := range types {
-			quoted[i] = "'" + t + "'"
-		}
-		changeTypeFilter = "WHERE c.change_type IN (" + strings.Join(quoted, ",") + ")"
 	}
 
 	orderDir := "DESC"
@@ -206,6 +216,19 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 	if sortBy == "percent" {
 		orderExpr = "market_delta_pct"
 	}
+
+	queryArgs := []any{fromSnap, toSnap}
+	argN := 3
+
+	var changeTypeClause string
+	if len(changeTypes) > 0 {
+		changeTypeClause = fmt.Sprintf("WHERE c.change_type = ANY($%d::text[])", argN)
+		queryArgs = append(queryArgs, changeTypes)
+		argN++
+	}
+
+	limitClause := fmt.Sprintf("LIMIT $%d OFFSET $%d", argN, argN+1)
+	queryArgs = append(queryArgs, limit, offset)
 
 	query := fmt.Sprintf(`
 		WITH from_prices AS (
@@ -276,9 +299,9 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 		LEFT JOIN products p ON c.product_id = p.product_id
 		%s
 		ORDER BY %s %s NULLS LAST
-		LIMIT $3`, changeTypeFilter, orderExpr, orderDir)
+		%s`, changeTypeClause, orderExpr, orderDir, limitClause)
 
-	rows, err := h.DB.Query(ctx, query, fromSnap, toSnap, limit)
+	rows, err := h.DB.Query(ctx, query, queryArgs...)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "query failed"})
 		return
@@ -301,6 +324,10 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 			return
 		}
 		movers = append(movers, m)
+	}
+	if err := rows.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "query interrupted"})
+		return
 	}
 
 	c.JSON(http.StatusOK, movers)

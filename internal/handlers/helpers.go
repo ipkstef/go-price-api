@@ -50,7 +50,9 @@ func (w *whereBuilder) SQL() string {
 }
 
 func (w *whereBuilder) Args(extra ...any) []any {
-	return append(w.args, extra...)
+	out := make([]any, len(w.args), len(w.args)+len(extra))
+	copy(out, w.args)
+	return append(out, extra...)
 }
 
 func (w *whereBuilder) NextArg() int {

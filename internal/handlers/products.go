@@ -2,12 +2,14 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	"go-price-api/internal/models"
@@ -78,6 +80,10 @@ func (h *ProductHandler) List(c *gin.Context) {
 		}
 		products = append(products, p)
 	}
+	if err := rows.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "query interrupted"})
+		return
+	}
 
 	c.JSON(http.StatusOK, models.PaginatedResponse{
 		Data:       products,
@@ -111,7 +117,11 @@ func (h *ProductHandler) Get(c *gin.Context) {
 		&extData, &p.ModifiedOn,
 	)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "product not found"})
+		if errors.Is(err, pgx.ErrNoRows) {
+			c.JSON(http.StatusNotFound, gin.H{"error": "product not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "query failed"})
+		}
 		return
 	}
 
@@ -151,6 +161,10 @@ func (h *ProductHandler) SKUs(c *gin.Context) {
 			return
 		}
 		skus = append(skus, s)
+	}
+	if err := rows.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "query interrupted"})
+		return
 	}
 
 	c.JSON(http.StatusOK, skus)
@@ -193,6 +207,10 @@ func (h *ProductHandler) Prices(c *gin.Context) {
 			return
 		}
 		prices = append(prices, p)
+	}
+	if err := rows.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "query interrupted"})
+		return
 	}
 
 	c.JSON(http.StatusOK, prices)
@@ -269,6 +287,10 @@ func (h *ProductHandler) PriceHistory(c *gin.Context) {
 			return
 		}
 		points = append(points, pp)
+	}
+	if err := rows.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "query interrupted"})
+		return
 	}
 
 	c.JSON(http.StatusOK, points)

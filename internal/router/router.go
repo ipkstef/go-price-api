@@ -1,6 +1,7 @@
 package router
 
 import (
+	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -10,8 +11,19 @@ import (
 	"go-price-api/internal/middleware"
 )
 
+func maxBodySize(n int64) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if c.Request.Body != nil {
+			c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, n)
+		}
+		c.Next()
+	}
+}
+
 func Setup(pool *pgxpool.Pool, jwtSecret string, jwtExpiry time.Duration) *gin.Engine {
 	r := gin.Default()
+	r.MaxMultipartMemory = 1 << 20 // 1 MB
+	r.Use(maxBodySize(1 << 20))    // 1 MB
 
 	auth := &handlers.AuthHandler{DB: pool, JWTSecret: jwtSecret, JWTExpiry: jwtExpiry}
 	products := &handlers.ProductHandler{DB: pool}

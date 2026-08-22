@@ -1,11 +1,13 @@
 package handlers
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	"go-price-api/internal/models"
@@ -64,6 +66,10 @@ func (h *IngestionHandler) List(c *gin.Context) {
 		}
 		runs = append(runs, r)
 	}
+	if err := rows.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "query interrupted"})
+		return
+	}
 
 	c.JSON(http.StatusOK, models.PaginatedResponse{
 		Data:       runs,
@@ -92,7 +98,11 @@ func (h *IngestionHandler) Get(c *gin.Context) {
 		&r.StartedAt, &r.CompletedAt,
 	)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "ingestion run not found"})
+		if errors.Is(err, pgx.ErrNoRows) {
+			c.JSON(http.StatusNotFound, gin.H{"error": "ingestion run not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "query failed"})
+		}
 		return
 	}
 
