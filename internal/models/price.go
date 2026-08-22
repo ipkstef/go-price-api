@@ -25,22 +25,16 @@ type PricePoint struct {
 }
 
 type PriceMover struct {
-	SKUID              int64    `json:"sku_id"`
-	ProductID          int64    `json:"product_id"`
-	ProductName        *string  `json:"product_name"`
-	ChangeType         string   `json:"change_type"`
-	PrevLow            *int32   `json:"prev_low_price_cents"`
-	CurrLow            *int32   `json:"curr_low_price_cents"`
-	PrevMid            *int32   `json:"prev_mid_price_cents"`
-	CurrMid            *int32   `json:"curr_mid_price_cents"`
-	PrevHigh           *int32   `json:"prev_high_price_cents"`
-	CurrHigh           *int32   `json:"curr_high_price_cents"`
-	PrevMarket         *int32   `json:"prev_market_price_cents"`
-	CurrMarket         *int32   `json:"curr_market_price_cents"`
-	PrevDirectLow      *int32   `json:"prev_direct_low_price_cents"`
-	CurrDirectLow      *int32   `json:"curr_direct_low_price_cents"`
-	MarketDeltaCents   *int32   `json:"market_delta_cents"`
-	MarketDeltaPercent *float64 `json:"market_delta_percent"`
+	SKUID        int64   `json:"sku_id"`
+	ProductID    int64   `json:"product_id"`
+	ProductName  *string `json:"product_name"`
+	Language     *string `json:"language"`
+	Printing     *string `json:"printing"`
+	Condition    *string `json:"condition"`
+	PrevLow      int32   `json:"prev_low_price_cents"`
+	CurrLow      int32   `json:"curr_low_price_cents"`
+	DeltaCents   int32   `json:"delta_cents"`
+	DeltaPercent float64 `json:"delta_percent"`
 }
 
 type BulkPriceRequest struct {
