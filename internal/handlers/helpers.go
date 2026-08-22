@@ -1,12 +1,34 @@
 package handlers
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
+
+func resolveGroupID(c *gin.Context, db *pgxpool.Pool) (int64, bool, error) {
+	if v := c.Query("group_id"); v != "" {
+		gid, err := strconv.ParseInt(v, 10, 64)
+		if err != nil {
+			return 0, false, fmt.Errorf("invalid group_id")
+		}
+		return gid, true, nil
+	}
+	if v := c.Query("group"); v != "" {
+		var gid int64
+		err := db.QueryRow(context.Background(),
+			`SELECT group_id FROM groups WHERE abbr = $1`, strings.ToUpper(v)).Scan(&gid)
+		if err != nil {
+			return 0, false, fmt.Errorf("set code '%s' not found", v)
+		}
+		return gid, true, nil
+	}
+	return 0, false, nil
+}
 
 func parsePagination(c *gin.Context) (limit, offset int) {
 	limit = 50

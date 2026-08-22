@@ -26,10 +26,11 @@ func (h *ProductHandler) List(c *gin.Context) {
 	if name := c.Query("name"); name != "" {
 		wb.Add("clean_name", "ILIKE", "%"+name+"%")
 	}
-	if v := c.Query("group_id"); v != "" {
-		if id, err := strconv.ParseInt(v, 10, 64); err == nil {
-			wb.Add("group_id", "=", id)
-		}
+	if gid, ok, err := resolveGroupID(c, h.DB); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	} else if ok {
+		wb.Add("group_id", "=", gid)
 	}
 	if v := c.Query("rarity_id"); v != "" {
 		if id, err := strconv.ParseInt(v, 10, 16); err == nil {

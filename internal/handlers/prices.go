@@ -206,12 +206,13 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 		queryArgs = append(queryArgs, v == "true")
 		argN++
 	}
-	if v := c.Query("group_id"); v != "" {
-		if gid, err := strconv.ParseInt(v, 10, 64); err == nil {
-			outerClauses = append(outerClauses, fmt.Sprintf("p.group_id = $%d", argN))
-			queryArgs = append(queryArgs, gid)
-			argN++
-		}
+	if gid, ok, err := resolveGroupID(c, h.DB); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	} else if ok {
+		outerClauses = append(outerClauses, fmt.Sprintf("p.group_id = $%d", argN))
+		queryArgs = append(queryArgs, gid)
+		argN++
 	}
 	if v := c.Query("language_id"); v != "" {
 		if lid, err := strconv.ParseInt(v, 10, 16); err == nil {
