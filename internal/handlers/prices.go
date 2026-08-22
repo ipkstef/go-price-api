@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -220,11 +221,28 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 	queryArgs := []any{fromSnap, toSnap}
 	argN := 3
 
-	var changeTypeClause string
+	var outerClauses []string
 	if len(changeTypes) > 0 {
-		changeTypeClause = fmt.Sprintf("WHERE c.change_type = ANY($%d::text[])", argN)
+		outerClauses = append(outerClauses, fmt.Sprintf("c.change_type = ANY($%d::text[])", argN))
 		queryArgs = append(queryArgs, changeTypes)
 		argN++
+	}
+	if v := c.Query("is_sealed"); v != "" {
+		outerClauses = append(outerClauses, fmt.Sprintf("p.is_sealed = $%d", argN))
+		queryArgs = append(queryArgs, v == "true")
+		argN++
+	}
+	if v := c.Query("group_id"); v != "" {
+		if gid, err := strconv.ParseInt(v, 10, 64); err == nil {
+			outerClauses = append(outerClauses, fmt.Sprintf("p.group_id = $%d", argN))
+			queryArgs = append(queryArgs, gid)
+			argN++
+		}
+	}
+
+	outerWhere := ""
+	if len(outerClauses) > 0 {
+		outerWhere = "WHERE " + strings.Join(outerClauses, " AND ")
 	}
 
 	limitClause := fmt.Sprintf("LIMIT $%d OFFSET $%d", argN, argN+1)
@@ -296,10 +314,10 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 		       c.prev_direct_low, c.curr_direct_low,
 		       c.market_delta, c.market_delta_pct
 		FROM combined c
-		LEFT JOIN products p ON c.product_id = p.product_id
+		JOIN products p ON c.product_id = p.product_id
 		%s
 		ORDER BY %s %s NULLS LAST
-		%s`, changeTypeClause, orderExpr, orderDir, limitClause)
+		%s`, outerWhere, orderExpr, orderDir, limitClause)
 
 	rows, err := h.DB.Query(ctx, query, queryArgs...)
 	if err != nil {

@@ -124,7 +124,10 @@ func (h *DocsHandler) Index(c *gin.Context) {
 					"direction":   "up or down (default: up)",
 					"sort_by":     "cents or percent (default: cents)",
 					"change_type": "comma-separated filter: changed, new, removed, price_added, price_removed",
+					"is_sealed":   "true/false — filter to sealed products only or exclude them",
+					"group_id":    "filter movers to a specific set",
 					"limit":       "1-200 (default 50)",
+					"offset":      "pagination offset (default 0)",
 				},
 				"response_fields": gin.H{
 					"change_type":          "changed | new | removed | price_added | price_removed",
