@@ -129,22 +129,27 @@ Or by SKU IDs:
 
 ### Price Movers
 
-Compare prices between two completed snapshots. Defaults to the two most recent.
+SKUs where `low_price_cents` changed between two completed snapshots. Ranked by delta. Each result includes the language, printing, and condition so you can identify the variant.
 
 ```sh
-GET /prices/movers?direction=up&limit=20
-GET /prices/movers?from=2026-08-20&to=2026-08-21&sort_by=percent
-GET /prices/movers?change_type=new,changed&direction=down
+GET /prices/movers?direction=up&min_price=100&limit=20
+GET /prices/movers?direction=up&is_sealed=false&language_id=1&printing_id=1&condition_id=1&min_price=500
+GET /prices/movers?direction=down&group_id=7&limit=10
 ```
 
 Params:
-- `from` / `to` — YYYY-MM-DD, resolves to the latest completed snapshot before midnight UTC of the following day
+- `from` / `to` — YYYY-MM-DD, resolves to the latest completed snapshot at or before this date
 - `direction` — `up` (default) or `down`
-- `sort_by` — `cents` (default) or `percent`
-- `change_type` — comma-separated filter: `changed`, `new`, `removed`, `price_added`, `price_removed`
+- `min_price` — minimum `low_price_cents` on both sides, in cents (filters out noise)
+- `is_sealed` — `true`/`false`
+- `group_id` — filter to a specific set
+- `language_id` — filter to a specific language
+- `printing_id` — filter to a specific printing (1=Normal, 2=Foil)
+- `condition_id` — filter to a specific condition (1=Near Mint, 2=Lightly Played, etc.)
 - `limit` — 1-200 (default 50)
+- `offset` — pagination offset (default 0)
 
-Response includes `change_type`, all five price fields (prev/curr), `market_delta_cents`, and `market_delta_percent`. Deltas are null when either side lacks a market price.
+Response includes `prev_low_price_cents`, `curr_low_price_cents`, `delta_cents`, `delta_percent`, plus `language`, `printing`, and `condition` names.
 
 ### Reference Data
 
