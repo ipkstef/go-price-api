@@ -192,6 +192,38 @@ All errors return JSON:
 {"error": "description of what went wrong"}
 ```
 
+## Deployment
+
+### systemd service
+
+Copy the service file and enable it:
+
+```sh
+sudo cp go-price-api.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable go-price-api
+sudo systemctl start go-price-api
+```
+
+The service reads environment variables from `.env` in the project directory. It restarts automatically on failure.
+
+Useful commands:
+
+```sh
+sudo systemctl status go-price-api    # check status
+sudo systemctl restart go-price-api   # restart after a rebuild
+sudo journalctl -u go-price-api -f    # follow logs
+```
+
+### Deploy workflow
+
+```sh
+cd go-price-api
+git pull origin main
+/usr/local/go/bin/go build -o go-price-api ./cmd/server
+sudo systemctl restart go-price-api
+```
+
 ## Data Notes
 
 - Prices are in cents (USD). A `market_price_cents` of `4900` is $49.00.

@@ -1,0 +1,16 @@
+[Unit]
+Description=go-price-api
+After=network.target
+
+[Service]
+Type=simple
+User=sammy
+Group=sammy
+WorkingDirectory=/home/sammy/go-price-api
+EnvironmentFile=/home/sammy/go-price-api/.env
+ExecStart=/home/sammy/go-price-api/go-price-api
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
