@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -10,11 +11,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
 
+	setcatalog "go-price-api/data"
 	"go-price-api/internal/models"
 )
 
 type PriceHandler struct {
-	DB *pgxpool.Pool
+	DB         *pgxpool.Pool
+	SetCatalog *setcatalog.Catalog
 }
 
 func (h *PriceHandler) BulkLatest(c *gin.Context) {
@@ -97,6 +100,29 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 	if direction != "up" && direction != "down" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "direction must be 'up' or 'down'"})
 		return
+	}
+
+	var eligibleGroups []int64
+	values, queryErr := setReleasedSinceValues(c.Request.URL.RawQuery)
+	if values != nil || queryErr != nil {
+		var cutoff time.Time
+		var err error
+		if len(values) == 1 {
+			cutoff, err = parseSetReleasedSince(values[0])
+		}
+		if queryErr != nil || len(values) != 1 || err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid set_released_since: use YYYY or YYYY-MM-DD with a valid date (years 0001-9999); YYYY means January 1"})
+			return
+		}
+		if h.SetCatalog == nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "set release catalog unavailable"})
+			return
+		}
+		eligibleGroups = h.SetCatalog.GroupsReleasedSince(cutoff)
+		if len(eligibleGroups) == 0 {
+			c.JSON(http.StatusOK, make([]models.PriceMover, 0))
+			return
+		}
 	}
 
 	var minPrice int
@@ -200,6 +226,11 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 
 	// Product/SKU filters applied in the outer WHERE
 	var outerClauses []string
+	if eligibleGroups != nil {
+		outerClauses = append(outerClauses, fmt.Sprintf("p.group_id = ANY($%d::bigint[])", argN))
+		queryArgs = append(queryArgs, eligibleGroups)
+		argN++
+	}
 
 	if v := c.Query("is_sealed"); v != "" {
 		outerClauses = append(outerClauses, fmt.Sprintf("p.is_sealed = $%d", argN))
@@ -305,4 +336,40 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, movers)
+}
+
+func parseSetReleasedSince(value string) (time.Time, error) {
+	if len(value) == 4 {
+		value += "-01-01"
+	}
+	if len(value) != len(time.DateOnly) {
+		return time.Time{}, fmt.Errorf("invalid date length")
+	}
+	d, err := time.Parse(time.DateOnly, value)
+	if err != nil {
+		return time.Time{}, err
+	}
+	if d.Year() < 1 {
+		return time.Time{}, fmt.Errorf("year must be between 0001 and 9999")
+	}
+	return d, nil
+}
+
+// Decode this parameter explicitly: URL.Query silently drops malformed escapes,
+// which could otherwise turn an invalid cutoff into an unfiltered request.
+func setReleasedSinceValues(rawQuery string) ([]string, error) {
+	var values []string
+	for _, pair := range strings.Split(rawQuery, "&") {
+		key, value, _ := strings.Cut(pair, "=")
+		name, err := url.QueryUnescape(key)
+		if err != nil || name != "set_released_since" {
+			continue
+		}
+		decoded, err := url.QueryUnescape(value)
+		if err != nil {
+			return nil, err
+		}
+		values = append(values, decoded)
+	}
+	return values, nil
 }

@@ -135,6 +135,8 @@ SKUs where `low_price_cents` changed between two completed snapshots. Ranked by 
 GET /prices/movers?direction=up&min_price=100&limit=20
 GET /prices/movers?direction=up&is_sealed=false&language_id=1&printing_id=1&condition_id=1&min_price=500
 GET /prices/movers?direction=down&group_id=7&limit=10
+GET /prices/movers?set_released_since=2020&limit=20
+GET /prices/movers?set_released_since=2020-06-01&direction=up
 ```
 
 Params:
@@ -143,6 +145,7 @@ Params:
 - `min_price` — minimum `low_price_cents` on both sides, in cents (filters out noise)
 - `is_sealed` — `true`/`false`
 - `group_id` — filter to a specific set
+- `set_released_since` — inclusive set release cutoff, `YYYY` or `YYYY-MM-DD`; a year means January 1. Separate from the price snapshot `from` / `to` dates.
 - `language_id` — filter to a specific language
 - `printing_id` — filter to a specific printing (1=Normal, 2=Foil)
 - `condition_id` — filter to a specific condition (1=Near Mint, 2=Lightly Played, etc.)
@@ -150,6 +153,23 @@ Params:
 - `offset` — pagination offset (default 0)
 
 Response includes `prev_low_price_cents`, `curr_low_price_cents`, `delta_cents`, `delta_percent`, plus `language`, `printing`, and `condition` names.
+
+When `set_released_since` is provided, groups missing from the bundled Scryfall
+catalog are excluded. If multiple Scryfall sets share a TCGplayer group, its
+earliest release date determines eligibility. The cutoff combines with the
+other filters before ranking and pagination. No eligible results returns `[]`.
+Omitting the parameter preserves the existing behavior. Future releases can
+qualify if their products have prices in both comparison snapshots.
+
+Empty, repeated, malformed, or impossible cutoff values return HTTP `400`:
+
+```json
+{"error":"invalid set_released_since: use YYYY or YYYY-MM-DD with a valid date (years 0001-9999); YYYY means January 1"}
+```
+
+For example, `2020` and `2020-01-01` are equivalent; `2020-01`, `2023-02-29`, and
+`0000` are invalid. Refresh the catalog with `go run ./cmd/update-sets`, then
+rebuild and restart the server to use the new embedded metadata.
 
 ### Reference Data
 

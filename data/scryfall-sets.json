@@ -1,0 +1,4511 @@
+{
+  "schema_version": 1,
+  "source": "https://api.scryfall.com/sets",
+  "sets": {
+    "10e": {
+      "id": "a66a6124-0d81-488d-b080-91f5ba7fbad0",
+      "code": "10e",
+      "name": "Tenth Edition",
+      "released_at": "2007-07-13",
+      "set_type": "core",
+      "tcgplayer_id": 1,
+      "digital": false
+    },
+    "2ed": {
+      "id": "cd7694b9-339c-405d-a991-14413d4f6d5c",
+      "code": "2ed",
+      "name": "Unlimited Edition",
+      "released_at": "1993-12-01",
+      "set_type": "core",
+      "tcgplayer_id": 115,
+      "digital": false
+    },
+    "2x2": {
+      "id": "5a645837-b050-449f-ac90-1e7ccbf45031",
+      "code": "2x2",
+      "name": "Double Masters 2022",
+      "released_at": "2022-07-08",
+      "set_type": "masters",
+      "tcgplayer_id": 3070,
+      "digital": false
+    },
+    "2xm": {
+      "id": "372dafe8-b5d1-4b81-998f-3ae96b59498a",
+      "code": "2xm",
+      "name": "Double Masters",
+      "released_at": "2020-08-07",
+      "set_type": "masters",
+      "tcgplayer_id": 2655,
+      "digital": false
+    },
+    "30a": {
+      "id": "c3cddb17-44d9-4abd-8d19-666f6c5171fe",
+      "code": "30a",
+      "name": "30th Anniversary Edition",
+      "released_at": "2022-11-28",
+      "set_type": "memorabilia",
+      "tcgplayer_id": 3178,
+      "digital": false
+    },
+    "3ed": {
+      "id": "45a69797-8adf-468e-a4e1-ba81fd9d66ac",
+      "code": "3ed",
+      "name": "Revised Edition",
+      "released_at": "1994-04-11",
+      "set_type": "core",
+      "tcgplayer_id": 97,
+      "digital": false
+    },
+    "40k": {
+      "id": "f35f5dd8-5b95-4f52-bbe7-1c62909a8d08",
+      "code": "40k",
+      "name": "Warhammer 40,000 Commander",
+      "released_at": "2022-10-07",
+      "set_type": "commander",
+      "tcgplayer_id": 3079,
+      "digital": false
+    },
+    "4bb": {
+      "id": "daa633b3-2bdb-48a2-a40e-3de16b6e41a5",
+      "code": "4bb",
+      "name": "Fourth Edition Foreign Black Border",
+      "released_at": "1995-04-01",
+      "set_type": "core",
+      "tcgplayer_id": 1688,
+      "parent_set_code": "4ed",
+      "digital": false
+    },
+    "4ed": {
+      "id": "2dd259d4-dc13-4956-a2dc-3e1d70b4a743",
+      "code": "4ed",
+      "name": "Fourth Edition",
+      "released_at": "1995-04-01",
+      "set_type": "core",
+      "tcgplayer_id": 46,
+      "digital": false
+    },
+    "5dn": {
+      "id": "e4bc1b87-5476-463c-8640-4c414ecf1763",
+      "code": "5dn",
+      "name": "Fifth Dawn",
+      "released_at": "2004-06-04",
+      "set_type": "expansion",
+      "tcgplayer_id": 43,
+      "digital": false
+    },
+    "5ed": {
+      "id": "5afd2f4b-8309-4f45-a2b2-3785018474cb",
+      "code": "5ed",
+      "name": "Fifth Edition",
+      "released_at": "1997-03-24",
+      "set_type": "core",
+      "tcgplayer_id": 44,
+      "digital": false
+    },
+    "6ed": {
+      "id": "78ee1957-d5d4-4551-acae-b1b418e8a50b",
+      "code": "6ed",
+      "name": "Classic Sixth Edition",
+      "released_at": "1999-04-21",
+      "set_type": "core",
+      "tcgplayer_id": 23,
+      "digital": false
+    },
+    "7ed": {
+      "id": "230f38aa-9511-4db8-a3aa-aeddbc3f7bb9",
+      "code": "7ed",
+      "name": "Seventh Edition",
+      "released_at": "2001-04-11",
+      "set_type": "core",
+      "tcgplayer_id": 2,
+      "digital": false
+    },
+    "8ed": {
+      "id": "cae8d29d-5979-4d8f-884d-7f3183bcc886",
+      "code": "8ed",
+      "name": "Eighth Edition",
+      "released_at": "2003-07-28",
+      "set_type": "core",
+      "tcgplayer_id": 3,
+      "digital": false
+    },
+    "9ed": {
+      "id": "e70c8572-4732-4e92-a140-b4e3c1c84c93",
+      "code": "9ed",
+      "name": "Ninth Edition",
+      "released_at": "2005-07-29",
+      "set_type": "core",
+      "tcgplayer_id": 4,
+      "digital": false
+    },
+    "a25": {
+      "id": "41ee6e2f-69b3-4c53-8a8e-960f5e974cfc",
+      "code": "a25",
+      "name": "Masters 25",
+      "released_at": "2018-03-16",
+      "set_type": "masters",
+      "tcgplayer_id": 2189,
+      "digital": false
+    },
+    "acr": {
+      "id": "54b67b0b-cd3f-4e0d-ac25-fef5d966409b",
+      "code": "acr",
+      "name": "Assassin's Creed",
+      "released_at": "2024-07-05",
+      "set_type": "draft_innovation",
+      "tcgplayer_id": 23446,
+      "digital": false
+    },
+    "aer": {
+      "id": "a4a0db50-8826-4e73-833c-3fd934375f96",
+      "code": "aer",
+      "name": "Aether Revolt",
+      "released_at": "2017-01-20",
+      "set_type": "expansion",
+      "tcgplayer_id": 1857,
+      "digital": false
+    },
+    "afc": {
+      "id": "db1b46f9-893c-4623-9465-985ff6e4472c",
+      "code": "afc",
+      "name": "Forgotten Realms Commander",
+      "released_at": "2021-07-23",
+      "set_type": "commander",
+      "tcgplayer_id": 2870,
+      "parent_set_code": "afr",
+      "digital": false
+    },
+    "afr": {
+      "id": "e1ef87ba-ba92-4573-817f-543b996d2851",
+      "code": "afr",
+      "name": "Adventures in the Forgotten Realms",
+      "released_at": "2021-07-23",
+      "set_type": "expansion",
+      "tcgplayer_id": 2823,
+      "digital": false
+    },
+    "akh": {
+      "id": "02d1c536-68bc-4208-9b65-7741ef1f9da8",
+      "code": "akh",
+      "name": "Amonkhet",
+      "released_at": "2017-04-28",
+      "set_type": "expansion",
+      "tcgplayer_id": 1882,
+      "digital": false
+    },
+    "ala": {
+      "id": "d667aaec-09b7-4406-b6fa-60795132dc11",
+      "code": "ala",
+      "name": "Shards of Alara",
+      "released_at": "2008-10-03",
+      "set_type": "expansion",
+      "tcgplayer_id": 103,
+      "digital": false
+    },
+    "all": {
+      "id": "64987b06-4a5c-443d-b560-ff5691744582",
+      "code": "all",
+      "name": "Alliances",
+      "released_at": "1996-06-10",
+      "set_type": "expansion",
+      "tcgplayer_id": 6,
+      "digital": false
+    },
+    "apc": {
+      "id": "e4e00913-d08d-4899-86ea-5cf631e09ce0",
+      "code": "apc",
+      "name": "Apocalypse",
+      "released_at": "2001-06-04",
+      "set_type": "expansion",
+      "tcgplayer_id": 10,
+      "digital": false
+    },
+    "arb": {
+      "id": "db486ec5-141d-4781-9ee5-5456926934c1",
+      "code": "arb",
+      "name": "Alara Reborn",
+      "released_at": "2009-04-30",
+      "set_type": "expansion",
+      "tcgplayer_id": 5,
+      "digital": false
+    },
+    "arc": {
+      "id": "8bc5ec64-18d5-4c81-96a1-8f619d81a019",
+      "code": "arc",
+      "name": "Archenemy",
+      "released_at": "2010-06-18",
+      "set_type": "archenemy",
+      "tcgplayer_id": 12,
+      "digital": false
+    },
+    "arn": {
+      "id": "856f63eb-e056-43e5-8a56-7a58e1608940",
+      "code": "arn",
+      "name": "Arabian Nights",
+      "released_at": "1993-12-17",
+      "set_type": "expansion",
+      "tcgplayer_id": 11,
+      "digital": false
+    },
+    "ath": {
+      "id": "49c9409d-5948-4c00-bd0a-bf3ebd50e23a",
+      "code": "ath",
+      "name": "Anthologies",
+      "released_at": "1998-11-01",
+      "set_type": "box",
+      "tcgplayer_id": 1275,
+      "digital": false
+    },
+    "atq": {
+      "id": "819f9678-87dd-4aba-a47b-2d553bfea21f",
+      "code": "atq",
+      "name": "Antiquities",
+      "released_at": "1994-03-04",
+      "set_type": "expansion",
+      "tcgplayer_id": 8,
+      "digital": false
+    },
+    "avr": {
+      "id": "039810a9-92d7-4f2d-b2d0-ca661ac586c0",
+      "code": "avr",
+      "name": "Avacyn Restored",
+      "released_at": "2012-05-04",
+      "set_type": "expansion",
+      "tcgplayer_id": 362,
+      "digital": false
+    },
+    "bbd": {
+      "id": "95f97fbc-58ef-4645-982e-43e2db6f1124",
+      "code": "bbd",
+      "name": "Battlebond",
+      "released_at": "2018-06-08",
+      "set_type": "draft_innovation",
+      "tcgplayer_id": 2245,
+      "digital": false
+    },
+    "bfz": {
+      "id": "91719374-7ac5-4afa-ada8-5da964dcf1d4",
+      "code": "bfz",
+      "name": "Battle for Zendikar",
+      "released_at": "2015-10-02",
+      "set_type": "expansion",
+      "tcgplayer_id": 1645,
+      "digital": false
+    },
+    "big": {
+      "id": "14332d2c-ba93-4498-bf3f-9d601f88f783",
+      "code": "big",
+      "name": "The Big Score",
+      "released_at": "2024-04-19",
+      "set_type": "expansion",
+      "tcgplayer_id": 23443,
+      "parent_set_code": "otj",
+      "digital": false
+    },
+    "blb": {
+      "id": "a2f58272-bba6-439d-871e-7a46686ac018",
+      "code": "blb",
+      "name": "Bloomburrow",
+      "released_at": "2024-08-02",
+      "set_type": "expansion",
+      "tcgplayer_id": 23447,
+      "digital": false
+    },
+    "blc": {
+      "id": "c0f860b9-a2d0-4fd7-bfac-a49ac60c84f1",
+      "code": "blc",
+      "name": "Bloomburrow Commander",
+      "released_at": "2024-08-02",
+      "set_type": "commander",
+      "tcgplayer_id": 23448,
+      "parent_set_code": "blb",
+      "digital": false
+    },
+    "bng": {
+      "id": "50a80fe4-a757-408f-ad23-52c5cc5f45cc",
+      "code": "bng",
+      "name": "Born of the Gods",
+      "released_at": "2014-02-07",
+      "set_type": "expansion",
+      "tcgplayer_id": 1276,
+      "digital": false
+    },
+    "bok": {
+      "id": "d4b88587-a1f5-4b47-9e24-78ec9e57bd0e",
+      "code": "bok",
+      "name": "Betrayers of Kamigawa",
+      "released_at": "2005-02-04",
+      "set_type": "expansion",
+      "tcgplayer_id": 18,
+      "digital": false
+    },
+    "bot": {
+      "id": "59ed954b-74c0-4db3-8a2b-1d395e33288e",
+      "code": "bot",
+      "name": "Transformers",
+      "released_at": "2022-11-18",
+      "set_type": "eternal",
+      "tcgplayer_id": 17664,
+      "parent_set_code": "bro",
+      "digital": false
+    },
+    "brb": {
+      "id": "81118b2a-b5c8-4fdc-830a-ce5b74eb60b9",
+      "code": "brb",
+      "name": "Battle Royale Box Set",
+      "released_at": "1999-11-12",
+      "set_type": "box",
+      "tcgplayer_id": 15,
+      "digital": false
+    },
+    "brc": {
+      "id": "81d56780-1efc-4487-9803-43d634ca13d0",
+      "code": "brc",
+      "name": "The Brothers' War Commander",
+      "released_at": "2022-11-18",
+      "set_type": "commander",
+      "tcgplayer_id": 3159,
+      "parent_set_code": "bro",
+      "digital": false
+    },
+    "bro": {
+      "id": "4219a14e-6701-4ddd-a185-21dc054ab19b",
+      "code": "bro",
+      "name": "The Brothers' War",
+      "released_at": "2022-11-18",
+      "set_type": "expansion",
+      "tcgplayer_id": 3157,
+      "digital": false
+    },
+    "brr": {
+      "id": "1dbdd608-c330-4199-901f-9d141ae03786",
+      "code": "brr",
+      "name": "The Brothers' War Retro Artifacts",
+      "released_at": "2022-11-18",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 17665,
+      "parent_set_code": "bro",
+      "digital": false
+    },
+    "btd": {
+      "id": "cdc88d15-c4de-4210-a7e4-dcc366de845f",
+      "code": "btd",
+      "name": "Beatdown Box Set",
+      "released_at": "2000-10-01",
+      "set_type": "box",
+      "tcgplayer_id": 16,
+      "digital": false
+    },
+    "c13": {
+      "id": "c62e6d4f-af8c-4f27-9bc8-361291890146",
+      "code": "c13",
+      "name": "Commander 2013",
+      "released_at": "2013-11-01",
+      "set_type": "commander",
+      "tcgplayer_id": 1164,
+      "digital": false
+    },
+    "c14": {
+      "id": "0980a6e2-eb78-4ad2-8396-cef08fce365e",
+      "code": "c14",
+      "name": "Commander 2014",
+      "released_at": "2014-11-07",
+      "set_type": "commander",
+      "tcgplayer_id": 1476,
+      "digital": false
+    },
+    "c15": {
+      "id": "ea6c99f9-5489-4504-b30c-c819fa3b1fd3",
+      "code": "c15",
+      "name": "Commander 2015",
+      "released_at": "2015-11-13",
+      "set_type": "commander",
+      "tcgplayer_id": 1673,
+      "digital": false
+    },
+    "c16": {
+      "id": "3e0d713a-b5cb-4287-81b9-a57d4dcaf415",
+      "code": "c16",
+      "name": "Commander 2016",
+      "released_at": "2016-11-11",
+      "set_type": "commander",
+      "tcgplayer_id": 1792,
+      "digital": false
+    },
+    "c17": {
+      "id": "5caec427-0c78-4c37-b4ec-30f7e0ba9abf",
+      "code": "c17",
+      "name": "Commander 2017",
+      "released_at": "2017-08-25",
+      "set_type": "commander",
+      "tcgplayer_id": 2009,
+      "digital": false
+    },
+    "c18": {
+      "id": "06ce6bc2-85cd-4cca-85b1-8c620d3e0902",
+      "code": "c18",
+      "name": "Commander 2018",
+      "released_at": "2018-08-10",
+      "set_type": "commander",
+      "tcgplayer_id": 2251,
+      "digital": false
+    },
+    "c19": {
+      "id": "0fa3ccbb-d86d-4a2e-a55e-c4979c4feeb2",
+      "code": "c19",
+      "name": "Commander 2019",
+      "released_at": "2019-08-23",
+      "set_type": "commander",
+      "tcgplayer_id": 2481,
+      "digital": false
+    },
+    "c20": {
+      "id": "f60ec786-1f8d-42f7-9abc-0d880fe243f6",
+      "code": "c20",
+      "name": "Commander 2020",
+      "released_at": "2020-04-17",
+      "set_type": "commander",
+      "tcgplayer_id": 2634,
+      "digital": false
+    },
+    "c21": {
+      "id": "27bf6dbd-a9e1-4904-afa7-d28fc7745c4f",
+      "code": "c21",
+      "name": "Commander 2021",
+      "released_at": "2021-04-23",
+      "set_type": "commander",
+      "tcgplayer_id": 2801,
+      "digital": false
+    },
+    "cc1": {
+      "id": "4de7b6af-43e2-4cd8-990e-3927b65ba62f",
+      "code": "cc1",
+      "name": "Commander Collection: Green",
+      "released_at": "2020-12-04",
+      "set_type": "arsenal",
+      "tcgplayer_id": 2699,
+      "digital": false
+    },
+    "cc2": {
+      "id": "78a7f4da-4838-4011-9f58-de8020d1fd2d",
+      "code": "cc2",
+      "name": "Commander Collection: Black",
+      "released_at": "2022-01-28",
+      "set_type": "arsenal",
+      "tcgplayer_id": 2905,
+      "digital": false
+    },
+    "ced": {
+      "id": "fdde66b9-027a-43e8-9aa4-5d338f379ade",
+      "code": "ced",
+      "name": "Collectors' Edition",
+      "released_at": "1993-12-10",
+      "set_type": "memorabilia",
+      "tcgplayer_id": 1526,
+      "digital": false
+    },
+    "cei": {
+      "id": "b2ab5603-659f-41ff-93cd-7abfc35aa006",
+      "code": "cei",
+      "name": "Intl. Collectors' Edition",
+      "released_at": "1993-12-10",
+      "set_type": "memorabilia",
+      "tcgplayer_id": 1527,
+      "digital": false
+    },
+    "chk": {
+      "id": "6183d21f-a0af-4118-ba58-aca1d8719c01",
+      "code": "chk",
+      "name": "Champions of Kamigawa",
+      "released_at": "2004-10-01",
+      "set_type": "expansion",
+      "tcgplayer_id": 20,
+      "digital": false
+    },
+    "chr": {
+      "id": "985eab7d-655a-4cb0-ba74-d48c8dcfb3d4",
+      "code": "chr",
+      "name": "Chronicles",
+      "released_at": "1995-07-01",
+      "set_type": "masters",
+      "tcgplayer_id": 22,
+      "digital": false
+    },
+    "clb": {
+      "id": "5e4c3fe8-fd57-4b20-ad56-c03790a16cea",
+      "code": "clb",
+      "name": "Commander Legends: Battle for Baldur's Gate",
+      "released_at": "2022-06-10",
+      "set_type": "draft_innovation",
+      "tcgplayer_id": 3047,
+      "digital": false
+    },
+    "clu": {
+      "id": "d4bfabcf-a859-43a4-9d8a-665533c8b174",
+      "code": "clu",
+      "name": "Ravnica: Clue Edition",
+      "released_at": "2024-02-23",
+      "set_type": "draft_innovation",
+      "tcgplayer_id": 23362,
+      "parent_set_code": "mkm",
+      "digital": false
+    },
+    "cm1": {
+      "id": "bf95efbe-b991-4f7c-b9e9-04f0bc59969a",
+      "code": "cm1",
+      "name": "Commander's Arsenal",
+      "released_at": "2012-11-02",
+      "set_type": "arsenal",
+      "tcgplayer_id": 568,
+      "digital": false
+    },
+    "cm2": {
+      "id": "2ba5b1a3-40ed-422e-981d-56753004dfc6",
+      "code": "cm2",
+      "name": "Commander Anthology Volume II",
+      "released_at": "2018-06-08",
+      "set_type": "commander",
+      "tcgplayer_id": 2246,
+      "digital": false
+    },
+    "cma": {
+      "id": "fd4d8463-0156-4c60-a40e-778762bb90e4",
+      "code": "cma",
+      "name": "Commander Anthology",
+      "released_at": "2017-06-09",
+      "set_type": "commander",
+      "tcgplayer_id": 1933,
+      "digital": false
+    },
+    "cmb1": {
+      "id": "8ffdef42-91f1-429f-bcd0-15778c57845c",
+      "code": "cmb1",
+      "name": "Mystery Booster Playtest Cards 2019",
+      "released_at": "2019-11-07",
+      "set_type": "funny",
+      "tcgplayer_id": 2570,
+      "digital": false
+    },
+    "cmb2": {
+      "id": "e18a60f0-bf18-487e-a7bb-a23ac6bd7a65",
+      "code": "cmb2",
+      "name": "Mystery Booster Playtest Cards 2021",
+      "released_at": "2021-08-20",
+      "set_type": "funny",
+      "tcgplayer_id": 2570,
+      "digital": false
+    },
+    "cmd": {
+      "id": "84ff1a64-4e69-4ed2-8c08-26206e3b97a0",
+      "code": "cmd",
+      "name": "Commander 2011",
+      "released_at": "2011-06-17",
+      "set_type": "commander",
+      "tcgplayer_id": 25,
+      "digital": false
+    },
+    "cmm": {
+      "id": "cd05036f-2698-43e6-a48e-5c8d82f0a551",
+      "code": "cmm",
+      "name": "Commander Masters",
+      "released_at": "2023-08-04",
+      "set_type": "masters",
+      "tcgplayer_id": 23020,
+      "digital": false
+    },
+    "cmr": {
+      "id": "39de6fbf-1f11-48d0-8f04-f0407f6a0732",
+      "code": "cmr",
+      "name": "Commander Legends",
+      "released_at": "2020-11-20",
+      "set_type": "draft_innovation",
+      "tcgplayer_id": 2708,
+      "digital": false
+    },
+    "cn2": {
+      "id": "ad1b8847-1905-4080-9e26-80691ea7c1ef",
+      "code": "cn2",
+      "name": "Conspiracy: Take the Crown",
+      "released_at": "2016-08-26",
+      "set_type": "draft_innovation",
+      "tcgplayer_id": 1794,
+      "digital": false
+    },
+    "cns": {
+      "id": "7d4ebb59-a50b-45b8-8fff-ab70767819a5",
+      "code": "cns",
+      "name": "Conspiracy",
+      "released_at": "2014-06-06",
+      "set_type": "draft_innovation",
+      "tcgplayer_id": 1312,
+      "digital": false
+    },
+    "con": {
+      "id": "76b2db58-904c-4e49-8580-9f62f7b3cca4",
+      "code": "con",
+      "name": "Conflux",
+      "released_at": "2009-02-06",
+      "set_type": "expansion",
+      "tcgplayer_id": 26,
+      "digital": false
+    },
+    "csp": {
+      "id": "1f4f105f-73e4-4f03-849e-82a204807847",
+      "code": "csp",
+      "name": "Coldsnap",
+      "released_at": "2006-07-21",
+      "set_type": "expansion",
+      "tcgplayer_id": 24,
+      "digital": false
+    },
+    "cst": {
+      "id": "fd92cc13-e08d-4793-ae51-c4bd5e98210f",
+      "code": "cst",
+      "name": "Coldsnap Theme Decks",
+      "released_at": "2006-07-21",
+      "set_type": "box",
+      "tcgplayer_id": 1348,
+      "parent_set_code": "csp",
+      "digital": false
+    },
+    "dbl": {
+      "id": "5c1638d2-bce9-463e-b0ec-469336cb1bd2",
+      "code": "dbl",
+      "name": "Innistrad: Double Feature",
+      "released_at": "2022-01-28",
+      "set_type": "draft_innovation",
+      "tcgplayer_id": 2942,
+      "digital": false
+    },
+    "dd1": {
+      "id": "94bd6d6b-a3df-4f03-b25f-ee3f57f7f2da",
+      "code": "dd1",
+      "name": "Duel Decks: Elves vs. Goblins",
+      "released_at": "2007-11-16",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 33,
+      "digital": false
+    },
+    "dd2": {
+      "id": "7161cc1c-adbd-479c-9125-df4c40b0e3ad",
+      "code": "dd2",
+      "name": "Duel Decks: Jace vs. Chandra",
+      "released_at": "2008-11-07",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 35,
+      "digital": false
+    },
+    "ddc": {
+      "id": "4a1b5533-e4a3-456e-9fb1-53e754402c23",
+      "code": "ddc",
+      "name": "Duel Decks: Divine vs. Demonic",
+      "released_at": "2009-04-10",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 31,
+      "digital": false
+    },
+    "ddd": {
+      "id": "15f41db6-1810-475b-bf2c-24a488050a37",
+      "code": "ddd",
+      "name": "Duel Decks: Garruk vs. Liliana",
+      "released_at": "2009-10-30",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 34,
+      "digital": false
+    },
+    "dde": {
+      "id": "bf561626-56ca-4eb0-a2de-b84dbe7874f8",
+      "code": "dde",
+      "name": "Duel Decks: Phyrexia vs. the Coalition",
+      "released_at": "2010-03-19",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 37,
+      "digital": false
+    },
+    "ddf": {
+      "id": "2a5a88d5-e2ac-4252-bc4e-62654b1f9a46",
+      "code": "ddf",
+      "name": "Duel Decks: Elspeth vs. Tezzeret",
+      "released_at": "2010-09-03",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 32,
+      "digital": false
+    },
+    "ddg": {
+      "id": "cf842e69-7a05-48e2-adac-fd177087caf5",
+      "code": "ddg",
+      "name": "Duel Decks: Knights vs. Dragons",
+      "released_at": "2011-04-01",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 36,
+      "digital": false
+    },
+    "ddh": {
+      "id": "bad1fe7e-27df-4999-821b-d477c2ec658d",
+      "code": "ddh",
+      "name": "Duel Decks: Ajani vs. Nicol Bolas",
+      "released_at": "2011-09-02",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 30,
+      "digital": false
+    },
+    "ddi": {
+      "id": "a29e8ace-bbcd-4507-b159-7ec77d28f792",
+      "code": "ddi",
+      "name": "Duel Decks: Venser vs. Koth",
+      "released_at": "2012-03-30",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 367,
+      "digital": false
+    },
+    "ddj": {
+      "id": "2dfea68b-b0c4-4f63-ba6c-36c9a6e3030f",
+      "code": "ddj",
+      "name": "Duel Decks: Izzet vs. Golgari",
+      "released_at": "2012-09-07",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 365,
+      "digital": false
+    },
+    "ddk": {
+      "id": "529a5259-8a88-4baf-86a0-cd88098c3ce7",
+      "code": "ddk",
+      "name": "Duel Decks: Sorin vs. Tibalt",
+      "released_at": "2013-03-15",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 601,
+      "digital": false
+    },
+    "ddl": {
+      "id": "7dfc5406-c4cf-479d-b005-11e578752dc9",
+      "code": "ddl",
+      "name": "Duel Decks: Heroes vs. Monsters",
+      "released_at": "2013-09-06",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 1145,
+      "digital": false
+    },
+    "ddm": {
+      "id": "a80b4ba1-7485-4c16-b745-eeea904863c3",
+      "code": "ddm",
+      "name": "Duel Decks: Jace vs. Vraska",
+      "released_at": "2014-03-14",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 1166,
+      "digital": false
+    },
+    "ddn": {
+      "id": "163844e5-077e-4e2c-a0f0-fa33fbc7bb3b",
+      "code": "ddn",
+      "name": "Duel Decks: Speed vs. Cunning",
+      "released_at": "2014-09-05",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 1477,
+      "digital": false
+    },
+    "ddo": {
+      "id": "6b350326-34f3-43c6-8df5-2b1d9a61ceff",
+      "code": "ddo",
+      "name": "Duel Decks: Elspeth vs. Kiora",
+      "released_at": "2015-02-27",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 1511,
+      "digital": false
+    },
+    "ddp": {
+      "id": "0dbc7609-b12c-471a-bfd3-c57bc670c445",
+      "code": "ddp",
+      "name": "Duel Decks: Zendikar vs. Eldrazi",
+      "released_at": "2015-08-28",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 1641,
+      "digital": false
+    },
+    "ddq": {
+      "id": "9f6e1af2-3913-47d6-aa6a-81f34ec7224c",
+      "code": "ddq",
+      "name": "Duel Decks: Blessed vs. Cursed",
+      "released_at": "2016-02-26",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 1726,
+      "digital": false
+    },
+    "ddr": {
+      "id": "20e10d8d-c2b0-4d3f-942d-28ae9e137c6e",
+      "code": "ddr",
+      "name": "Duel Decks: Nissa vs. Ob Nixilis",
+      "released_at": "2016-09-02",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 1835,
+      "digital": false
+    },
+    "dds": {
+      "id": "758fe4d1-ce2b-4106-8cec-820841d730af",
+      "code": "dds",
+      "name": "Duel Decks: Mind vs. Might",
+      "released_at": "2017-03-31",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 1905,
+      "digital": false
+    },
+    "ddt": {
+      "id": "c77df674-0ef5-47d9-ab22-56a6e1dc901c",
+      "code": "ddt",
+      "name": "Duel Decks: Merfolk vs. Goblins",
+      "released_at": "2017-10-24",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 2076,
+      "digital": false
+    },
+    "ddu": {
+      "id": "01e30e53-f292-4c39-ab09-435b015877f5",
+      "code": "ddu",
+      "name": "Duel Decks: Elves vs. Inventors",
+      "released_at": "2018-04-06",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 2207,
+      "digital": false
+    },
+    "dft": {
+      "id": "23464cc2-a69c-427d-b8a7-08e5d80235d7",
+      "code": "dft",
+      "name": "Aetherdrift",
+      "released_at": "2025-02-14",
+      "set_type": "expansion",
+      "tcgplayer_id": 23874,
+      "digital": false
+    },
+    "dgm": {
+      "id": "c8bd8520-cd98-45cd-b533-8d40c2087426",
+      "code": "dgm",
+      "name": "Dragon's Maze",
+      "released_at": "2013-05-03",
+      "set_type": "expansion",
+      "tcgplayer_id": 570,
+      "digital": false
+    },
+    "dis": {
+      "id": "fdebeda1-b95f-4343-8a94-d125821e6b5c",
+      "code": "dis",
+      "name": "Dissension",
+      "released_at": "2006-05-05",
+      "set_type": "expansion",
+      "tcgplayer_id": 28,
+      "digital": false
+    },
+    "dka": {
+      "id": "8052750a-aaf2-46fc-b46d-633f14124017",
+      "code": "dka",
+      "name": "Dark Ascension",
+      "released_at": "2012-02-03",
+      "set_type": "expansion",
+      "tcgplayer_id": 125,
+      "digital": false
+    },
+    "dkm": {
+      "id": "cfcec75d-481b-4b24-bcaa-a7185cf32e15",
+      "code": "dkm",
+      "name": "Deckmasters",
+      "released_at": "2001-12-01",
+      "set_type": "box",
+      "tcgplayer_id": 1311,
+      "digital": false
+    },
+    "dmc": {
+      "id": "78076b27-f888-4723-b27c-44074accd261",
+      "code": "dmc",
+      "name": "Dominaria United Commander",
+      "released_at": "2022-09-09",
+      "set_type": "commander",
+      "tcgplayer_id": 3140,
+      "parent_set_code": "dmu",
+      "digital": false
+    },
+    "dmr": {
+      "id": "ca4c2884-e539-4b7f-980d-5d6a50220f2a",
+      "code": "dmr",
+      "name": "Dominaria Remastered",
+      "released_at": "2023-01-13",
+      "set_type": "masters",
+      "tcgplayer_id": 17670,
+      "digital": false
+    },
+    "dmu": {
+      "id": "4e47a6cd-cdeb-4b0f-8f24-cfe1a0127cb3",
+      "code": "dmu",
+      "name": "Dominaria United",
+      "released_at": "2022-09-09",
+      "set_type": "expansion",
+      "tcgplayer_id": 3102,
+      "digital": false
+    },
+    "dom": {
+      "id": "be1daba3-51c9-4e7e-9212-36e68addc26c",
+      "code": "dom",
+      "name": "Dominaria",
+      "released_at": "2018-04-27",
+      "set_type": "expansion",
+      "tcgplayer_id": 2199,
+      "digital": false
+    },
+    "dpa": {
+      "id": "491666a2-3de4-4214-8238-2dad9dfb5a7a",
+      "code": "dpa",
+      "name": "Duels of the Planeswalkers",
+      "released_at": "2010-06-04",
+      "set_type": "box",
+      "tcgplayer_id": 1274,
+      "digital": false
+    },
+    "drb": {
+      "id": "c1cec8aa-5906-41d9-ae01-cbdde2e776fb",
+      "code": "drb",
+      "name": "From the Vault: Dragons",
+      "released_at": "2008-08-29",
+      "set_type": "from_the_vault",
+      "tcgplayer_id": 47,
+      "digital": false
+    },
+    "drc": {
+      "id": "d33ef7a4-41bb-4f16-bad3-b3ee13c257e6",
+      "code": "drc",
+      "name": "Aetherdrift Commander",
+      "released_at": "2025-02-14",
+      "set_type": "commander",
+      "tcgplayer_id": 23929,
+      "parent_set_code": "dft",
+      "digital": false
+    },
+    "drk": {
+      "id": "a21c6836-c435-459a-81e3-22d2da174549",
+      "code": "drk",
+      "name": "The Dark",
+      "released_at": "1994-08-01",
+      "set_type": "expansion",
+      "tcgplayer_id": 109,
+      "digital": false
+    },
+    "dsc": {
+      "id": "4c822528-83c3-42c7-8708-dd1d37166819",
+      "code": "dsc",
+      "name": "Duskmourn: House of Horror Commander",
+      "released_at": "2024-09-27",
+      "set_type": "commander",
+      "tcgplayer_id": 23551,
+      "parent_set_code": "dsk",
+      "digital": false
+    },
+    "dsk": {
+      "id": "a111d8a9-b647-48ec-afab-2b78f92173f5",
+      "code": "dsk",
+      "name": "Duskmourn: House of Horror",
+      "released_at": "2024-09-27",
+      "set_type": "expansion",
+      "tcgplayer_id": 23550,
+      "digital": false
+    },
+    "dst": {
+      "id": "e29cb2dd-1345-4032-abfe-e52e8c8ce074",
+      "code": "dst",
+      "name": "Darksteel",
+      "released_at": "2004-02-06",
+      "set_type": "expansion",
+      "tcgplayer_id": 27,
+      "digital": false
+    },
+    "dtk": {
+      "id": "7e72625f-f320-4552-a719-d11e2f1853bd",
+      "code": "dtk",
+      "name": "Dragons of Tarkir",
+      "released_at": "2015-03-27",
+      "set_type": "expansion",
+      "tcgplayer_id": 1515,
+      "digital": false
+    },
+    "e01": {
+      "id": "bf058cce-027d-4784-85e7-2750533a11df",
+      "code": "e01",
+      "name": "Archenemy: Nicol Bolas",
+      "released_at": "2017-06-16",
+      "set_type": "archenemy",
+      "tcgplayer_id": 1904,
+      "digital": false
+    },
+    "e02": {
+      "id": "a5531353-3534-4882-8802-0304e5c2bf64",
+      "code": "e02",
+      "name": "Explorers of Ixalan",
+      "released_at": "2017-11-24",
+      "set_type": "box",
+      "tcgplayer_id": 2077,
+      "digital": false
+    },
+    "ecc": {
+      "id": "805b5a0c-f8bb-4555-86ea-eb9ec36a011a",
+      "code": "ecc",
+      "name": "Lorwyn Eclipsed Commander",
+      "released_at": "2026-01-23",
+      "set_type": "commander",
+      "tcgplayer_id": 24464,
+      "parent_set_code": "ecl",
+      "digital": false
+    },
+    "ecl": {
+      "id": "5d293ad8-a749-4725-bd5c-c4e1db828bd0",
+      "code": "ecl",
+      "name": "Lorwyn Eclipsed",
+      "released_at": "2026-01-23",
+      "set_type": "expansion",
+      "tcgplayer_id": 24463,
+      "digital": false
+    },
+    "eld": {
+      "id": "a90a7b2f-9dd8-4fc7-9f7d-8ea2797ec782",
+      "code": "eld",
+      "name": "Throne of Eldraine",
+      "released_at": "2019-10-04",
+      "set_type": "expansion",
+      "tcgplayer_id": 2494,
+      "digital": false
+    },
+    "ema": {
+      "id": "1f29f022-3ace-4c96-85e8-1f7b63aadf7e",
+      "code": "ema",
+      "name": "Eternal Masters",
+      "released_at": "2016-06-10",
+      "set_type": "masters",
+      "tcgplayer_id": 1740,
+      "digital": false
+    },
+    "emn": {
+      "id": "5f0e4093-334f-4439-bbb5-a0affafd0ffc",
+      "code": "emn",
+      "name": "Eldritch Moon",
+      "released_at": "2016-07-22",
+      "set_type": "expansion",
+      "tcgplayer_id": 1790,
+      "digital": false
+    },
+    "eoc": {
+      "id": "b6ec8c6b-b4e6-4cb4-84d6-06234ace3b44",
+      "code": "eoc",
+      "name": "Edge of Eternities Commander",
+      "released_at": "2025-08-01",
+      "set_type": "commander",
+      "tcgplayer_id": 24236,
+      "parent_set_code": "eoe",
+      "digital": false
+    },
+    "eoe": {
+      "id": "452951cf-378b-4472-b7fe-572fe2af2ac0",
+      "code": "eoe",
+      "name": "Edge of Eternities",
+      "released_at": "2025-08-01",
+      "set_type": "expansion",
+      "tcgplayer_id": 24233,
+      "digital": false
+    },
+    "eos": {
+      "id": "538306e5-d40a-44c0-b9df-2f6c4b130c9f",
+      "code": "eos",
+      "name": "Edge of Eternities: Stellar Sights",
+      "released_at": "2025-08-01",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 24361,
+      "parent_set_code": "eoe",
+      "digital": false
+    },
+    "eve": {
+      "id": "86b4dfef-f2d1-49d6-825d-7df6bda44357",
+      "code": "eve",
+      "name": "Eventide",
+      "released_at": "2008-07-25",
+      "set_type": "expansion",
+      "tcgplayer_id": 39,
+      "digital": false
+    },
+    "evg": {
+      "id": "d5dbdea8-45f6-4d22-990b-6b6897f99d18",
+      "code": "evg",
+      "name": "Duel Decks Anthology: Elves vs. Goblins",
+      "released_at": "2014-12-05",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 33,
+      "digital": false
+    },
+    "exo": {
+      "id": "1401f7af-2e71-476d-9813-991084ed0bb9",
+      "code": "exo",
+      "name": "Exodus",
+      "released_at": "1998-06-15",
+      "set_type": "expansion",
+      "tcgplayer_id": 40,
+      "digital": false
+    },
+    "exp": {
+      "id": "f6ccda04-e8ef-4260-8453-9408d788bacf",
+      "code": "exp",
+      "name": "Zendikar Expeditions",
+      "released_at": "2015-10-02",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 1649,
+      "parent_set_code": "bfz",
+      "digital": false
+    },
+    "fbb": {
+      "id": "60648044-9f6a-4961-81af-47a0a94dfac9",
+      "code": "fbb",
+      "name": "Foreign Black Border",
+      "released_at": "1994-04-11",
+      "set_type": "core",
+      "tcgplayer_id": 1689,
+      "parent_set_code": "3ed",
+      "digital": false
+    },
+    "fca": {
+      "id": "5f2176db-3c44-459d-8a57-7c51e770a476",
+      "code": "fca",
+      "name": "Final Fantasy: Through the Ages",
+      "released_at": "2025-06-13",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 24226,
+      "parent_set_code": "fin",
+      "digital": false
+    },
+    "fdc": {
+      "id": "2a0b24ac-7614-4a08-b58a-b64f7c173361",
+      "code": "fdc",
+      "name": "Foundations Commander",
+      "released_at": "2024-11-15",
+      "set_type": "commander",
+      "tcgplayer_id": 23814,
+      "parent_set_code": "fdn",
+      "digital": false
+    },
+    "fdn": {
+      "id": "a7ecb771-d1b6-4dec-8cf5-8d45179f21e0",
+      "code": "fdn",
+      "name": "Foundations",
+      "released_at": "2024-11-15",
+      "set_type": "core",
+      "tcgplayer_id": 23556,
+      "digital": false
+    },
+    "fem": {
+      "id": "cf7390b1-341a-4ae8-a325-da0f5f322f13",
+      "code": "fem",
+      "name": "Fallen Empires",
+      "released_at": "1994-11-01",
+      "set_type": "expansion",
+      "tcgplayer_id": 41,
+      "digital": false
+    },
+    "fic": {
+      "id": "30659956-4558-4cbf-a65f-34cd00c89579",
+      "code": "fic",
+      "name": "Final Fantasy Commander",
+      "released_at": "2025-06-13",
+      "set_type": "commander",
+      "tcgplayer_id": 24220,
+      "parent_set_code": "fin",
+      "digital": false
+    },
+    "fin": {
+      "id": "d7beb4b7-e1ff-4d35-ab07-5700f17ea1ea",
+      "code": "fin",
+      "name": "Final Fantasy",
+      "released_at": "2025-06-13",
+      "set_type": "expansion",
+      "tcgplayer_id": 24219,
+      "digital": false
+    },
+    "fnm": {
+      "id": "b9c0c822-3cac-46ec-801d-0ec322913387",
+      "code": "fnm",
+      "name": "Friday Night Magic 2000",
+      "released_at": "2000-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 45,
+      "digital": false
+    },
+    "fra": {
+      "id": "6595985e-39cf-4ca3-b43d-dd3e64749fdc",
+      "code": "fra",
+      "name": "Reality Fracture",
+      "released_at": "2026-10-02",
+      "set_type": "expansion",
+      "tcgplayer_id": 24684,
+      "digital": false
+    },
+    "frf": {
+      "id": "7bb5cb2b-081a-4c8c-b7e1-494046e6baa1",
+      "code": "frf",
+      "name": "Fate Reforged",
+      "released_at": "2015-01-23",
+      "set_type": "expansion",
+      "tcgplayer_id": 1497,
+      "digital": false
+    },
+    "fut": {
+      "id": "bf951ddb-4445-4923-87cb-3fe4ac3c6b9a",
+      "code": "fut",
+      "name": "Future Sight",
+      "released_at": "2007-05-04",
+      "set_type": "expansion",
+      "tcgplayer_id": 51,
+      "digital": false
+    },
+    "g00": {
+      "id": "0964514c-cf50-468d-9cf7-a388aff65de9",
+      "code": "g00",
+      "name": "Judge Gift Cards 2000",
+      "released_at": "2000-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "g01": {
+      "id": "b704de85-87bd-4fa4-8bf0-df7380c83af8",
+      "code": "g01",
+      "name": "Judge Gift Cards 2001",
+      "released_at": "2001-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "g02": {
+      "id": "a3dc11d1-f22b-44fe-81db-3470aecb6bbc",
+      "code": "g02",
+      "name": "Judge Gift Cards 2002",
+      "released_at": "2002-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "g03": {
+      "id": "d77319c6-78a1-48d4-bc87-cbf4b1baed07",
+      "code": "g03",
+      "name": "Judge Gift Cards 2003",
+      "released_at": "2003-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "g04": {
+      "id": "68b258e6-d659-457c-a3d6-9da5d7cd6aa1",
+      "code": "g04",
+      "name": "Judge Gift Cards 2004",
+      "released_at": "2004-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "g05": {
+      "id": "0a722d87-0ce5-46e5-94e1-6f58f931a381",
+      "code": "g05",
+      "name": "Judge Gift Cards 2005",
+      "released_at": "2005-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "g06": {
+      "id": "be42d9f4-d1af-4b58-8efa-99484f478022",
+      "code": "g06",
+      "name": "Judge Gift Cards 2006",
+      "released_at": "2006-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "g07": {
+      "id": "4624619f-b5bf-4822-b364-8385a09a69da",
+      "code": "g07",
+      "name": "Judge Gift Cards 2007",
+      "released_at": "2007-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "g08": {
+      "id": "587e3ddb-7ffd-4e17-85e0-7846846d677f",
+      "code": "g08",
+      "name": "Judge Gift Cards 2008",
+      "released_at": "2008-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "g09": {
+      "id": "cf3a6c7e-f8e1-4c3f-95da-8b4ad094f489",
+      "code": "g09",
+      "name": "Judge Gift Cards 2009",
+      "released_at": "2009-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "g10": {
+      "id": "f9a512bb-f2ab-4805-8480-16decaacab3a",
+      "code": "g10",
+      "name": "Judge Gift Cards 2010",
+      "released_at": "2010-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "g11": {
+      "id": "e9ec9f60-333b-48f7-8e73-5db562638a54",
+      "code": "g11",
+      "name": "Judge Gift Cards 2011",
+      "released_at": "2011-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "g99": {
+      "id": "08041686-693b-4b57-9e87-76ba81f3b1a3",
+      "code": "g99",
+      "name": "Judge Gift Cards 1999",
+      "released_at": "1999-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "gk1": {
+      "id": "600bdba8-0b12-454f-811c-438e0d9eb9b6",
+      "code": "gk1",
+      "name": "GRN Guild Kit",
+      "released_at": "2018-11-02",
+      "set_type": "box",
+      "tcgplayer_id": 2334,
+      "digital": false
+    },
+    "gk2": {
+      "id": "ce193344-b2a8-4b56-8243-c6ba4f6e20ef",
+      "code": "gk2",
+      "name": "RNA Guild Kit",
+      "released_at": "2019-02-15",
+      "set_type": "box",
+      "tcgplayer_id": 2388,
+      "digital": false
+    },
+    "gn2": {
+      "id": "a72727dd-dbab-4158-a772-a08825735169",
+      "code": "gn2",
+      "name": "Game Night 2019",
+      "released_at": "2019-11-15",
+      "set_type": "box",
+      "tcgplayer_id": 2359,
+      "digital": false
+    },
+    "gn3": {
+      "id": "fe88ea3a-0e2c-44b9-9210-35bfdec1e288",
+      "code": "gn3",
+      "name": "Game Night: Free-for-All",
+      "released_at": "2022-10-14",
+      "set_type": "box",
+      "tcgplayer_id": 3129,
+      "digital": false
+    },
+    "gnt": {
+      "id": "cdbedc27-4f24-4d89-ace1-8da1b36ac78e",
+      "code": "gnt",
+      "name": "Game Night",
+      "released_at": "2018-11-16",
+      "set_type": "box",
+      "tcgplayer_id": 2359,
+      "digital": false
+    },
+    "gpt": {
+      "id": "594b4d09-8ce1-494d-bdb2-842c124bd087",
+      "code": "gpt",
+      "name": "Guildpact",
+      "released_at": "2006-02-03",
+      "set_type": "expansion",
+      "tcgplayer_id": 55,
+      "digital": false
+    },
+    "grn": {
+      "id": "597c6d4a-8212-4903-a6af-12c4ae9e13f0",
+      "code": "grn",
+      "name": "Guilds of Ravnica",
+      "released_at": "2018-10-05",
+      "set_type": "expansion",
+      "tcgplayer_id": 2290,
+      "digital": false
+    },
+    "gs1": {
+      "id": "19c285e9-68e0-45e1-b82b-ac6051eb43be",
+      "code": "gs1",
+      "name": "Global Series Jiang Yanggu \u0026 Mu Yanling",
+      "released_at": "2018-06-22",
+      "set_type": "duel_deck",
+      "tcgplayer_id": 2247,
+      "digital": false
+    },
+    "gtc": {
+      "id": "035a05f7-e020-4f50-a141-ed16ba704bd2",
+      "code": "gtc",
+      "name": "Gatecrash",
+      "released_at": "2013-02-01",
+      "set_type": "expansion",
+      "tcgplayer_id": 569,
+      "digital": false
+    },
+    "h09": {
+      "id": "3a045e59-64b5-465d-9dbd-f4ddadf8f4dc",
+      "code": "h09",
+      "name": "Premium Deck Series: Slivers",
+      "released_at": "2009-11-20",
+      "set_type": "premium_deck",
+      "tcgplayer_id": 91,
+      "digital": false
+    },
+    "h1r": {
+      "id": "7b3294cf-104e-43fb-8170-add3e78faca7",
+      "code": "h1r",
+      "name": "Modern Horizons 1 Timeshifts",
+      "released_at": "2021-06-18",
+      "set_type": "draft_innovation",
+      "tcgplayer_id": 2422,
+      "parent_set_code": "mh2",
+      "digital": false
+    },
+    "hml": {
+      "id": "5ac1f606-e682-46e9-ad0f-122a3783581b",
+      "code": "hml",
+      "name": "Homelands",
+      "released_at": "1995-10-01",
+      "set_type": "expansion",
+      "tcgplayer_id": 57,
+      "digital": false
+    },
+    "hob": {
+      "id": "59218c23-cb7a-4fde-9cff-3f2f71af1308",
+      "code": "hob",
+      "name": "The Hobbit",
+      "released_at": "2026-08-14",
+      "set_type": "expansion",
+      "tcgplayer_id": 24683,
+      "digital": false
+    },
+    "hoc": {
+      "id": "a185c905-5359-4f40-85c3-a3eae2ca4ff0",
+      "code": "hoc",
+      "name": "The Hobbit Eternal",
+      "released_at": "2026-08-14",
+      "set_type": "eternal",
+      "tcgplayer_id": 24691,
+      "parent_set_code": "hob",
+      "digital": false
+    },
+    "hop": {
+      "id": "7137ffeb-eb1d-466c-a0d3-3157f52b1b10",
+      "code": "hop",
+      "name": "Planechase",
+      "released_at": "2009-09-04",
+      "set_type": "planechase",
+      "tcgplayer_id": 84,
+      "digital": false
+    },
+    "hou": {
+      "id": "65ff168b-bb94-47a5-a8f9-4ec6c213e768",
+      "code": "hou",
+      "name": "Hour of Devastation",
+      "released_at": "2017-07-14",
+      "set_type": "expansion",
+      "tcgplayer_id": 1934,
+      "digital": false
+    },
+    "ice": {
+      "id": "b0e08eea-5c01-4406-a6e2-dcd09c5e5b67",
+      "code": "ice",
+      "name": "Ice Age",
+      "released_at": "1995-06-03",
+      "set_type": "expansion",
+      "tcgplayer_id": 58,
+      "digital": false
+    },
+    "iko": {
+      "id": "19feda43-15ab-427e-a0e4-148a4bf2b03a",
+      "code": "iko",
+      "name": "Ikoria: Lair of Behemoths",
+      "released_at": "2020-04-24",
+      "set_type": "expansion",
+      "tcgplayer_id": 2603,
+      "digital": false
+    },
+    "ima": {
+      "id": "741bcd30-7709-4133-8919-f4b46483bed7",
+      "code": "ima",
+      "name": "Iconic Masters",
+      "released_at": "2017-11-17",
+      "set_type": "masters",
+      "tcgplayer_id": 2050,
+      "digital": false
+    },
+    "inr": {
+      "id": "b9618c8c-9f31-4b42-9798-2991893c27bf",
+      "code": "inr",
+      "name": "Innistrad Remastered",
+      "released_at": "2025-01-24",
+      "set_type": "masters",
+      "tcgplayer_id": 23848,
+      "digital": false
+    },
+    "inv": {
+      "id": "b9ae5e02-7726-47ca-b5e4-5ec402b41cd1",
+      "code": "inv",
+      "name": "Invasion",
+      "released_at": "2000-10-02",
+      "set_type": "expansion",
+      "tcgplayer_id": 60,
+      "digital": false
+    },
+    "isd": {
+      "id": "d1026945-2969-42b9-be53-f941405a58cb",
+      "code": "isd",
+      "name": "Innistrad",
+      "released_at": "2011-09-30",
+      "set_type": "expansion",
+      "tcgplayer_id": 59,
+      "digital": false
+    },
+    "itp": {
+      "id": "ebcaf6a7-c14c-4479-a228-2b24b6c11c9e",
+      "code": "itp",
+      "name": "Introductory Two-Player Set",
+      "released_at": "1996-12-31",
+      "set_type": "starter",
+      "tcgplayer_id": 2742,
+      "digital": false
+    },
+    "j12": {
+      "id": "d2de9024-04a9-487c-8ca7-9111fb2a0fe0",
+      "code": "j12",
+      "name": "Judge Gift Cards 2012",
+      "released_at": "2012-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "j13": {
+      "id": "e9d7337b-b74e-43ae-820e-a6d26b23c9f3",
+      "code": "j13",
+      "name": "Judge Gift Cards 2013",
+      "released_at": "2013-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "j14": {
+      "id": "27b3e564-c016-47d4-8a63-55b0034f9e30",
+      "code": "j14",
+      "name": "Judge Gift Cards 2014",
+      "released_at": "2014-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "j15": {
+      "id": "6f528eed-2bc2-4a27-bb27-937c211754b3",
+      "code": "j15",
+      "name": "Judge Gift Cards 2015",
+      "released_at": "2015-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "j16": {
+      "id": "a3490e7b-791b-4ed3-bd0c-6fb19b819150",
+      "code": "j16",
+      "name": "Judge Gift Cards 2016",
+      "released_at": "2016-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "j17": {
+      "id": "6c69afe8-bb1e-466f-a46a-4a3e92351b25",
+      "code": "j17",
+      "name": "Judge Gift Cards 2017",
+      "released_at": "2017-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "j18": {
+      "id": "71da38d2-c15a-45c4-97b2-a791a2fd695b",
+      "code": "j18",
+      "name": "Judge Gift Cards 2018",
+      "released_at": "2018-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "j22": {
+      "id": "247df475-e4ce-4e5e-9317-11892d2211e0",
+      "code": "j22",
+      "name": "Jumpstart 2022",
+      "released_at": "2022-12-02",
+      "set_type": "draft_innovation",
+      "tcgplayer_id": 3185,
+      "digital": false
+    },
+    "j25": {
+      "id": "9201567c-bab5-4720-aac9-260e6741f115",
+      "code": "j25",
+      "name": "Foundations Jumpstart",
+      "released_at": "2024-11-15",
+      "set_type": "draft_innovation",
+      "tcgplayer_id": 23792,
+      "parent_set_code": "fdn",
+      "digital": false
+    },
+    "jgp": {
+      "id": "804c01dd-4714-440a-950e-2f2130d781f3",
+      "code": "jgp",
+      "name": "Judge Gift Cards 1998",
+      "released_at": "1998-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 62,
+      "digital": false
+    },
+    "jmp": {
+      "id": "0f6ccf25-a627-4263-86df-5757137f1696",
+      "code": "jmp",
+      "name": "Jumpstart",
+      "released_at": "2020-07-17",
+      "set_type": "draft_innovation",
+      "tcgplayer_id": 2654,
+      "digital": false
+    },
+    "jou": {
+      "id": "204d2dca-1887-4721-9558-164aa7bbeb4f",
+      "code": "jou",
+      "name": "Journey into Nyx",
+      "released_at": "2014-05-02",
+      "set_type": "expansion",
+      "tcgplayer_id": 1277,
+      "digital": false
+    },
+    "jud": {
+      "id": "cd82de1a-36fd-4618-bfe8-b45532a582d9",
+      "code": "jud",
+      "name": "Judgment",
+      "released_at": "2002-05-27",
+      "set_type": "expansion",
+      "tcgplayer_id": 63,
+      "digital": false
+    },
+    "khc": {
+      "id": "d532ef25-e52b-4276-941a-3a1c095544b0",
+      "code": "khc",
+      "name": "Kaldheim Commander",
+      "released_at": "2021-02-05",
+      "set_type": "commander",
+      "tcgplayer_id": 2766,
+      "parent_set_code": "khm",
+      "digital": false
+    },
+    "khm": {
+      "id": "43057fad-b1c1-437f-bc48-0045bce6d8c9",
+      "code": "khm",
+      "name": "Kaldheim",
+      "released_at": "2021-02-05",
+      "set_type": "expansion",
+      "tcgplayer_id": 2750,
+      "digital": false
+    },
+    "kld": {
+      "id": "d667e468-be8f-411f-a030-473d148deb74",
+      "code": "kld",
+      "name": "Kaladesh",
+      "released_at": "2016-09-30",
+      "set_type": "expansion",
+      "tcgplayer_id": 1791,
+      "digital": false
+    },
+    "ktk": {
+      "id": "6c7a715c-ded9-449e-89b0-c665773e9c3c",
+      "code": "ktk",
+      "name": "Khans of Tarkir",
+      "released_at": "2014-09-26",
+      "set_type": "expansion",
+      "tcgplayer_id": 1356,
+      "digital": false
+    },
+    "lcc": {
+      "id": "d253edc3-5bc7-4cf1-9446-a8540dedffa5",
+      "code": "lcc",
+      "name": "The Lost Caverns of Ixalan Commander",
+      "released_at": "2023-11-17",
+      "set_type": "commander",
+      "tcgplayer_id": 23316,
+      "parent_set_code": "lci",
+      "digital": false
+    },
+    "lci": {
+      "id": "70169a6e-89d1-4a3a-aef7-3152958d55ac",
+      "code": "lci",
+      "name": "The Lost Caverns of Ixalan",
+      "released_at": "2023-11-17",
+      "set_type": "expansion",
+      "tcgplayer_id": 23312,
+      "digital": false
+    },
+    "lea": {
+      "id": "288bd996-960e-448b-a187-9504c1930c2c",
+      "code": "lea",
+      "name": "Limited Edition Alpha",
+      "released_at": "1993-08-05",
+      "set_type": "core",
+      "tcgplayer_id": 7,
+      "digital": false
+    },
+    "leb": {
+      "id": "5307bd88-637c-4a5c-9801-a0d887715302",
+      "code": "leb",
+      "name": "Limited Edition Beta",
+      "released_at": "1993-10-04",
+      "set_type": "core",
+      "tcgplayer_id": 17,
+      "digital": false
+    },
+    "leg": {
+      "id": "78c50b4b-b220-455b-a2d5-cee458fa56f3",
+      "code": "leg",
+      "name": "Legends",
+      "released_at": "1994-06-01",
+      "set_type": "expansion",
+      "tcgplayer_id": 65,
+      "digital": false
+    },
+    "lgn": {
+      "id": "c2d60a18-1a81-4784-8e0c-e1de2f43c5cf",
+      "code": "lgn",
+      "name": "Legions",
+      "released_at": "2003-02-03",
+      "set_type": "expansion",
+      "tcgplayer_id": 66,
+      "digital": false
+    },
+    "lrw": {
+      "id": "30ec97cb-dca9-4bf4-a98b-310f9d8ceaff",
+      "code": "lrw",
+      "name": "Lorwyn",
+      "released_at": "2007-10-12",
+      "set_type": "expansion",
+      "tcgplayer_id": 67,
+      "digital": false
+    },
+    "ltc": {
+      "id": "e567c19c-0fe4-446e-a7bf-fce8a150cd2e",
+      "code": "ltc",
+      "name": "Tales of Middle-earth Commander",
+      "released_at": "2023-06-23",
+      "set_type": "commander",
+      "tcgplayer_id": 23071,
+      "parent_set_code": "ltr",
+      "digital": false
+    },
+    "ltr": {
+      "id": "08078706-ac5d-439b-8f01-894d38751367",
+      "code": "ltr",
+      "name": "The Lord of the Rings: Tales of Middle-earth",
+      "released_at": "2023-06-23",
+      "set_type": "draft_innovation",
+      "tcgplayer_id": 23019,
+      "digital": false
+    },
+    "m10": {
+      "id": "0dba38a9-6b9d-4768-9831-4e03e8970a0b",
+      "code": "m10",
+      "name": "Magic 2010",
+      "released_at": "2009-07-17",
+      "set_type": "core",
+      "tcgplayer_id": 68,
+      "digital": false
+    },
+    "m11": {
+      "id": "485d2468-18c8-42a4-9482-ca1c51e0470e",
+      "code": "m11",
+      "name": "Magic 2011",
+      "released_at": "2010-07-16",
+      "set_type": "core",
+      "tcgplayer_id": 69,
+      "digital": false
+    },
+    "m12": {
+      "id": "5cdd2643-229c-4441-a62a-c34e4b531e1c",
+      "code": "m12",
+      "name": "Magic 2012",
+      "released_at": "2011-07-15",
+      "set_type": "core",
+      "tcgplayer_id": 70,
+      "digital": false
+    },
+    "m13": {
+      "id": "f9b0c6f4-8a4f-4f36-ad3c-e1e16fb8535d",
+      "code": "m13",
+      "name": "Magic 2013",
+      "released_at": "2012-07-13",
+      "set_type": "core",
+      "tcgplayer_id": 364,
+      "digital": false
+    },
+    "m14": {
+      "id": "e03ee1c0-ecd2-4fcc-ac3c-e8fdb103a847",
+      "code": "m14",
+      "name": "Magic 2014",
+      "released_at": "2013-07-19",
+      "set_type": "core",
+      "tcgplayer_id": 1113,
+      "digital": false
+    },
+    "m15": {
+      "id": "6ce49890-3b37-42a5-8932-dbeef1d7b62c",
+      "code": "m15",
+      "name": "Magic 2015",
+      "released_at": "2014-07-18",
+      "set_type": "core",
+      "tcgplayer_id": 1293,
+      "digital": false
+    },
+    "m19": {
+      "id": "2f5f2509-56db-414d-9a7e-6e312ec3760c",
+      "code": "m19",
+      "name": "Core Set 2019",
+      "released_at": "2018-07-13",
+      "set_type": "core",
+      "tcgplayer_id": 2250,
+      "digital": false
+    },
+    "m20": {
+      "id": "4a787360-9767-4f44-80b1-2405dc5e39c7",
+      "code": "m20",
+      "name": "Core Set 2020",
+      "released_at": "2019-07-12",
+      "set_type": "core",
+      "tcgplayer_id": 2441,
+      "digital": false
+    },
+    "m21": {
+      "id": "bc94aba1-7376-4e02-a12d-3a2efb66ab0f",
+      "code": "m21",
+      "name": "Core Set 2021",
+      "released_at": "2020-07-03",
+      "set_type": "core",
+      "tcgplayer_id": 2653,
+      "digital": false
+    },
+    "m3c": {
+      "id": "f5e00721-cf99-43ba-bf16-b22d56d12c73",
+      "code": "m3c",
+      "name": "Modern Horizons 3 Commander",
+      "released_at": "2024-06-14",
+      "set_type": "commander",
+      "tcgplayer_id": 23445,
+      "parent_set_code": "mh3",
+      "digital": false
+    },
+    "mar": {
+      "id": "159f2a38-6a67-48fb-b583-2538554d70a3",
+      "code": "mar",
+      "name": "Marvel Universe",
+      "released_at": "2025-09-26",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 24432,
+      "digital": false
+    },
+    "mat": {
+      "id": "6727e43d-31b6-45b0-ae05-7a811ba72f70",
+      "code": "mat",
+      "name": "March of the Machine: The Aftermath",
+      "released_at": "2023-05-12",
+      "set_type": "expansion",
+      "tcgplayer_id": 22876,
+      "digital": false
+    },
+    "mb2": {
+      "id": "1e6879fe-2f29-4ad7-8d42-7f5bfb469f4a",
+      "code": "mb2",
+      "name": "Mystery Booster 2",
+      "released_at": "2024-08-02",
+      "set_type": "masters",
+      "tcgplayer_id": 23580,
+      "digital": false
+    },
+    "mbc": {
+      "id": "a4135564-9f37-4aaf-963a-90666f843e0d",
+      "code": "mbc",
+      "name": "Mystery Booster Commander Edition",
+      "released_at": "2026-11-09",
+      "set_type": "draft_innovation",
+      "tcgplayer_id": 24777,
+      "digital": false
+    },
+    "mbs": {
+      "id": "f46c57e3-9301-4006-a6ca-06f3f65961fb",
+      "code": "mbs",
+      "name": "Mirrodin Besieged",
+      "released_at": "2011-02-04",
+      "set_type": "expansion",
+      "tcgplayer_id": 76,
+      "digital": false
+    },
+    "md1": {
+      "id": "3c31de17-6766-448e-a4eb-878d83031f3e",
+      "code": "md1",
+      "name": "Modern Event Deck 2014",
+      "released_at": "2014-05-30",
+      "set_type": "box",
+      "tcgplayer_id": 1346,
+      "digital": false
+    },
+    "med": {
+      "id": "08aabe3a-7c0e-4c48-b2c2-57dcb5a266a4",
+      "code": "med",
+      "name": "Mythic Edition",
+      "released_at": "2018-10-05",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 2326,
+      "digital": false
+    },
+    "mh1": {
+      "id": "d7efccd6-55bc-4fb8-9138-e72577510a99",
+      "code": "mh1",
+      "name": "Modern Horizons",
+      "released_at": "2019-06-14",
+      "set_type": "draft_innovation",
+      "tcgplayer_id": 2422,
+      "digital": false
+    },
+    "mh2": {
+      "id": "c1c7eb8c-f205-40ab-a609-767cb296544e",
+      "code": "mh2",
+      "name": "Modern Horizons 2",
+      "released_at": "2021-06-18",
+      "set_type": "draft_innovation",
+      "tcgplayer_id": 2809,
+      "digital": false
+    },
+    "mh3": {
+      "id": "3ed80bb6-77e8-4aa7-8262-95377a38aba1",
+      "code": "mh3",
+      "name": "Modern Horizons 3",
+      "released_at": "2024-06-14",
+      "set_type": "draft_innovation",
+      "tcgplayer_id": 23444,
+      "digital": false
+    },
+    "mic": {
+      "id": "7f9a4deb-715e-47d2-afac-3843ef92f39b",
+      "code": "mic",
+      "name": "Midnight Hunt Commander",
+      "released_at": "2021-09-24",
+      "set_type": "commander",
+      "tcgplayer_id": 2893,
+      "parent_set_code": "mid",
+      "digital": false
+    },
+    "mid": {
+      "id": "44b8eb8f-fa23-401a-98b5-1fbb9871128e",
+      "code": "mid",
+      "name": "Innistrad: Midnight Hunt",
+      "released_at": "2021-09-24",
+      "set_type": "expansion",
+      "tcgplayer_id": 2864,
+      "digital": false
+    },
+    "mir": {
+      "id": "5f06acf3-8123-4a78-b2e7-089b0b775a4a",
+      "code": "mir",
+      "name": "Mirage",
+      "released_at": "1996-10-08",
+      "set_type": "expansion",
+      "tcgplayer_id": 74,
+      "digital": false
+    },
+    "mkc": {
+      "id": "286c37ca-ba65-4d3e-8c5d-d1878d88fd95",
+      "code": "mkc",
+      "name": "Murders at Karlov Manor Commander",
+      "released_at": "2024-02-09",
+      "set_type": "commander",
+      "tcgplayer_id": 23363,
+      "parent_set_code": "mkm",
+      "digital": false
+    },
+    "mkm": {
+      "id": "2b17794b-15c3-4796-ad6f-0887a0eceeca",
+      "code": "mkm",
+      "name": "Murders at Karlov Manor",
+      "released_at": "2024-02-09",
+      "set_type": "expansion",
+      "tcgplayer_id": 23361,
+      "digital": false
+    },
+    "mm2": {
+      "id": "28cac015-43df-4e88-90d0-95dcdd894834",
+      "code": "mm2",
+      "name": "Modern Masters 2015",
+      "released_at": "2015-05-22",
+      "set_type": "masters",
+      "tcgplayer_id": 1503,
+      "digital": false
+    },
+    "mm3": {
+      "id": "02624962-f727-4c31-bbf2-a94fa6c5b653",
+      "code": "mm3",
+      "name": "Modern Masters 2017",
+      "released_at": "2017-03-17",
+      "set_type": "masters",
+      "tcgplayer_id": 1879,
+      "digital": false
+    },
+    "mma": {
+      "id": "0b7020f2-336d-4706-9ce6-f6710b9ebd5c",
+      "code": "mma",
+      "name": "Modern Masters",
+      "released_at": "2013-06-07",
+      "set_type": "masters",
+      "tcgplayer_id": 1111,
+      "digital": false
+    },
+    "mmq": {
+      "id": "385e11a4-492b-4d07-b4a6-a1409ef829b8",
+      "code": "mmq",
+      "name": "Mercadian Masques",
+      "released_at": "1999-10-04",
+      "set_type": "expansion",
+      "tcgplayer_id": 73,
+      "digital": false
+    },
+    "moc": {
+      "id": "6bba5de9-5afb-42af-a7eb-24ac854bf671",
+      "code": "moc",
+      "name": "March of the Machine Commander",
+      "released_at": "2023-04-21",
+      "set_type": "commander",
+      "tcgplayer_id": 22979,
+      "parent_set_code": "mom",
+      "digital": false
+    },
+    "mom": {
+      "id": "392f7315-dc53-40a3-a2cc-5482dbd498b3",
+      "code": "mom",
+      "name": "March of the Machine",
+      "released_at": "2023-04-21",
+      "set_type": "expansion",
+      "tcgplayer_id": 22875,
+      "digital": false
+    },
+    "mor": {
+      "id": "c41550df-7b41-41a3-85ab-8612eb2f168f",
+      "code": "mor",
+      "name": "Morningtide",
+      "released_at": "2008-02-01",
+      "set_type": "expansion",
+      "tcgplayer_id": 77,
+      "digital": false
+    },
+    "mp2": {
+      "id": "c26402e7-838e-48db-a4b2-7abfc305998a",
+      "code": "mp2",
+      "name": "Amonkhet Invocations",
+      "released_at": "2017-04-28",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 1909,
+      "parent_set_code": "akh",
+      "digital": false
+    },
+    "mps": {
+      "id": "910ea2a2-9f6a-4665-98f6-165ea7928952",
+      "code": "mps",
+      "name": "Kaladesh Inventions",
+      "released_at": "2016-09-30",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 1837,
+      "parent_set_code": "kld",
+      "digital": false
+    },
+    "mrd": {
+      "id": "1d4f90ba-8d4a-4ee5-bc2f-e2d6bffe4955",
+      "code": "mrd",
+      "name": "Mirrodin",
+      "released_at": "2003-10-02",
+      "set_type": "expansion",
+      "tcgplayer_id": 75,
+      "digital": false
+    },
+    "msc": {
+      "id": "9d739461-c5ac-43a1-af41-3d5a585b5c8d",
+      "code": "msc",
+      "name": "Marvel Super Heroes Commander",
+      "released_at": "2026-06-26",
+      "set_type": "commander",
+      "tcgplayer_id": 24554,
+      "parent_set_code": "msh",
+      "digital": false
+    },
+    "msh": {
+      "id": "ba9bf625-681c-4a4e-ab48-399b2fecac6b",
+      "code": "msh",
+      "name": "Marvel Super Heroes",
+      "released_at": "2026-06-26",
+      "set_type": "expansion",
+      "tcgplayer_id": 24553,
+      "digital": false
+    },
+    "mul": {
+      "id": "a3f8daea-b24e-4e5c-a4d9-ec8910e9078a",
+      "code": "mul",
+      "name": "Multiverse Legends",
+      "released_at": "2023-04-21",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 22989,
+      "parent_set_code": "mom",
+      "digital": false
+    },
+    "ncc": {
+      "id": "c51de34b-d4d6-4179-a432-573744ded119",
+      "code": "ncc",
+      "name": "New Capenna Commander",
+      "released_at": "2022-04-29",
+      "set_type": "commander",
+      "tcgplayer_id": 3031,
+      "parent_set_code": "snc",
+      "digital": false
+    },
+    "nec": {
+      "id": "5b4d929d-bdf9-4bbf-858e-e248f53325ad",
+      "code": "nec",
+      "name": "Neon Dynasty Commander",
+      "released_at": "2022-02-18",
+      "set_type": "commander",
+      "tcgplayer_id": 2967,
+      "parent_set_code": "neo",
+      "digital": false
+    },
+    "nem": {
+      "id": "fa5d1fdb-f781-473d-b14d-50396d40d43f",
+      "code": "nem",
+      "name": "Nemesis",
+      "released_at": "2000-02-14",
+      "set_type": "expansion",
+      "tcgplayer_id": 78,
+      "digital": false
+    },
+    "neo": {
+      "id": "59a2059f-5482-433f-8761-eb2e17859b71",
+      "code": "neo",
+      "name": "Kamigawa: Neon Dynasty",
+      "released_at": "2022-02-18",
+      "set_type": "expansion",
+      "tcgplayer_id": 2965,
+      "digital": false
+    },
+    "nph": {
+      "id": "e8e356d8-6d01-4dab-aa07-d0999dc9359f",
+      "code": "nph",
+      "name": "New Phyrexia",
+      "released_at": "2011-05-13",
+      "set_type": "expansion",
+      "tcgplayer_id": 79,
+      "digital": false
+    },
+    "ody": {
+      "id": "b0d90d2d-494a-4224-bfa0-36ce5ee281b1",
+      "code": "ody",
+      "name": "Odyssey",
+      "released_at": "2001-10-01",
+      "set_type": "expansion",
+      "tcgplayer_id": 80,
+      "digital": false
+    },
+    "ogw": {
+      "id": "cd51d245-8f95-45b0-ab5f-e2b3a3eb5dfe",
+      "code": "ogw",
+      "name": "Oath of the Gatewatch",
+      "released_at": "2016-01-22",
+      "set_type": "expansion",
+      "tcgplayer_id": 1693,
+      "digital": false
+    },
+    "onc": {
+      "id": "8c5e86d4-ae2d-42f7-a0e5-0e4141eb953d",
+      "code": "onc",
+      "name": "Phyrexia: All Will Be One Commander",
+      "released_at": "2023-02-10",
+      "set_type": "commander",
+      "tcgplayer_id": 17685,
+      "parent_set_code": "one",
+      "digital": false
+    },
+    "one": {
+      "id": "04bef644-343f-4230-95ee-255f29aa67a2",
+      "code": "one",
+      "name": "Phyrexia: All Will Be One",
+      "released_at": "2023-02-10",
+      "set_type": "expansion",
+      "tcgplayer_id": 17684,
+      "digital": false
+    },
+    "ons": {
+      "id": "914a6c6d-cb3b-45e8-a2db-9978a2339faf",
+      "code": "ons",
+      "name": "Onslaught",
+      "released_at": "2002-10-07",
+      "set_type": "expansion",
+      "tcgplayer_id": 81,
+      "digital": false
+    },
+    "ori": {
+      "id": "0eeb9a9a-20ac-404d-b55f-aeb7a43a7f62",
+      "code": "ori",
+      "name": "Magic Origins",
+      "released_at": "2015-07-17",
+      "set_type": "core",
+      "tcgplayer_id": 1512,
+      "digital": false
+    },
+    "otc": {
+      "id": "d6548798-0c10-4509-b71a-2d8b1d14665a",
+      "code": "otc",
+      "name": "Outlaws of Thunder Junction Commander",
+      "released_at": "2024-04-19",
+      "set_type": "commander",
+      "tcgplayer_id": 23440,
+      "parent_set_code": "otj",
+      "digital": false
+    },
+    "otj": {
+      "id": "55a85ebe-644e-4bef-8be8-5290408be3d1",
+      "code": "otj",
+      "name": "Outlaws of Thunder Junction",
+      "released_at": "2024-04-19",
+      "set_type": "expansion",
+      "tcgplayer_id": 23439,
+      "digital": false
+    },
+    "otp": {
+      "id": "8b51294d-fc54-410c-83b2-0168837ede87",
+      "code": "otp",
+      "name": "Breaking News",
+      "released_at": "2024-04-19",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 23442,
+      "parent_set_code": "otj",
+      "digital": false
+    },
+    "p02": {
+      "id": "ac67f18a-4f0e-407e-bab1-a9fe4f659565",
+      "code": "p02",
+      "name": "Portal Second Age",
+      "released_at": "1998-06-24",
+      "set_type": "starter",
+      "tcgplayer_id": 87,
+      "digital": false
+    },
+    "p30a": {
+      "id": "f3d98295-0697-433a-9429-d04600da2295",
+      "code": "p30a",
+      "name": "30th Anniversary Play Promos",
+      "released_at": "2022-09-02",
+      "set_type": "promo",
+      "tcgplayer_id": 3178,
+      "parent_set_code": "30a",
+      "digital": false
+    },
+    "palp": {
+      "id": "994d1115-3d9e-494d-be58-45ff635a9595",
+      "code": "palp",
+      "name": "Asia Pacific Land Program",
+      "released_at": "1998-09-01",
+      "set_type": "promo",
+      "tcgplayer_id": 9,
+      "digital": false
+    },
+    "past": {
+      "id": "9ca75b06-d9c5-4245-9bba-f2751f8d50a5",
+      "code": "past",
+      "name": "Astral Cards",
+      "released_at": "1997-04-01",
+      "set_type": "box",
+      "tcgplayer_id": 14,
+      "digital": true
+    },
+    "pc2": {
+      "id": "9fb2f83e-7015-4aa9-808f-310ccf0fdb9c",
+      "code": "pc2",
+      "name": "Planechase 2012",
+      "released_at": "2012-06-01",
+      "set_type": "planechase",
+      "tcgplayer_id": 363,
+      "digital": false
+    },
+    "pca": {
+      "id": "ceadd605-dfba-4998-b96d-e8e8138aa20f",
+      "code": "pca",
+      "name": "Planechase Anthology",
+      "released_at": "2016-11-25",
+      "set_type": "planechase",
+      "tcgplayer_id": 1793,
+      "digital": false
+    },
+    "pcmp": {
+      "id": "3bbd8312-611e-4479-9658-ac96482b97ae",
+      "code": "pcmp",
+      "name": "Champs and States",
+      "released_at": "2006-03-18",
+      "set_type": "promo",
+      "tcgplayer_id": 21,
+      "digital": false
+    },
+    "pcy": {
+      "id": "c233bd36-57c0-4aa2-ae6c-7aeabfb4e3ce",
+      "code": "pcy",
+      "name": "Prophecy",
+      "released_at": "2000-06-05",
+      "set_type": "expansion",
+      "tcgplayer_id": 94,
+      "digital": false
+    },
+    "pd2": {
+      "id": "e0d91aba-be11-4ddd-96a4-4753e708458a",
+      "code": "pd2",
+      "name": "Premium Deck Series: Fire and Lightning",
+      "released_at": "2010-11-19",
+      "set_type": "premium_deck",
+      "tcgplayer_id": 89,
+      "digital": false
+    },
+    "pd3": {
+      "id": "b6d6ba83-3b91-4203-8103-320cfa50f848",
+      "code": "pd3",
+      "name": "Premium Deck Series: Graveborn",
+      "released_at": "2011-11-18",
+      "set_type": "premium_deck",
+      "tcgplayer_id": 90,
+      "digital": false
+    },
+    "pelp": {
+      "id": "fe73e363-c74e-4211-a728-0f4d01f9cb29",
+      "code": "pelp",
+      "name": "European Land Program",
+      "released_at": "2000-02-05",
+      "set_type": "promo",
+      "tcgplayer_id": 38,
+      "digital": false
+    },
+    "pgpx": {
+      "id": "08e04147-c201-4c75-9b30-a566164ecaf3",
+      "code": "pgpx",
+      "name": "Grand Prix Promos",
+      "released_at": "2007-02-24",
+      "set_type": "promo",
+      "tcgplayer_id": 54,
+      "digital": false
+    },
+    "pgru": {
+      "id": "30c0fe51-0ce7-40c4-9bf4-2836a0dc063b",
+      "code": "pgru",
+      "name": "Guru",
+      "released_at": "1999-07-12",
+      "set_type": "promo",
+      "tcgplayer_id": 56,
+      "digital": false
+    },
+    "pip": {
+      "id": "d84d7a49-2ef4-4808-83b4-8c65b4aa0e2d",
+      "code": "pip",
+      "name": "Fallout",
+      "released_at": "2024-03-08",
+      "set_type": "commander",
+      "tcgplayer_id": 23337,
+      "digital": false
+    },
+    "plc": {
+      "id": "5a1b571c-73e9-4c14-b9d4-a62507d85789",
+      "code": "plc",
+      "name": "Planar Chaos",
+      "released_at": "2007-02-02",
+      "set_type": "expansion",
+      "tcgplayer_id": 83,
+      "digital": false
+    },
+    "pls": {
+      "id": "82dc193b-bd5f-4883-a93f-a4155b467ee0",
+      "code": "pls",
+      "name": "Planeshift",
+      "released_at": "2001-02-05",
+      "set_type": "expansion",
+      "tcgplayer_id": 85,
+      "digital": false
+    },
+    "plst": {
+      "id": "67e47ba2-b019-4181-9005-fe9fc021de44",
+      "code": "plst",
+      "name": "The List",
+      "released_at": "2020-09-26",
+      "set_type": "masters",
+      "tcgplayer_id": 2715,
+      "digital": false
+    },
+    "pm20": {
+      "id": "bb017236-6da1-4558-a8bd-cf020e964530",
+      "code": "pm20",
+      "name": "Core Set 2020 Promos",
+      "released_at": "2019-07-12",
+      "set_type": "promo",
+      "tcgplayer_id": 92,
+      "parent_set_code": "m20",
+      "digital": false
+    },
+    "pmei": {
+      "id": "80b77354-aa37-420c-a9a2-8a0c66989f23",
+      "code": "pmei",
+      "name": "Media and Collaboration Promos",
+      "released_at": "1995-01-01",
+      "set_type": "promo",
+      "tcgplayer_id": 72,
+      "digital": false
+    },
+    "pmps": {
+      "id": "7fc829b2-1406-43ff-b741-ea815ecdce02",
+      "code": "pmps",
+      "name": "Magic Premiere Shop 2005",
+      "released_at": "2005-10-07",
+      "set_type": "promo",
+      "tcgplayer_id": 369,
+      "digital": false
+    },
+    "por": {
+      "id": "478c47df-5058-4ce6-830e-7e80732b2ca9",
+      "code": "por",
+      "name": "Portal",
+      "released_at": "1997-05-01",
+      "set_type": "starter",
+      "tcgplayer_id": 86,
+      "digital": false
+    },
+    "ppro": {
+      "id": "e82b640d-bacf-41a5-8cf9-85e1ffeee71e",
+      "code": "ppro",
+      "name": "Pro Tour Promos",
+      "released_at": "2007-02-09",
+      "set_type": "promo",
+      "tcgplayer_id": 93,
+      "digital": false
+    },
+    "prm": {
+      "id": "638940fb-6be9-4be3-b83f-68d3902fbbe5",
+      "code": "prm",
+      "name": "Magic Online Promos",
+      "released_at": "2002-06-24",
+      "set_type": "promo",
+      "tcgplayer_id": 24690,
+      "digital": true
+    },
+    "ps11": {
+      "id": "97fe7b09-5b23-4fcb-a9ae-6803c5314382",
+      "code": "ps11",
+      "name": "Salvat 2011",
+      "released_at": "2011-01-01",
+      "set_type": "box",
+      "tcgplayer_id": 2988,
+      "digital": false
+    },
+    "psal": {
+      "id": "1132e6a3-d93a-4ed1-8724-ad5e8e5a1d41",
+      "code": "psal",
+      "name": "Salvat 2005",
+      "released_at": "2005-08-22",
+      "set_type": "box",
+      "tcgplayer_id": 2989,
+      "digital": false
+    },
+    "psus": {
+      "id": "7708825d-7afc-472a-ac35-348713ffb3e1",
+      "code": "psus",
+      "name": "Junior Super Series",
+      "released_at": "1999-12-01",
+      "set_type": "promo",
+      "tcgplayer_id": 61,
+      "digital": false
+    },
+    "ptg": {
+      "id": "d264b61b-bfb3-4388-be42-e34a1eaa00c2",
+      "code": "ptg",
+      "name": "Ponies: The Galloping",
+      "released_at": "2019-10-22",
+      "set_type": "funny",
+      "tcgplayer_id": 2552,
+      "digital": false
+    },
+    "ptk": {
+      "id": "2676ff2e-9d86-4b5b-b935-e84e41b0755e",
+      "code": "ptk",
+      "name": "Portal Three Kingdoms",
+      "released_at": "1999-05-01",
+      "set_type": "starter",
+      "tcgplayer_id": 88,
+      "digital": false
+    },
+    "ptkdf": {
+      "id": "6f68a621-24b7-4371-a25c-9fff3ed68b8f",
+      "code": "ptkdf",
+      "name": "Tarkir Dragonfury",
+      "released_at": "2015-04-03",
+      "set_type": "promo",
+      "tcgplayer_id": 1520,
+      "parent_set_code": "dtk",
+      "digital": false
+    },
+    "puma": {
+      "id": "bb516e44-1185-4bd5-9025-2c1b994beaac",
+      "code": "puma",
+      "name": "Ultimate Box Topper",
+      "released_at": "2018-12-07",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 2361,
+      "parent_set_code": "uma",
+      "digital": false
+    },
+    "pvan": {
+      "id": "3c098543-7919-46d5-b14d-aa0444fd6573",
+      "code": "pvan",
+      "name": "Vanguard Series",
+      "released_at": "1997-05-01",
+      "set_type": "vanguard",
+      "tcgplayer_id": 119,
+      "digital": false
+    },
+    "pza": {
+      "id": "59aecbd0-4c5b-4dd7-a0f2-ba16b4403c56",
+      "code": "pza",
+      "name": "Teenage Mutant Ninja Turtles Source Material",
+      "released_at": "2026-03-06",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 24497,
+      "parent_set_code": "tmt",
+      "digital": false
+    },
+    "rav": {
+      "id": "15fccbe8-2825-41ca-9d0a-67aebdf91c4a",
+      "code": "rav",
+      "name": "Ravnica: City of Guilds",
+      "released_at": "2005-10-07",
+      "set_type": "expansion",
+      "tcgplayer_id": 95,
+      "digital": false
+    },
+    "ren": {
+      "id": "bec33d25-cf6f-460f-918d-29b3009686bb",
+      "code": "ren",
+      "name": "Renaissance",
+      "released_at": "1995-08-01",
+      "set_type": "masters",
+      "tcgplayer_id": 2379,
+      "digital": false
+    },
+    "rex": {
+      "id": "647b6fd3-6935-4b96-85a4-d0191487ea5a",
+      "code": "rex",
+      "name": "Jurassic World Collection",
+      "released_at": "2023-11-17",
+      "set_type": "eternal",
+      "tcgplayer_id": 23317,
+      "parent_set_code": "lci",
+      "digital": false
+    },
+    "rix": {
+      "id": "2f7e40fc-772d-4a85-bfdd-01653c41d0fa",
+      "code": "rix",
+      "name": "Rivals of Ixalan",
+      "released_at": "2018-01-19",
+      "set_type": "expansion",
+      "tcgplayer_id": 2098,
+      "digital": false
+    },
+    "rna": {
+      "id": "97a7fd84-8d89-45a3-b48b-c951f6a3f9f1",
+      "code": "rna",
+      "name": "Ravnica Allegiance",
+      "released_at": "2019-01-25",
+      "set_type": "expansion",
+      "tcgplayer_id": 2366,
+      "digital": false
+    },
+    "roe": {
+      "id": "eadb8a82-ec56-4623-b50e-42e7e60cb535",
+      "code": "roe",
+      "name": "Rise of the Eldrazi",
+      "released_at": "2010-04-23",
+      "set_type": "expansion",
+      "tcgplayer_id": 98,
+      "digital": false
+    },
+    "rqs": {
+      "id": "8a407de5-5d19-44ad-ad77-6417c5ee6083",
+      "code": "rqs",
+      "name": "Rivals Quick Start Set",
+      "released_at": "1996-07-01",
+      "set_type": "box",
+      "tcgplayer_id": 2778,
+      "digital": false
+    },
+    "rtr": {
+      "id": "80b2374d-c5f1-403e-9772-f6c806fd275e",
+      "code": "rtr",
+      "name": "Return to Ravnica",
+      "released_at": "2012-10-05",
+      "set_type": "expansion",
+      "tcgplayer_id": 370,
+      "digital": false
+    },
+    "rvr": {
+      "id": "fed2c8cd-ab92-44f6-808a-41e7809bcfe2",
+      "code": "rvr",
+      "name": "Ravnica Remastered",
+      "released_at": "2024-01-12",
+      "set_type": "masters",
+      "tcgplayer_id": 23319,
+      "digital": false
+    },
+    "s00": {
+      "id": "1c105623-2564-40d7-a3aa-4134787fb127",
+      "code": "s00",
+      "name": "Starter 2000",
+      "released_at": "2000-04-01",
+      "set_type": "starter",
+      "tcgplayer_id": 106,
+      "digital": false
+    },
+    "s99": {
+      "id": "7e345c51-7a88-4c7a-8184-4e1ba493b40d",
+      "code": "s99",
+      "name": "Starter 1999",
+      "released_at": "1999-07-01",
+      "set_type": "starter",
+      "tcgplayer_id": 105,
+      "digital": false
+    },
+    "scd": {
+      "id": "adc5d965-43ea-46bc-aebd-8a39282ce168",
+      "code": "scd",
+      "name": "Starter Commander Decks",
+      "released_at": "2022-12-02",
+      "set_type": "commander",
+      "tcgplayer_id": 17662,
+      "digital": false
+    },
+    "scg": {
+      "id": "5133c3a1-1412-4ce6-a1f0-73b695966ded",
+      "code": "scg",
+      "name": "Scourge",
+      "released_at": "2003-05-26",
+      "set_type": "expansion",
+      "tcgplayer_id": 101,
+      "digital": false
+    },
+    "sds": {
+      "id": "6c6374a8-d70e-410f-a3c4-978a18fdbaa0",
+      "code": "sds",
+      "name": "Stardates",
+      "released_at": "2026-11-13",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 24771,
+      "parent_set_code": "trk",
+      "digital": false
+    },
+    "shm": {
+      "id": "c18c0ba1-2081-4808-9b2e-549bc3a666f3",
+      "code": "shm",
+      "name": "Shadowmoor",
+      "released_at": "2008-05-02",
+      "set_type": "expansion",
+      "tcgplayer_id": 102,
+      "digital": false
+    },
+    "slc": {
+      "id": "8224dce1-ca9c-45af-ac77-78bfc6042ae2",
+      "code": "slc",
+      "name": "Secret Lair Countdown",
+      "released_at": "2022-11-01",
+      "set_type": "box",
+      "tcgplayer_id": 17667,
+      "parent_set_code": "sld",
+      "digital": false
+    },
+    "sld": {
+      "id": "4d92a8a7-ccb0-437d-abdc-9d70fc5ed672",
+      "code": "sld",
+      "name": "Secret Lair Drop",
+      "released_at": "2019-12-02",
+      "set_type": "box",
+      "tcgplayer_id": 2576,
+      "digital": false
+    },
+    "slp": {
+      "id": "c325b3f9-51e1-416b-83b1-138f11790dd1",
+      "code": "slp",
+      "name": "Secret Lair Promo",
+      "released_at": "2023-02-17",
+      "set_type": "promo",
+      "tcgplayer_id": 22970,
+      "parent_set_code": "sld",
+      "digital": false
+    },
+    "slu": {
+      "id": "6333fd9a-d48e-497f-83fd-30609018e5cb",
+      "code": "slu",
+      "name": "Secret Lair: Ultimate Edition",
+      "released_at": "2020-05-29",
+      "set_type": "box",
+      "tcgplayer_id": 2632,
+      "parent_set_code": "sld",
+      "digital": false
+    },
+    "slx": {
+      "id": "3c318e12-9152-4300-a096-4f58a6438897",
+      "code": "slx",
+      "name": "Universes Within",
+      "released_at": "2022-03-03",
+      "set_type": "masters",
+      "tcgplayer_id": 3054,
+      "parent_set_code": "sld",
+      "digital": false
+    },
+    "slz": {
+      "id": "fbbad14d-1d42-4204-ade6-911876dc7c06",
+      "code": "slz",
+      "name": "The Zeta Set",
+      "released_at": "2026-09-02",
+      "set_type": "box",
+      "tcgplayer_id": 24836,
+      "digital": false
+    },
+    "snc": {
+      "id": "df837242-8c15-42e4-b049-c933a02dc501",
+      "code": "snc",
+      "name": "Streets of New Capenna",
+      "released_at": "2022-04-29",
+      "set_type": "expansion",
+      "tcgplayer_id": 3026,
+      "digital": false
+    },
+    "soa": {
+      "id": "f57497ce-4c8f-45e3-9cd9-395148357189",
+      "code": "soa",
+      "name": "Secrets of Strixhaven Mystical Archive",
+      "released_at": "2026-04-24",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 24603,
+      "parent_set_code": "sos",
+      "digital": false
+    },
+    "soc": {
+      "id": "97fab8d1-480a-419d-ab14-663968e29b9c",
+      "code": "soc",
+      "name": "Secrets of Strixhaven Commander",
+      "released_at": "2026-04-24",
+      "set_type": "commander",
+      "tcgplayer_id": 24602,
+      "parent_set_code": "sos",
+      "digital": false
+    },
+    "soi": {
+      "id": "5e914d7e-c1e9-446c-a33d-d093c02b2743",
+      "code": "soi",
+      "name": "Shadows over Innistrad",
+      "released_at": "2016-04-08",
+      "set_type": "expansion",
+      "tcgplayer_id": 1708,
+      "digital": false
+    },
+    "sok": {
+      "id": "4db16ad3-2b95-442f-bb6b-e9aa7fe7f769",
+      "code": "sok",
+      "name": "Saviors of Kamigawa",
+      "released_at": "2005-06-03",
+      "set_type": "expansion",
+      "tcgplayer_id": 99,
+      "digital": false
+    },
+    "som": {
+      "id": "8f403072-9b22-4e69-8d59-22dc4c97fd8d",
+      "code": "som",
+      "name": "Scars of Mirrodin",
+      "released_at": "2010-10-01",
+      "set_type": "expansion",
+      "tcgplayer_id": 100,
+      "digital": false
+    },
+    "sos": {
+      "id": "e487c9ce-5e76-4756-bcd0-e4b7db5c38a3",
+      "code": "sos",
+      "name": "Secrets of Strixhaven",
+      "released_at": "2026-04-24",
+      "set_type": "expansion",
+      "tcgplayer_id": 24601,
+      "digital": false
+    },
+    "spe": {
+      "id": "57f25bcf-c541-418d-87c2-57361d57d35e",
+      "code": "spe",
+      "name": "Marvel's Spider-Man Eternal",
+      "released_at": "2025-09-26",
+      "set_type": "eternal",
+      "tcgplayer_id": 24246,
+      "parent_set_code": "spm",
+      "digital": false
+    },
+    "spg": {
+      "id": "c01003a2-b3e2-4e7f-a26d-2348144c8056",
+      "code": "spg",
+      "name": "Special Guests",
+      "released_at": "2023-11-17",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 23318,
+      "digital": false
+    },
+    "spm": {
+      "id": "a1c7b891-9e96-434c-9994-be58b62b27f1",
+      "code": "spm",
+      "name": "Marvel's Spider-Man",
+      "released_at": "2025-09-26",
+      "set_type": "expansion",
+      "tcgplayer_id": 24245,
+      "digital": false
+    },
+    "ss1": {
+      "id": "a24031db-1378-420f-b671-bcaec52d6f6c",
+      "code": "ss1",
+      "name": "Signature Spellbook: Jace",
+      "released_at": "2018-06-15",
+      "set_type": "spellbook",
+      "tcgplayer_id": 2220,
+      "digital": false
+    },
+    "ss2": {
+      "id": "9ae53f04-9cbb-45db-8b5c-972fe847a984",
+      "code": "ss2",
+      "name": "Signature Spellbook: Gideon",
+      "released_at": "2019-06-28",
+      "set_type": "spellbook",
+      "tcgplayer_id": 2447,
+      "digital": false
+    },
+    "ss3": {
+      "id": "4887d21f-71e7-4d7a-a079-e9521fd7e6d7",
+      "code": "ss3",
+      "name": "Signature Spellbook: Chandra",
+      "released_at": "2020-06-26",
+      "set_type": "spellbook",
+      "tcgplayer_id": 2633,
+      "digital": false
+    },
+    "sta": {
+      "id": "5064a720-907f-4cb6-a425-766dc1dd7374",
+      "code": "sta",
+      "name": "Strixhaven Mystical Archive",
+      "released_at": "2021-04-23",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 2791,
+      "parent_set_code": "stx",
+      "digital": false
+    },
+    "sth": {
+      "id": "5c83396a-d386-4367-926b-571a75b086a3",
+      "code": "sth",
+      "name": "Stronghold",
+      "released_at": "1998-03-02",
+      "set_type": "expansion",
+      "tcgplayer_id": 107,
+      "digital": false
+    },
+    "stx": {
+      "id": "541c3c28-8747-40e5-a231-8e8f33234859",
+      "code": "stx",
+      "name": "Strixhaven: School of Mages",
+      "released_at": "2021-04-23",
+      "set_type": "expansion",
+      "tcgplayer_id": 2773,
+      "digital": false
+    },
+    "sum": {
+      "id": "7993c591-1361-4dcb-b2af-ac94dd8e86e8",
+      "code": "sum",
+      "name": "Summer Magic / Edgar",
+      "released_at": "1994-06-21",
+      "set_type": "core",
+      "tcgplayer_id": 2642,
+      "digital": false
+    },
+    "tdc": {
+      "id": "bca9779c-0a0b-4ac1-8794-f3fc25549cf4",
+      "code": "tdc",
+      "name": "Tarkir: Dragonstorm Commander",
+      "released_at": "2025-04-11",
+      "set_type": "commander",
+      "tcgplayer_id": 24234,
+      "parent_set_code": "tdm",
+      "digital": false
+    },
+    "tdm": {
+      "id": "1361ca81-1304-49a8-b2e6-e76a4aa4a8c3",
+      "code": "tdm",
+      "name": "Tarkir: Dragonstorm",
+      "released_at": "2025-04-11",
+      "set_type": "expansion",
+      "tcgplayer_id": 24232,
+      "digital": false
+    },
+    "thb": {
+      "id": "5f23a78d-cda1-462a-8be3-a62b40c34913",
+      "code": "thb",
+      "name": "Theros Beyond Death",
+      "released_at": "2020-01-24",
+      "set_type": "expansion",
+      "tcgplayer_id": 2568,
+      "digital": false
+    },
+    "ths": {
+      "id": "69093d6f-e25a-41a4-8cf5-688d7f11c0fb",
+      "code": "ths",
+      "name": "Theros",
+      "released_at": "2013-09-27",
+      "set_type": "expansion",
+      "tcgplayer_id": 1144,
+      "digital": false
+    },
+    "tla": {
+      "id": "118f7e64-5caa-4cb7-99a8-184f4d3a7422",
+      "code": "tla",
+      "name": "Avatar: The Last Airbender",
+      "released_at": "2025-11-21",
+      "set_type": "expansion",
+      "tcgplayer_id": 24421,
+      "digital": false
+    },
+    "tle": {
+      "id": "a75e6ceb-d62c-4063-8e96-f269e3a0b025",
+      "code": "tle",
+      "name": "Avatar: The Last Airbender Eternal",
+      "released_at": "2025-11-21",
+      "set_type": "eternal",
+      "tcgplayer_id": 24422,
+      "parent_set_code": "tla",
+      "digital": false
+    },
+    "tmc": {
+      "id": "178a07bb-cd54-4443-8b62-675e0c52cfe3",
+      "code": "tmc",
+      "name": "Teenage Mutant Ninja Turtles Eternal",
+      "released_at": "2026-03-06",
+      "set_type": "eternal",
+      "tcgplayer_id": 24496,
+      "parent_set_code": "tmt",
+      "digital": false
+    },
+    "tmp": {
+      "id": "10df3a67-178e-4363-8668-34f0e6edf2a7",
+      "code": "tmp",
+      "name": "Tempest",
+      "released_at": "1997-10-14",
+      "set_type": "expansion",
+      "tcgplayer_id": 108,
+      "digital": false
+    },
+    "tmt": {
+      "id": "03990f52-1d8a-4ce8-828a-c9bf633f0de6",
+      "code": "tmt",
+      "name": "Teenage Mutant Ninja Turtles",
+      "released_at": "2026-03-06",
+      "set_type": "expansion",
+      "tcgplayer_id": 24495,
+      "digital": false
+    },
+    "tor": {
+      "id": "e0b3fda1-a6ca-4996-849b-08b463d39484",
+      "code": "tor",
+      "name": "Torment",
+      "released_at": "2002-02-04",
+      "set_type": "expansion",
+      "tcgplayer_id": 112,
+      "digital": false
+    },
+    "trc": {
+      "id": "a38c10be-90b1-4bb9-bd74-46784a751ac3",
+      "code": "trc",
+      "name": "Star Trek Commander",
+      "released_at": "2026-11-13",
+      "set_type": "commander",
+      "tcgplayer_id": 24770,
+      "parent_set_code": "trk",
+      "digital": false
+    },
+    "trk": {
+      "id": "b47039dc-da5a-448c-8feb-e77d458108a6",
+      "code": "trk",
+      "name": "Star Trek",
+      "released_at": "2026-11-13",
+      "set_type": "expansion",
+      "tcgplayer_id": 24766,
+      "digital": false
+    },
+    "tsb": {
+      "id": "6519be58-b8cb-4cd7-9f5b-4db23364715b",
+      "code": "tsb",
+      "name": "Time Spiral Timeshifted",
+      "released_at": "2006-10-06",
+      "set_type": "expansion",
+      "tcgplayer_id": 111,
+      "parent_set_code": "tsp",
+      "digital": false
+    },
+    "tsp": {
+      "id": "c1d109bc-ffd8-428f-8d7d-3f8d7e648046",
+      "code": "tsp",
+      "name": "Time Spiral",
+      "released_at": "2006-10-06",
+      "set_type": "expansion",
+      "tcgplayer_id": 110,
+      "digital": false
+    },
+    "tsr": {
+      "id": "11e90d1b-0502-43e6-b056-e24836523c13",
+      "code": "tsr",
+      "name": "Time Spiral Remastered",
+      "released_at": "2021-03-19",
+      "set_type": "masters",
+      "tcgplayer_id": 2772,
+      "digital": false
+    },
+    "uds": {
+      "id": "44f17b37-dcf8-4239-baab-1efc00cd3480",
+      "code": "uds",
+      "name": "Urza's Destiny",
+      "released_at": "1999-06-07",
+      "set_type": "expansion",
+      "tcgplayer_id": 116,
+      "digital": false
+    },
+    "ugin": {
+      "id": "fc7ea025-628e-45f4-9e0b-73681b1f68b7",
+      "code": "ugin",
+      "name": "Ugin's Fate",
+      "released_at": "2015-01-17",
+      "set_type": "promo",
+      "tcgplayer_id": 1507,
+      "parent_set_code": "frf",
+      "digital": false
+    },
+    "ugl": {
+      "id": "3404fc78-6678-4cf4-bd39-4c0be3bb7baf",
+      "code": "ugl",
+      "name": "Unglued",
+      "released_at": "1998-08-11",
+      "set_type": "funny",
+      "tcgplayer_id": 113,
+      "digital": false
+    },
+    "ulg": {
+      "id": "78ced61b-4b8a-4b33-b6b2-f5bd66f1a75a",
+      "code": "ulg",
+      "name": "Urza's Legacy",
+      "released_at": "1999-02-15",
+      "set_type": "expansion",
+      "tcgplayer_id": 117,
+      "digital": false
+    },
+    "uma": {
+      "id": "2ec77b94-6d47-4891-a480-5d0b4e5c9372",
+      "code": "uma",
+      "name": "Ultimate Masters",
+      "released_at": "2018-12-07",
+      "set_type": "masters",
+      "tcgplayer_id": 2360,
+      "digital": false
+    },
+    "und": {
+      "id": "fccfdf97-f5f2-43b4-9be9-9255414e6633",
+      "code": "und",
+      "name": "Unsanctioned",
+      "released_at": "2020-02-29",
+      "set_type": "funny",
+      "tcgplayer_id": 2598,
+      "digital": false
+    },
+    "unf": {
+      "id": "b314f553-8f07-4ba9-96c8-16be7784eff3",
+      "code": "unf",
+      "name": "Unfinity",
+      "released_at": "2022-10-07",
+      "set_type": "funny",
+      "tcgplayer_id": 2958,
+      "digital": false
+    },
+    "unh": {
+      "id": "4c8bc76a-05a5-43db-aaf0-34deb347b871",
+      "code": "unh",
+      "name": "Unhinged",
+      "released_at": "2004-11-19",
+      "set_type": "funny",
+      "tcgplayer_id": 114,
+      "digital": false
+    },
+    "unk": {
+      "id": "d2703c4f-66b6-438d-9368-ebb55aa12e78",
+      "code": "unk",
+      "name": "Unknown Event",
+      "released_at": "2023-02-15",
+      "set_type": "funny",
+      "tcgplayer_id": 23025,
+      "digital": false
+    },
+    "usg": {
+      "id": "c330df40-51db-4caf-bde6-48df6c181001",
+      "code": "usg",
+      "name": "Urza's Saga",
+      "released_at": "1998-10-12",
+      "set_type": "expansion",
+      "tcgplayer_id": 118,
+      "digital": false
+    },
+    "ust": {
+      "id": "83491685-880d-41dd-a4af-47d2b3b17c10",
+      "code": "ust",
+      "name": "Unstable",
+      "released_at": "2017-12-08",
+      "set_type": "funny",
+      "tcgplayer_id": 2092,
+      "digital": false
+    },
+    "v09": {
+      "id": "6254693f-c620-4e47-8bab-01085f8c3ffb",
+      "code": "v09",
+      "name": "From the Vault: Exiled",
+      "released_at": "2009-08-28",
+      "set_type": "from_the_vault",
+      "tcgplayer_id": 48,
+      "digital": false
+    },
+    "v10": {
+      "id": "3e3ea3e8-3d63-481f-b3ec-03c4f50b602e",
+      "code": "v10",
+      "name": "From the Vault: Relics",
+      "released_at": "2010-08-27",
+      "set_type": "from_the_vault",
+      "tcgplayer_id": 50,
+      "digital": false
+    },
+    "v11": {
+      "id": "b83c0908-ae67-47eb-9099-7a1791ada84a",
+      "code": "v11",
+      "name": "From the Vault: Legends",
+      "released_at": "2011-08-26",
+      "set_type": "from_the_vault",
+      "tcgplayer_id": 49,
+      "digital": false
+    },
+    "v12": {
+      "id": "b9259658-67bf-451b-b78b-f5545129e9bd",
+      "code": "v12",
+      "name": "From the Vault: Realms",
+      "released_at": "2012-08-31",
+      "set_type": "from_the_vault",
+      "tcgplayer_id": 368,
+      "digital": false
+    },
+    "v13": {
+      "id": "815577c6-652f-4171-8298-c1063c5bced1",
+      "code": "v13",
+      "name": "From the Vault: Twenty",
+      "released_at": "2013-08-23",
+      "set_type": "from_the_vault",
+      "tcgplayer_id": 1141,
+      "digital": false
+    },
+    "v14": {
+      "id": "21dd7ae2-1196-46d4-9acf-4ff9d82797be",
+      "code": "v14",
+      "name": "From the Vault: Annihilation",
+      "released_at": "2014-08-22",
+      "set_type": "from_the_vault",
+      "tcgplayer_id": 1475,
+      "digital": false
+    },
+    "v15": {
+      "id": "bd5cb4e5-8090-4bd9-bcd4-89741056689b",
+      "code": "v15",
+      "name": "From the Vault: Angels",
+      "released_at": "2015-08-21",
+      "set_type": "from_the_vault",
+      "tcgplayer_id": 1577,
+      "digital": false
+    },
+    "v16": {
+      "id": "599b33cd-678b-4149-9e68-2a59da7d7f81",
+      "code": "v16",
+      "name": "From the Vault: Lore",
+      "released_at": "2016-08-19",
+      "set_type": "from_the_vault",
+      "tcgplayer_id": 1821,
+      "digital": false
+    },
+    "v17": {
+      "id": "63c89a12-d115-4084-a4af-fceef40ca02f",
+      "code": "v17",
+      "name": "From the Vault: Transform",
+      "released_at": "2017-11-24",
+      "set_type": "from_the_vault",
+      "tcgplayer_id": 2078,
+      "digital": false
+    },
+    "vis": {
+      "id": "2c32f1a9-7921-4826-bea0-80bbac70532c",
+      "code": "vis",
+      "name": "Visions",
+      "released_at": "1997-02-03",
+      "set_type": "expansion",
+      "tcgplayer_id": 120,
+      "digital": false
+    },
+    "voc": {
+      "id": "b2e444f7-41e6-4172-ba01-47d91d5e7bbc",
+      "code": "voc",
+      "name": "Crimson Vow Commander",
+      "released_at": "2021-11-19",
+      "set_type": "commander",
+      "tcgplayer_id": 2900,
+      "parent_set_code": "vow",
+      "digital": false
+    },
+    "vow": {
+      "id": "8144b676-569f-4716-8005-bc8f0778f3fa",
+      "code": "vow",
+      "name": "Innistrad: Crimson Vow",
+      "released_at": "2021-11-19",
+      "set_type": "expansion",
+      "tcgplayer_id": 2862,
+      "digital": false
+    },
+    "w16": {
+      "id": "b3a0e4a1-5f2c-44e1-8558-61e6dcd88fda",
+      "code": "w16",
+      "name": "Welcome Deck 2016",
+      "released_at": "2016-04-08",
+      "set_type": "starter",
+      "tcgplayer_id": 1765,
+      "digital": false
+    },
+    "w17": {
+      "id": "2027da7f-c82a-4080-af34-4b9edf7c5132",
+      "code": "w17",
+      "name": "Welcome Deck 2017",
+      "released_at": "2017-04-15",
+      "set_type": "starter",
+      "tcgplayer_id": 1930,
+      "digital": false
+    },
+    "war": {
+      "id": "ee044f0b-e101-4ead-8d0e-aa510aad4277",
+      "code": "war",
+      "name": "War of the Spark",
+      "released_at": "2019-05-03",
+      "set_type": "expansion",
+      "tcgplayer_id": 2418,
+      "digital": false
+    },
+    "wc97": {
+      "id": "8b791ead-c9b5-42fa-9ffb-43f178af5ac8",
+      "code": "wc97",
+      "name": "World Championship Decks 1997",
+      "released_at": "1997-08-13",
+      "set_type": "memorabilia",
+      "tcgplayer_id": 2198,
+      "digital": false
+    },
+    "who": {
+      "id": "efdfdd99-cee7-4c11-a5e9-03d60f88bdd6",
+      "code": "who",
+      "name": "Doctor Who",
+      "released_at": "2023-10-13",
+      "set_type": "commander",
+      "tcgplayer_id": 23165,
+      "digital": false
+    },
+    "woc": {
+      "id": "51c0814a-2db2-4182-9aac-77340e9a540d",
+      "code": "woc",
+      "name": "Wilds of Eldraine Commander",
+      "released_at": "2023-09-08",
+      "set_type": "commander",
+      "tcgplayer_id": 23164,
+      "parent_set_code": "woe",
+      "digital": false
+    },
+    "woe": {
+      "id": "79139661-13ee-43c4-8bad-a8c069f1a1df",
+      "code": "woe",
+      "name": "Wilds of Eldraine",
+      "released_at": "2023-09-08",
+      "set_type": "expansion",
+      "tcgplayer_id": 23163,
+      "digital": false
+    },
+    "wot": {
+      "id": "d1eba841-452b-4f81-88c9-b32973ac8176",
+      "code": "wot",
+      "name": "Wilds of Eldraine: Enchanting Tales",
+      "released_at": "2023-09-08",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 23273,
+      "parent_set_code": "woe",
+      "digital": false
+    },
+    "wth": {
+      "id": "700997ac-add2-4ce2-992e-5efa0fdfc0e9",
+      "code": "wth",
+      "name": "Weatherlight",
+      "released_at": "1997-06-09",
+      "set_type": "expansion",
+      "tcgplayer_id": 121,
+      "digital": false
+    },
+    "wwk": {
+      "id": "2f248ce6-c2a5-4c6f-a2be-0c593fbe173c",
+      "code": "wwk",
+      "name": "Worldwake",
+      "released_at": "2010-02-05",
+      "set_type": "expansion",
+      "tcgplayer_id": 122,
+      "digital": false
+    },
+    "xln": {
+      "id": "fe0dad85-54bc-4151-9200-d68da84dd0f2",
+      "code": "xln",
+      "name": "Ixalan",
+      "released_at": "2017-09-29",
+      "set_type": "expansion",
+      "tcgplayer_id": 2043,
+      "digital": false
+    },
+    "zen": {
+      "id": "eb16a2bd-a218-4e4e-8339-4aa1afc0c8d2",
+      "code": "zen",
+      "name": "Zendikar",
+      "released_at": "2009-10-02",
+      "set_type": "expansion",
+      "tcgplayer_id": 124,
+      "digital": false
+    },
+    "znc": {
+      "id": "25c6bd9b-4e10-40a4-b9b5-0f4d9b5852a1",
+      "code": "znc",
+      "name": "Zendikar Rising Commander",
+      "released_at": "2020-09-25",
+      "set_type": "commander",
+      "tcgplayer_id": 2716,
+      "parent_set_code": "znr",
+      "digital": false
+    },
+    "zne": {
+      "id": "24e668b5-8312-498e-9bd7-c77a102bb55c",
+      "code": "zne",
+      "name": "Zendikar Rising Expeditions",
+      "released_at": "2020-09-25",
+      "set_type": "masterpiece",
+      "tcgplayer_id": 2713,
+      "parent_set_code": "znr",
+      "digital": false
+    },
+    "znr": {
+      "id": "f4e01fa7-b254-42dd-849f-69b58027a8c4",
+      "code": "znr",
+      "name": "Zendikar Rising",
+      "released_at": "2020-09-25",
+      "set_type": "expansion",
+      "tcgplayer_id": 2648,
+      "digital": false
+    }
+  },
+  "tcgplayer_groups": {
+    "1": [
+      "10e"
+    ],
+    "10": [
+      "apc"
+    ],
+    "100": [
+      "som"
+    ],
+    "101": [
+      "scg"
+    ],
+    "102": [
+      "shm"
+    ],
+    "103": [
+      "ala"
+    ],
+    "105": [
+      "s99"
+    ],
+    "106": [
+      "s00"
+    ],
+    "107": [
+      "sth"
+    ],
+    "108": [
+      "tmp"
+    ],
+    "109": [
+      "drk"
+    ],
+    "11": [
+      "arn"
+    ],
+    "110": [
+      "tsp"
+    ],
+    "111": [
+      "tsb"
+    ],
+    "1111": [
+      "mma"
+    ],
+    "1113": [
+      "m14"
+    ],
+    "112": [
+      "tor"
+    ],
+    "113": [
+      "ugl"
+    ],
+    "114": [
+      "unh"
+    ],
+    "1141": [
+      "v13"
+    ],
+    "1144": [
+      "ths"
+    ],
+    "1145": [
+      "ddl"
+    ],
+    "115": [
+      "2ed"
+    ],
+    "116": [
+      "uds"
+    ],
+    "1164": [
+      "c13"
+    ],
+    "1166": [
+      "ddm"
+    ],
+    "117": [
+      "ulg"
+    ],
+    "118": [
+      "usg"
+    ],
+    "119": [
+      "pvan"
+    ],
+    "12": [
+      "arc"
+    ],
+    "120": [
+      "vis"
+    ],
+    "121": [
+      "wth"
+    ],
+    "122": [
+      "wwk"
+    ],
+    "124": [
+      "zen"
+    ],
+    "125": [
+      "dka"
+    ],
+    "1274": [
+      "dpa"
+    ],
+    "1275": [
+      "ath"
+    ],
+    "1276": [
+      "bng"
+    ],
+    "1277": [
+      "jou"
+    ],
+    "1293": [
+      "m15"
+    ],
+    "1311": [
+      "dkm"
+    ],
+    "1312": [
+      "cns"
+    ],
+    "1346": [
+      "md1"
+    ],
+    "1348": [
+      "cst"
+    ],
+    "1356": [
+      "ktk"
+    ],
+    "14": [
+      "past"
+    ],
+    "1475": [
+      "v14"
+    ],
+    "1476": [
+      "c14"
+    ],
+    "1477": [
+      "ddn"
+    ],
+    "1497": [
+      "frf"
+    ],
+    "15": [
+      "brb"
+    ],
+    "1503": [
+      "mm2"
+    ],
+    "1507": [
+      "ugin"
+    ],
+    "1511": [
+      "ddo"
+    ],
+    "1512": [
+      "ori"
+    ],
+    "1515": [
+      "dtk"
+    ],
+    "1520": [
+      "ptkdf"
+    ],
+    "1526": [
+      "ced"
+    ],
+    "1527": [
+      "cei"
+    ],
+    "1577": [
+      "v15"
+    ],
+    "16": [
+      "btd"
+    ],
+    "1641": [
+      "ddp"
+    ],
+    "1645": [
+      "bfz"
+    ],
+    "1649": [
+      "exp"
+    ],
+    "1673": [
+      "c15"
+    ],
+    "1688": [
+      "4bb"
+    ],
+    "1689": [
+      "fbb"
+    ],
+    "1693": [
+      "ogw"
+    ],
+    "17": [
+      "leb"
+    ],
+    "1708": [
+      "soi"
+    ],
+    "1726": [
+      "ddq"
+    ],
+    "1740": [
+      "ema"
+    ],
+    "1765": [
+      "w16"
+    ],
+    "17662": [
+      "scd"
+    ],
+    "17664": [
+      "bot"
+    ],
+    "17665": [
+      "brr"
+    ],
+    "17667": [
+      "slc"
+    ],
+    "17670": [
+      "dmr"
+    ],
+    "17684": [
+      "one"
+    ],
+    "17685": [
+      "onc"
+    ],
+    "1790": [
+      "emn"
+    ],
+    "1791": [
+      "kld"
+    ],
+    "1792": [
+      "c16"
+    ],
+    "1793": [
+      "pca"
+    ],
+    "1794": [
+      "cn2"
+    ],
+    "18": [
+      "bok"
+    ],
+    "1821": [
+      "v16"
+    ],
+    "1835": [
+      "ddr"
+    ],
+    "1837": [
+      "mps"
+    ],
+    "1857": [
+      "aer"
+    ],
+    "1879": [
+      "mm3"
+    ],
+    "1882": [
+      "akh"
+    ],
+    "1904": [
+      "e01"
+    ],
+    "1905": [
+      "dds"
+    ],
+    "1909": [
+      "mp2"
+    ],
+    "1930": [
+      "w17"
+    ],
+    "1933": [
+      "cma"
+    ],
+    "1934": [
+      "hou"
+    ],
+    "2": [
+      "7ed"
+    ],
+    "20": [
+      "chk"
+    ],
+    "2009": [
+      "c17"
+    ],
+    "2043": [
+      "xln"
+    ],
+    "2050": [
+      "ima"
+    ],
+    "2076": [
+      "ddt"
+    ],
+    "2077": [
+      "e02"
+    ],
+    "2078": [
+      "v17"
+    ],
+    "2092": [
+      "ust"
+    ],
+    "2098": [
+      "rix"
+    ],
+    "21": [
+      "pcmp"
+    ],
+    "2189": [
+      "a25"
+    ],
+    "2198": [
+      "wc97"
+    ],
+    "2199": [
+      "dom"
+    ],
+    "22": [
+      "chr"
+    ],
+    "2207": [
+      "ddu"
+    ],
+    "2220": [
+      "ss1"
+    ],
+    "2245": [
+      "bbd"
+    ],
+    "2246": [
+      "cm2"
+    ],
+    "2247": [
+      "gs1"
+    ],
+    "2250": [
+      "m19"
+    ],
+    "2251": [
+      "c18"
+    ],
+    "22875": [
+      "mom"
+    ],
+    "22876": [
+      "mat"
+    ],
+    "2290": [
+      "grn"
+    ],
+    "22970": [
+      "slp"
+    ],
+    "22979": [
+      "moc"
+    ],
+    "22989": [
+      "mul"
+    ],
+    "23": [
+      "6ed"
+    ],
+    "23019": [
+      "ltr"
+    ],
+    "23020": [
+      "cmm"
+    ],
+    "23025": [
+      "unk"
+    ],
+    "23071": [
+      "ltc"
+    ],
+    "23163": [
+      "woe"
+    ],
+    "23164": [
+      "woc"
+    ],
+    "23165": [
+      "who"
+    ],
+    "2326": [
+      "med"
+    ],
+    "23273": [
+      "wot"
+    ],
+    "23312": [
+      "lci"
+    ],
+    "23316": [
+      "lcc"
+    ],
+    "23317": [
+      "rex"
+    ],
+    "23318": [
+      "spg"
+    ],
+    "23319": [
+      "rvr"
+    ],
+    "23337": [
+      "pip"
+    ],
+    "2334": [
+      "gk1"
+    ],
+    "23361": [
+      "mkm"
+    ],
+    "23362": [
+      "clu"
+    ],
+    "23363": [
+      "mkc"
+    ],
+    "23439": [
+      "otj"
+    ],
+    "23440": [
+      "otc"
+    ],
+    "23442": [
+      "otp"
+    ],
+    "23443": [
+      "big"
+    ],
+    "23444": [
+      "mh3"
+    ],
+    "23445": [
+      "m3c"
+    ],
+    "23446": [
+      "acr"
+    ],
+    "23447": [
+      "blb"
+    ],
+    "23448": [
+      "blc"
+    ],
+    "23550": [
+      "dsk"
+    ],
+    "23551": [
+      "dsc"
+    ],
+    "23556": [
+      "fdn"
+    ],
+    "23580": [
+      "mb2"
+    ],
+    "2359": [
+      "gn2",
+      "gnt"
+    ],
+    "2360": [
+      "uma"
+    ],
+    "2361": [
+      "puma"
+    ],
+    "2366": [
+      "rna"
+    ],
+    "2379": [
+      "ren"
+    ],
+    "23792": [
+      "j25"
+    ],
+    "23814": [
+      "fdc"
+    ],
+    "23848": [
+      "inr"
+    ],
+    "23874": [
+      "dft"
+    ],
+    "2388": [
+      "gk2"
+    ],
+    "23929": [
+      "drc"
+    ],
+    "24": [
+      "csp"
+    ],
+    "2418": [
+      "war"
+    ],
+    "24219": [
+      "fin"
+    ],
+    "2422": [
+      "h1r",
+      "mh1"
+    ],
+    "24220": [
+      "fic"
+    ],
+    "24226": [
+      "fca"
+    ],
+    "24232": [
+      "tdm"
+    ],
+    "24233": [
+      "eoe"
+    ],
+    "24234": [
+      "tdc"
+    ],
+    "24236": [
+      "eoc"
+    ],
+    "24245": [
+      "spm"
+    ],
+    "24246": [
+      "spe"
+    ],
+    "24361": [
+      "eos"
+    ],
+    "2441": [
+      "m20"
+    ],
+    "24421": [
+      "tla"
+    ],
+    "24422": [
+      "tle"
+    ],
+    "24432": [
+      "mar"
+    ],
+    "24463": [
+      "ecl"
+    ],
+    "24464": [
+      "ecc"
+    ],
+    "2447": [
+      "ss2"
+    ],
+    "24495": [
+      "tmt"
+    ],
+    "24496": [
+      "tmc"
+    ],
+    "24497": [
+      "pza"
+    ],
+    "24553": [
+      "msh"
+    ],
+    "24554": [
+      "msc"
+    ],
+    "24601": [
+      "sos"
+    ],
+    "24602": [
+      "soc"
+    ],
+    "24603": [
+      "soa"
+    ],
+    "24683": [
+      "hob"
+    ],
+    "24684": [
+      "fra"
+    ],
+    "24690": [
+      "prm"
+    ],
+    "24691": [
+      "hoc"
+    ],
+    "24766": [
+      "trk"
+    ],
+    "24770": [
+      "trc"
+    ],
+    "24771": [
+      "sds"
+    ],
+    "24777": [
+      "mbc"
+    ],
+    "2481": [
+      "c19"
+    ],
+    "24836": [
+      "slz"
+    ],
+    "2494": [
+      "eld"
+    ],
+    "25": [
+      "cmd"
+    ],
+    "2552": [
+      "ptg"
+    ],
+    "2568": [
+      "thb"
+    ],
+    "2570": [
+      "cmb1",
+      "cmb2"
+    ],
+    "2576": [
+      "sld"
+    ],
+    "2598": [
+      "und"
+    ],
+    "26": [
+      "con"
+    ],
+    "2603": [
+      "iko"
+    ],
+    "2632": [
+      "slu"
+    ],
+    "2633": [
+      "ss3"
+    ],
+    "2634": [
+      "c20"
+    ],
+    "2642": [
+      "sum"
+    ],
+    "2648": [
+      "znr"
+    ],
+    "2653": [
+      "m21"
+    ],
+    "2654": [
+      "jmp"
+    ],
+    "2655": [
+      "2xm"
+    ],
+    "2699": [
+      "cc1"
+    ],
+    "27": [
+      "dst"
+    ],
+    "2708": [
+      "cmr"
+    ],
+    "2713": [
+      "zne"
+    ],
+    "2715": [
+      "plst"
+    ],
+    "2716": [
+      "znc"
+    ],
+    "2742": [
+      "itp"
+    ],
+    "2750": [
+      "khm"
+    ],
+    "2766": [
+      "khc"
+    ],
+    "2772": [
+      "tsr"
+    ],
+    "2773": [
+      "stx"
+    ],
+    "2778": [
+      "rqs"
+    ],
+    "2791": [
+      "sta"
+    ],
+    "28": [
+      "dis"
+    ],
+    "2801": [
+      "c21"
+    ],
+    "2809": [
+      "mh2"
+    ],
+    "2823": [
+      "afr"
+    ],
+    "2862": [
+      "vow"
+    ],
+    "2864": [
+      "mid"
+    ],
+    "2870": [
+      "afc"
+    ],
+    "2893": [
+      "mic"
+    ],
+    "2900": [
+      "voc"
+    ],
+    "2905": [
+      "cc2"
+    ],
+    "2942": [
+      "dbl"
+    ],
+    "2958": [
+      "unf"
+    ],
+    "2965": [
+      "neo"
+    ],
+    "2967": [
+      "nec"
+    ],
+    "2988": [
+      "ps11"
+    ],
+    "2989": [
+      "psal"
+    ],
+    "3": [
+      "8ed"
+    ],
+    "30": [
+      "ddh"
+    ],
+    "3026": [
+      "snc"
+    ],
+    "3031": [
+      "ncc"
+    ],
+    "3047": [
+      "clb"
+    ],
+    "3054": [
+      "slx"
+    ],
+    "3070": [
+      "2x2"
+    ],
+    "3079": [
+      "40k"
+    ],
+    "31": [
+      "ddc"
+    ],
+    "3102": [
+      "dmu"
+    ],
+    "3129": [
+      "gn3"
+    ],
+    "3140": [
+      "dmc"
+    ],
+    "3157": [
+      "bro"
+    ],
+    "3159": [
+      "brc"
+    ],
+    "3178": [
+      "30a",
+      "p30a"
+    ],
+    "3185": [
+      "j22"
+    ],
+    "32": [
+      "ddf"
+    ],
+    "33": [
+      "dd1",
+      "evg"
+    ],
+    "34": [
+      "ddd"
+    ],
+    "35": [
+      "dd2"
+    ],
+    "36": [
+      "ddg"
+    ],
+    "362": [
+      "avr"
+    ],
+    "363": [
+      "pc2"
+    ],
+    "364": [
+      "m13"
+    ],
+    "365": [
+      "ddj"
+    ],
+    "367": [
+      "ddi"
+    ],
+    "368": [
+      "v12"
+    ],
+    "369": [
+      "pmps"
+    ],
+    "37": [
+      "dde"
+    ],
+    "370": [
+      "rtr"
+    ],
+    "38": [
+      "pelp"
+    ],
+    "39": [
+      "eve"
+    ],
+    "4": [
+      "9ed"
+    ],
+    "40": [
+      "exo"
+    ],
+    "41": [
+      "fem"
+    ],
+    "43": [
+      "5dn"
+    ],
+    "44": [
+      "5ed"
+    ],
+    "45": [
+      "fnm"
+    ],
+    "46": [
+      "4ed"
+    ],
+    "47": [
+      "drb"
+    ],
+    "48": [
+      "v09"
+    ],
+    "49": [
+      "v11"
+    ],
+    "5": [
+      "arb"
+    ],
+    "50": [
+      "v10"
+    ],
+    "51": [
+      "fut"
+    ],
+    "54": [
+      "pgpx"
+    ],
+    "55": [
+      "gpt"
+    ],
+    "56": [
+      "pgru"
+    ],
+    "568": [
+      "cm1"
+    ],
+    "569": [
+      "gtc"
+    ],
+    "57": [
+      "hml"
+    ],
+    "570": [
+      "dgm"
+    ],
+    "58": [
+      "ice"
+    ],
+    "59": [
+      "isd"
+    ],
+    "6": [
+      "all"
+    ],
+    "60": [
+      "inv"
+    ],
+    "601": [
+      "ddk"
+    ],
+    "61": [
+      "psus"
+    ],
+    "62": [
+      "g00",
+      "g01",
+      "g02",
+      "g03",
+      "g04",
+      "g05",
+      "g06",
+      "g07",
+      "g08",
+      "g09",
+      "g10",
+      "g11",
+      "g99",
+      "j12",
+      "j13",
+      "j14",
+      "j15",
+      "j16",
+      "j17",
+      "j18",
+      "jgp"
+    ],
+    "63": [
+      "jud"
+    ],
+    "65": [
+      "leg"
+    ],
+    "66": [
+      "lgn"
+    ],
+    "67": [
+      "lrw"
+    ],
+    "68": [
+      "m10"
+    ],
+    "69": [
+      "m11"
+    ],
+    "7": [
+      "lea"
+    ],
+    "70": [
+      "m12"
+    ],
+    "72": [
+      "pmei"
+    ],
+    "73": [
+      "mmq"
+    ],
+    "74": [
+      "mir"
+    ],
+    "75": [
+      "mrd"
+    ],
+    "76": [
+      "mbs"
+    ],
+    "77": [
+      "mor"
+    ],
+    "78": [
+      "nem"
+    ],
+    "79": [
+      "nph"
+    ],
+    "8": [
+      "atq"
+    ],
+    "80": [
+      "ody"
+    ],
+    "81": [
+      "ons"
+    ],
+    "83": [
+      "plc"
+    ],
+    "84": [
+      "hop"
+    ],
+    "85": [
+      "pls"
+    ],
+    "86": [
+      "por"
+    ],
+    "87": [
+      "p02"
+    ],
+    "88": [
+      "ptk"
+    ],
+    "89": [
+      "pd2"
+    ],
+    "9": [
+      "palp"
+    ],
+    "90": [
+      "pd3"
+    ],
+    "91": [
+      "h09"
+    ],
+    "92": [
+      "pm20"
+    ],
+    "93": [
+      "ppro"
+    ],
+    "94": [
+      "pcy"
+    ],
+    "95": [
+      "rav"
+    ],
+    "97": [
+      "3ed"
+    ],
+    "98": [
+      "roe"
+    ],
+    "99": [
+      "sok"
+    ]
+  }
+}

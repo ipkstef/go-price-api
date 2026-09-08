@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"time"
 
+	setcatalog "go-price-api/data"
 	"go-price-api/internal/config"
 	"go-price-api/internal/database"
 	"go-price-api/internal/router"
@@ -33,7 +34,11 @@ func main() {
 	}
 	defer pool.Close()
 
-	r := router.Setup(pool, cfg.JWTSecret, cfg.JWTExpiry)
+	catalog, err := setcatalog.Load()
+	if err != nil {
+		log.Fatalf("set catalog: %v", err)
+	}
+	r := router.Setup(pool, cfg.JWTSecret, cfg.JWTExpiry, catalog)
 
 	srv := &http.Server{
 		Addr:              ":" + cfg.Port,
