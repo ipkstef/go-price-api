@@ -117,7 +117,7 @@ func (h *DocsHandler) Index(c *gin.Context) {
 				"method":      "GET",
 				"path":        "/prices/movers",
 				"auth":        true,
-				"description": "SKUs where low_price changed between two completed snapshots. Includes language, printing, and condition names. Defaults to the two most recent completed snapshots.",
+				"description": "SKUs where low_price changed between two completed snapshots. Includes language, printing, and condition names. Each result includes prev_snapshot_at and curr_snapshot_at as UTC RFC 3339 timestamps of the actual resolved snapshots, not individual listing-change times or the requested dates. Defaults to the two most recent completed snapshots.",
 				"errors": gin.H{
 					"400 (empty, repeated, malformed, or impossible set_released_since)": "invalid set_released_since: use YYYY or YYYY-MM-DD with a valid date (years 0001-9999); YYYY means January 1",
 				},

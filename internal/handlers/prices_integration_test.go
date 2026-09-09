@@ -55,14 +55,16 @@ func TestMoversLiveSetFilter(t *testing.T) {
 	r := gin.New()
 	r.GET("/prices/movers", h.Movers)
 	var from, to time.Time
-	if err := db.QueryRow(ctx, `SELECT min(snapshot_at),max(snapshot_at) FROM (SELECT DISTINCT snapshot_at FROM ingestion_runs WHERE status='complete' ORDER BY snapshot_at DESC LIMIT 2) s`).Scan(&from, &to); err != nil {
+	// Explicit from/to parameters select whole UTC dates, so use the last
+	// completed snapshot from each of two distinct days.
+	if err := db.QueryRow(ctx, `SELECT min(snapshot_at),max(snapshot_at) FROM (SELECT max(snapshot_at) AS snapshot_at FROM ingestion_runs WHERE status='complete' GROUP BY (snapshot_at AT TIME ZONE 'UTC')::date ORDER BY snapshot_at DESC LIMIT 2) s`).Scan(&from, &to); err != nil {
 		t.Fatal(err)
 	}
 	if !from.Before(to) {
-		t.Fatal("need two completed snapshots")
+		t.Fatal("need completed snapshots on two distinct UTC dates")
 	}
 	base := "/prices/movers?from=" + from.Format(time.DateOnly) + "&to=" + to.Format(time.DateOnly) + "&limit=20"
-	request := func(query string) []models.PriceMover {
+	request := func(t *testing.T, query string) []models.PriceMover {
 		t.Helper()
 		w := httptest.NewRecorder()
 		r.ServeHTTP(w, httptest.NewRequest("GET", base+query, nil))
@@ -73,82 +75,96 @@ func TestMoversLiveSetFilter(t *testing.T) {
 		if err := json.Unmarshal(w.Body.Bytes(), &results); err != nil {
 			t.Fatal(err)
 		}
+		for _, m := range results {
+			if !m.PrevSnapshotAt.Equal(from) || !m.CurrSnapshotAt.Equal(to) {
+				t.Fatalf("SKU %d snapshot dates = %s -> %s, want %s -> %s", m.SKUID, m.PrevSnapshotAt, m.CurrSnapshotAt, from, to)
+			}
+		}
 		return results
 	}
-	cutoff, _ := time.Parse(time.DateOnly, "2020-01-01")
-	eligible := map[int64]bool{}
-	for _, id := range catalog.GroupsReleasedSince(cutoff) {
-		eligible[id] = true
-	}
-	for _, query := range []string{"", "&set_released_since=2020", "&set_released_since=2020-01-01", "&set_released_since=2020&direction=down&is_sealed=false&language_id=1&printing_id=1&condition_id=1&min_price=500", "&set_released_since=2020&offset=20"} {
-		results := request(query)
-		if len(results) != 20 {
-			t.Fatalf("%s returned %d results, expected full page with representative data", query, len(results))
+	t.Run("snapshot timestamps", func(t *testing.T) {
+		results := request(t, "&group_id=24219&language_id=1&printing_id=2&condition_id=1")
+		if len(results) == 0 {
+			t.Fatal("need a nonempty page to verify timestamps")
 		}
-		ids := make([]int64, 0, len(results))
-		skus := make([]int64, 0, len(results))
-		for _, m := range results {
-			ids = append(ids, m.ProductID)
-			skus = append(skus, m.SKUID)
+		t.Logf("verified %d results with snapshots %s -> %s", len(results), results[0].PrevSnapshotAt, results[0].CurrSnapshotAt)
+	})
+	t.Run("set filters", func(t *testing.T) {
+		cutoff, _ := time.Parse(time.DateOnly, "2020-01-01")
+		eligible := map[int64]bool{}
+		for _, id := range catalog.GroupsReleasedSince(cutoff) {
+			eligible[id] = true
 		}
-		rows, err := db.Query(ctx, `SELECT product_id,group_id FROM products WHERE product_id=ANY($1)`, ids)
-		if err != nil {
-			t.Fatal(err)
-		}
-		groups := map[int64]int64{}
-		for rows.Next() {
-			var pid, gid int64
-			if err := rows.Scan(&pid, &gid); err != nil {
+		for _, query := range []string{"", "&set_released_since=2020", "&set_released_since=2020-01-01", "&set_released_since=2020&direction=down&is_sealed=false&language_id=1&printing_id=1&condition_id=1&min_price=500", "&set_released_since=2020&offset=20"} {
+			results := request(t, query)
+			if len(results) != 20 {
+				t.Fatalf("%s returned %d results, expected full page with representative data", query, len(results))
+			}
+			ids := make([]int64, 0, len(results))
+			skus := make([]int64, 0, len(results))
+			for _, m := range results {
+				ids = append(ids, m.ProductID)
+				skus = append(skus, m.SKUID)
+			}
+			rows, err := db.Query(ctx, `SELECT product_id,group_id FROM products WHERE product_id=ANY($1)`, ids)
+			if err != nil {
 				t.Fatal(err)
 			}
-			groups[pid] = gid
-		}
-		rows.Close()
-		if err := rows.Err(); err != nil {
-			t.Fatal(err)
-		}
-		rows, err = db.Query(ctx, `SELECT f.sku_id,f.low_price_cents,t.low_price_cents FROM sku_price_snapshots f JOIN sku_price_snapshots t USING(sku_id) WHERE f.sku_id=ANY($1) AND f.snapshot_at=$2 AND t.snapshot_at=$3`, skus, from, to)
-		if err != nil {
-			t.Fatal(err)
-		}
-		prices := map[int64][2]int32{}
-		for rows.Next() {
-			var sku int64
-			var previous, current int32
-			if err := rows.Scan(&sku, &previous, &current); err != nil {
+			groups := map[int64]int64{}
+			for rows.Next() {
+				var pid, gid int64
+				if err := rows.Scan(&pid, &gid); err != nil {
+					t.Fatal(err)
+				}
+				groups[pid] = gid
+			}
+			rows.Close()
+			if err := rows.Err(); err != nil {
 				t.Fatal(err)
 			}
-			prices[sku] = [2]int32{previous, current}
-		}
-		rows.Close()
-		if err := rows.Err(); err != nil {
-			t.Fatal(err)
-		}
-		for _, m := range results {
-			gid, ok := groups[m.ProductID]
-			if !ok || query != "" && !eligible[gid] {
-				t.Fatalf("%s returned ineligible product %d group %d", query, m.ProductID, gid)
+			rows, err = db.Query(ctx, `SELECT f.sku_id,f.low_price_cents,t.low_price_cents FROM sku_price_snapshots f JOIN sku_price_snapshots t USING(sku_id) WHERE f.sku_id=ANY($1) AND f.snapshot_at=$2 AND t.snapshot_at=$3`, skus, from, to)
+			if err != nil {
+				t.Fatal(err)
 			}
-			price, ok := prices[m.SKUID]
-			if !ok {
-				t.Fatalf("missing database prices for SKU %d", m.SKUID)
+			prices := map[int64][2]int32{}
+			for rows.Next() {
+				var sku int64
+				var previous, current int32
+				if err := rows.Scan(&sku, &previous, &current); err != nil {
+					t.Fatal(err)
+				}
+				prices[sku] = [2]int32{previous, current}
 			}
-			previous, current := price[0], price[1]
-			if m.PrevLow != previous || m.CurrLow != current || m.DeltaCents != current-previous {
-				t.Fatalf("incorrect prices for SKU %d: %+v; database %d -> %d", m.SKUID, m, previous, current)
+			rows.Close()
+			if err := rows.Err(); err != nil {
+				t.Fatal(err)
+			}
+			for _, m := range results {
+				gid, ok := groups[m.ProductID]
+				if !ok || query != "" && !eligible[gid] {
+					t.Fatalf("%s returned ineligible product %d group %d", query, m.ProductID, gid)
+				}
+				price, ok := prices[m.SKUID]
+				if !ok {
+					t.Fatalf("missing database prices for SKU %d", m.SKUID)
+				}
+				previous, current := price[0], price[1]
+				if m.PrevLow != previous || m.CurrLow != current || m.DeltaCents != current-previous {
+					t.Fatalf("incorrect prices for SKU %d: %+v; database %d -> %d", m.SKUID, m, previous, current)
+				}
+			}
+			t.Logf("%s: %d results; first SKU %d, %d -> %d cents", query, len(results), results[0].SKUID, results[0].PrevLow, results[0].CurrLow)
+		}
+		for _, query := range []string{
+			"&set_released_since=2020&group_id=7",    // old
+			"&set_released_since=2020&group=LEA",     // existing code resolver
+			"&set_released_since=2020&group_id=9",    // unmapped
+			"&set_released_since=2020&group_id=2422", // shared: 2019 and 2021
+			"&set_released_since=9999",
+		} {
+			if got := request(t, query); len(got) != 0 {
+				t.Fatalf("%s returned %d results", query, len(got))
 			}
 		}
-		t.Logf("%s: %d results; first SKU %d, %d -> %d cents", query, len(results), results[0].SKUID, results[0].PrevLow, results[0].CurrLow)
-	}
-	for _, query := range []string{
-		"&set_released_since=2020&group_id=7",    // old
-		"&set_released_since=2020&group=LEA",     // existing code resolver
-		"&set_released_since=2020&group_id=9",    // unmapped
-		"&set_released_since=2020&group_id=2422", // shared: 2019 and 2021
-		"&set_released_since=9999",
-	} {
-		if got := request(query); len(got) != 0 {
-			t.Fatalf("%s returned %d results", query, len(got))
-		}
-	}
+	})
 }

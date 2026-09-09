@@ -23,7 +23,8 @@ The cutoff is inclusive. Unknown groups are excluded when filtering, and a
 shared group qualifies only if its earliest release qualifies. Catalog dates
 are bundled current metadata even when comparing historical snapshots.
 The existing definition of completed snapshots and price comparisons is
-unchanged. Endpoint output fields are unchanged.
+unchanged. The set filter itself does not change endpoint output fields;
+the subsequent timestamp addition is documented below.
 
 ## Validation status
 
@@ -119,3 +120,20 @@ restart. No writes, retries of writes, or partial-write states are introduced
 by the read-only filter. Ingestion concurrency and sustained request load
 have not been validated. The existing snapshot-completeness behavior was
 preserved rather than redesigned.
+
+## Snapshot timestamp fields (2026-09-09)
+
+Each mover now includes `prev_snapshot_at` and `curr_snapshot_at`, populated
+from the resolved snapshot variables used by the price query and serialized
+in UTC. This adds no database queries or changes to the existing SQL.
+
+`go test ./...` and the server build passed. A focused read-only integration
+check verified all 20 returned movers used the exact comparison snapshots:
+`2026-09-08T15:00:13Z` and `2026-09-09T15:21:57Z`. That test completed in
+6.24 seconds. Run it with the integration database environment configured:
+`go test ./internal/handlers -run TestMoversLiveSetFilter/snapshot_timestamps -v -count=1`.
+
+The attempted broad live suite hit its 60-second database statement timeout
+on the full-market query, so that suite did not pass during this change.
+The explicit-date test fixture now selects the latest completed snapshot on
+each of two distinct UTC days, matching the endpoint's date resolution.

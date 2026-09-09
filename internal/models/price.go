@@ -25,16 +25,18 @@ type PricePoint struct {
 }
 
 type PriceMover struct {
-	SKUID        int64   `json:"sku_id"`
-	ProductID    int64   `json:"product_id"`
-	ProductName  *string `json:"product_name"`
-	Language     *string `json:"language"`
-	Printing     *string `json:"printing"`
-	Condition    *string `json:"condition"`
-	PrevLow      int32   `json:"prev_low_price_cents"`
-	CurrLow      int32   `json:"curr_low_price_cents"`
-	DeltaCents   int32   `json:"delta_cents"`
-	DeltaPercent float64 `json:"delta_percent"`
+	SKUID          int64     `json:"sku_id"`
+	ProductID      int64     `json:"product_id"`
+	ProductName    *string   `json:"product_name"`
+	Language       *string   `json:"language"`
+	Printing       *string   `json:"printing"`
+	Condition      *string   `json:"condition"`
+	PrevSnapshotAt time.Time `json:"prev_snapshot_at"`
+	CurrSnapshotAt time.Time `json:"curr_snapshot_at"`
+	PrevLow        int32     `json:"prev_low_price_cents"`
+	CurrLow        int32     `json:"curr_low_price_cents"`
+	DeltaCents     int32     `json:"delta_cents"`
+	DeltaPercent   float64   `json:"delta_percent"`
 }
 
 type BulkPriceRequest struct {

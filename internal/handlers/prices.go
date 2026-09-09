@@ -318,7 +318,10 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 
 	movers := make([]models.PriceMover, 0)
 	for rows.Next() {
-		var m models.PriceMover
+		m := models.PriceMover{
+			PrevSnapshotAt: fromSnap.UTC(),
+			CurrSnapshotAt: toSnap.UTC(),
+		}
 		if err := rows.Scan(
 			&m.SKUID, &m.ProductID, &m.ProductName,
 			&m.Language, &m.Printing, &m.Condition,

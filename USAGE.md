@@ -154,6 +154,22 @@ Params:
 
 Response includes `prev_low_price_cents`, `curr_low_price_cents`, `delta_cents`, `delta_percent`, plus `language`, `printing`, and `condition` names.
 
+Each result also includes `prev_snapshot_at` and `curr_snapshot_at`: UTC
+RFC 3339 timestamps identifying the actual snapshots used for the previous and
+current prices. These are snapshot times, not individual listing-change times.
+They reflect the resolved snapshots, which can precede the requested `from` or
+`to` date. All results in one response share the same comparison timestamps.
+The response remains an array; an empty result is still `[]`.
+
+Example timestamp fields (illustrative):
+
+```json
+{
+  "prev_snapshot_at": "2026-09-08T15:00:13Z",
+  "curr_snapshot_at": "2026-09-09T02:08:56Z"
+}
+```
+
 When `set_released_since` is provided, groups missing from the bundled Scryfall
 catalog are excluded. If multiple Scryfall sets share a TCGplayer group, its
 earliest release date determines eligibility. The cutoff combines with the
