@@ -149,11 +149,19 @@ func TestMoversLiveSetFilter(t *testing.T) {
 					t.Fatalf("missing database prices for SKU %d", m.SKUID)
 				}
 				previous, current := price[0], price[1]
-				if m.PrevLow != previous || m.CurrLow != current || m.DeltaCents != current-previous {
+				// Prices and deltas are nullable by contract; this fixture only
+				// selects SKUs priced in both snapshots, so all three must be set.
+				if m.PrevLow == nil || m.CurrLow == nil || m.DeltaCents == nil {
+					t.Fatalf("unexpected null price or delta for SKU %d: %+v", m.SKUID, m)
+				}
+				if *m.PrevLow != previous || *m.CurrLow != current || *m.DeltaCents != current-previous {
 					t.Fatalf("incorrect prices for SKU %d: %+v; database %d -> %d", m.SKUID, m, previous, current)
 				}
+				if m.ChangeType != "changed" {
+					t.Fatalf("expected change_type 'changed' for SKU %d, got %q", m.SKUID, m.ChangeType)
+				}
 			}
-			t.Logf("%s: %d results; first SKU %d, %d -> %d cents", query, len(results), results[0].SKUID, results[0].PrevLow, results[0].CurrLow)
+			t.Logf("%s: %d results; first SKU %d, %d -> %d cents", query, len(results), results[0].SKUID, *results[0].PrevLow, *results[0].CurrLow)
 		}
 		for _, query := range []string{
 			"&set_released_since=2020&group_id=7",    // old

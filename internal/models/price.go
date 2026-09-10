@@ -33,10 +33,14 @@ type PriceMover struct {
 	Condition      *string   `json:"condition"`
 	PrevSnapshotAt time.Time `json:"prev_snapshot_at"`
 	CurrSnapshotAt time.Time `json:"curr_snapshot_at"`
-	PrevLow        int32     `json:"prev_low_price_cents"`
-	CurrLow        int32     `json:"curr_low_price_cents"`
-	DeltaCents     int32     `json:"delta_cents"`
-	DeltaPercent   float64   `json:"delta_percent"`
+	ChangeType     string    `json:"change_type"`
+	// Nullable by contract: a SKU present in only one snapshot, or whose price
+	// appeared or disappeared, has no defined delta. A missing price is never
+	// coerced to zero, and null deltas sort after defined ones.
+	PrevLow      *int32   `json:"prev_low_price_cents"`
+	CurrLow      *int32   `json:"curr_low_price_cents"`
+	DeltaCents   *int32   `json:"delta_cents"`
+	DeltaPercent *float64 `json:"delta_percent"`
 }
 
 type BulkPriceRequest struct {
