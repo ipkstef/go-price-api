@@ -40,28 +40,29 @@ func (h *PriceHandler) BulkLatest(c *gin.Context) {
 	var query string
 	var args []any
 
+	ctx := c.Request.Context()
+	snap, err := latestCompleteSnapshot(ctx, h.DB)
+	if err != nil {
+		c.JSON(http.StatusOK, make([]models.SKUPrice, 0))
+		return
+	}
+
 	if len(req.SKUIDs) > 0 {
-		query = `SELECT DISTINCT ON (s.sku_id)
-		            s.snapshot_at, s.sku_id, s.product_id,
+		query = `SELECT s.snapshot_at, s.sku_id, s.product_id,
 		            s.language_id, s.printing_id, s.condition_id,
 		            s.low_price_cents, s.mid_price_cents, s.high_price_cents,
 		            s.market_price_cents, s.direct_low_price_cents
 		         FROM sku_price_snapshots s
-		         JOIN ingestion_runs ir ON ir.ingestion_id = s.ingestion_id AND ir.status = 'complete'
-		         WHERE s.sku_id = ANY($1)
-		         ORDER BY s.sku_id, s.snapshot_at DESC`
-		args = append(args, req.SKUIDs)
+		         WHERE s.snapshot_at = $1 AND s.sku_id = ANY($2)`
+		args = append(args, snap, req.SKUIDs)
 	} else {
-		query = `SELECT DISTINCT ON (s.sku_id)
-		            s.snapshot_at, s.sku_id, s.product_id,
+		query = `SELECT s.snapshot_at, s.sku_id, s.product_id,
 		            s.language_id, s.printing_id, s.condition_id,
 		            s.low_price_cents, s.mid_price_cents, s.high_price_cents,
 		            s.market_price_cents, s.direct_low_price_cents
 		         FROM sku_price_snapshots s
-		         JOIN ingestion_runs ir ON ir.ingestion_id = s.ingestion_id AND ir.status = 'complete'
-		         WHERE s.product_id = ANY($1)
-		         ORDER BY s.sku_id, s.snapshot_at DESC`
-		args = append(args, req.ProductIDs)
+		         WHERE s.snapshot_at = $1 AND s.product_id = ANY($2)`
+		args = append(args, snap, req.ProductIDs)
 	}
 
 	rows, err := h.DB.Query(c.Request.Context(), query, args...)

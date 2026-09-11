@@ -5,10 +5,18 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
+
+func latestCompleteSnapshot(ctx context.Context, db *pgxpool.Pool) (time.Time, error) {
+	var t time.Time
+	err := db.QueryRow(ctx,
+		`SELECT max(snapshot_at) FROM ingestion_runs WHERE status = 'complete'`).Scan(&t)
+	return t, err
+}
 
 func resolveGroupID(c *gin.Context, db *pgxpool.Pool) (int64, bool, error) {
 	if v := c.Query("group_id"); v != "" {

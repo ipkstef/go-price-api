@@ -141,12 +141,17 @@ func (h *ProductHandler) SKUs(c *gin.Context) {
 		return
 	}
 
-	rows, err := h.DB.Query(c.Request.Context(),
-		`SELECT DISTINCT ON (s.sku_id) s.sku_id, s.language_id, s.printing_id, s.condition_id
+	ctx := c.Request.Context()
+	snap, err := latestCompleteSnapshot(ctx, h.DB)
+	if err != nil {
+		c.JSON(http.StatusOK, make([]models.SKU, 0))
+		return
+	}
+
+	rows, err := h.DB.Query(ctx,
+		`SELECT s.sku_id, s.language_id, s.printing_id, s.condition_id
 		 FROM sku_price_snapshots s
-		 JOIN ingestion_runs ir ON ir.ingestion_id = s.ingestion_id AND ir.status = 'complete'
-		 WHERE s.product_id = $1
-		 ORDER BY s.sku_id, s.snapshot_at DESC`, id,
+		 WHERE s.snapshot_at = $1 AND s.product_id = $2`, snap, id,
 	)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "query failed"})
@@ -178,16 +183,20 @@ func (h *ProductHandler) Prices(c *gin.Context) {
 		return
 	}
 
-	rows, err := h.DB.Query(c.Request.Context(),
-		`SELECT DISTINCT ON (s.sku_id)
-		        s.snapshot_at, s.sku_id, s.product_id,
+	ctx := c.Request.Context()
+	snap, err := latestCompleteSnapshot(ctx, h.DB)
+	if err != nil {
+		c.JSON(http.StatusOK, make([]models.SKUPrice, 0))
+		return
+	}
+
+	rows, err := h.DB.Query(ctx,
+		`SELECT s.snapshot_at, s.sku_id, s.product_id,
 		        s.language_id, s.printing_id, s.condition_id,
 		        s.low_price_cents, s.mid_price_cents, s.high_price_cents,
 		        s.market_price_cents, s.direct_low_price_cents
 		 FROM sku_price_snapshots s
-		 JOIN ingestion_runs ir ON ir.ingestion_id = s.ingestion_id AND ir.status = 'complete'
-		 WHERE s.product_id = $1
-		 ORDER BY s.sku_id, s.snapshot_at DESC`, id,
+		 WHERE s.snapshot_at = $1 AND s.product_id = $2`, snap, id,
 	)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "query failed"})
@@ -249,6 +258,8 @@ func (h *ProductHandler) PriceHistory(c *gin.Context) {
 		if t, err := time.Parse(time.DateOnly, v); err == nil {
 			wb.Add("s.snapshot_at", ">=", t)
 		}
+	} else {
+		wb.Add("s.snapshot_at", ">=", time.Now().UTC().AddDate(0, 0, -30))
 	}
 	if v := c.Query("to"); v != "" {
 		if t, err := time.Parse(time.DateOnly, v); err == nil {
@@ -263,8 +274,8 @@ func (h *ProductHandler) PriceHistory(c *gin.Context) {
 		        avg(s.high_price_cents)   AS avg_high,
 		        avg(s.market_price_cents) AS avg_market
 		 FROM sku_price_snapshots s
-		 JOIN ingestion_runs ir ON ir.ingestion_id = s.ingestion_id AND ir.status = 'complete'
 		 %s
+		   AND s.snapshot_at IN (SELECT snapshot_at FROM ingestion_runs WHERE status = 'complete')
 		 GROUP BY bucket
 		 ORDER BY bucket`,
 		interval, wb.SQL(),
