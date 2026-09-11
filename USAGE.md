@@ -129,22 +129,29 @@ Or by SKU IDs:
 
 ### Price Movers
 
-SKUs where `low_price_cents` changed between two completed snapshots. Ranked by delta. Each result includes the language, printing, and condition so you can identify the variant.
+SKUs whose price moved between two completed snapshots, ranked by delta. One price field per request, chosen with `price_type`. Each result includes the language, printing, and condition so you can identify the variant.
 
 ```sh
 GET /prices/movers?direction=up&min_price=100&limit=20
 GET /prices/movers?direction=up&is_sealed=false&language_id=1&printing_id=1&condition_id=1&min_price=500
 GET /prices/movers?direction=down&group_id=7&limit=10
+GET /prices/movers?group=LTR&direction=up
 GET /prices/movers?set_released_since=2020&limit=20
 GET /prices/movers?set_released_since=2020-06-01&direction=up
+GET /prices/movers?price_type=market&sort_by=percent
+GET /prices/movers?change_type=new,price_added&limit=100
 ```
 
 Params:
 - `from` / `to` — YYYY-MM-DD, resolves to the latest completed snapshot at or before this date
 - `direction` — `up` (default) or `down`
-- `min_price` — minimum `low_price_cents` on both sides, in cents (filters out noise)
+- `price_type` — `low` (default) or `market`. Exactly one value; a list is rejected so a SKU can never occupy two ranks in one response.
+- `sort_by` — `cents` (default) or `percent`
+- `change_type` — comma-separated subset of `changed`, `new`, `removed`, `price_added`, `price_removed`. Omit for all.
+- `min_price` — minimum price on both sides, in cents (filters out noise)
 - `is_sealed` — `true`/`false`
-- `group_id` — filter to a specific set
+- `group_id` — filter to a specific set by TCGplayer group ID
+- `group` — filter to a specific set by code, e.g. `LTR` (case-insensitive)
 - `set_released_since` — inclusive set release cutoff, `YYYY` or `YYYY-MM-DD`; a year means January 1. Separate from the price snapshot `from` / `to` dates.
 - `language_id` — filter to a specific language
 - `printing_id` — filter to a specific printing (1=Normal, 2=Foil)
@@ -152,7 +159,25 @@ Params:
 - `limit` — 1-200 (default 50)
 - `offset` — pagination offset (default 0)
 
-Response includes `prev_low_price_cents`, `curr_low_price_cents`, `delta_cents`, `delta_percent`, plus `language`, `printing`, and `condition` names.
+`max_price` is not implemented and is ignored if supplied.
+
+Response includes `change_type`, `prev_low_price_cents`, `curr_low_price_cents`, `delta_cents`, `delta_percent`, plus `language`, `printing`, and `condition` names. The price fields carry whichever `price_type` was requested.
+
+Prices and deltas are nullable. A SKU present in only one snapshot, or whose
+price appeared or disappeared, has no defined delta, and a missing price is
+never coerced to zero. `delta_percent` is additionally null when the earlier
+price is not greater than zero. Null deltas sort after every ranked mover, so
+`new`, `removed`, `price_added` and `price_removed` stay in the response without
+polluting the ranking.
+
+`change_type` values, each a statement about the requested price field rather
+than the SKU as a whole:
+
+- `changed` — present in both snapshots with two distinct non-null prices
+- `new` — present only in the later snapshot, with a price for this field
+- `removed` — present only in the earlier snapshot, with a price for this field
+- `price_added` — present in both; this field went from null to a price
+- `price_removed` — present in both; this field went from a price to null
 
 Each result also includes `prev_snapshot_at` and `curr_snapshot_at`: UTC
 RFC 3339 timestamps identifying the actual snapshots used for the previous and

@@ -1,5 +1,20 @@
 # Movers set release filter validation
 
+> **Superseded, 2026-09-10.** This records the set-release filter as shipped on
+> 2026-09-08, when movers derived every comparison from `sku_price_snapshots` at
+> request time. The measurements below (41-47s recent, 19-24s compressed) are
+> accurate for that design and are the reason it was replaced.
+>
+> The endpoint now reads `app.sku_price_changes`, a per-ingestion delta written
+> by the loader, and falls back to the live comparison only for pairs that table
+> does not hold. The reported failing request went from 85.0s to 1.57s end to
+> end through the API. Movers also gained `price_type`, `sort_by` and
+> `change_type`. The current contract is `docs/database-contract.md` in the
+> replicatemtg repository; `USAGE.md` documents the parameters.
+>
+> Kept for the access-pattern analysis and the before-and-after numbers. Do not
+> read the performance sections as describing current behaviour.
+
 ## Access patterns and assumptions
 
 - Metadata write: occasional manual catalog refresh; 374 set records, 349
