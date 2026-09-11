@@ -98,52 +98,67 @@ var validChangeTypes = map[string]bool{
 	"price_added": true, "price_removed": true,
 }
 
-// precomputedMoverCTE reads the deltas the loader stored for this snapshot
-// pair. Bounded by the number of movers rather than the size of a snapshot.
+// priceColumns maps price_type to the snapshot column the live path reads. The
+// precomputed path filters on the stored price_type instead.
+var priceColumns = map[string]string{
+	"low":    "low_price_cents",
+	"market": "market_price_cents",
+}
+
+// precomputedMoverCTE reads the deltas the loader stored for this snapshot pair
+// and price field. Bounded by the number of movers rather than the size of a
+// snapshot. Takes the price_type placeholder number.
 const precomputedMoverCTE = `
 		SELECT sku_id, product_id, language_id, printing_id, condition_id,
 		       change_type,
-		       prev_low_price_cents AS prev_low,
-		       curr_low_price_cents AS curr_low,
+		       prev_price_cents AS prev_price,
+		       curr_price_cents AS curr_price,
 		       delta_cents, delta_percent
 		FROM sku_price_changes
-		WHERE prev_snapshot_at = $1 AND curr_snapshot_at = $2`
+		WHERE prev_snapshot_at = $1 AND curr_snapshot_at = $2
+		  AND price_type = $%d`
 
 // liveMoverCTE derives the same rows straight from the snapshots, for pairs the
 // loader has not stored: non-adjacent 'from'/'to' ranges, and snapshots that
 // predate the delta table. It must scan both snapshots in full, so it is slow.
 const liveMoverCTE = `
-		SELECT COALESCE(t.sku_id, f.sku_id)             AS sku_id,
-		       COALESCE(t.product_id, f.product_id)     AS product_id,
-		       COALESCE(t.language_id, f.language_id)   AS language_id,
-		       COALESCE(t.printing_id, f.printing_id)   AS printing_id,
-		       COALESCE(t.condition_id, f.condition_id) AS condition_id,
+		SELECT x.sku_id, x.product_id, x.language_id, x.printing_id, x.condition_id,
 		       CASE
-		           WHEN f.sku_id IS NULL THEN 'new'
-		           WHEN t.sku_id IS NULL THEN 'removed'
-		           WHEN f.low_price_cents IS NULL THEN 'price_added'
-		           WHEN t.low_price_cents IS NULL THEN 'price_removed'
+		           WHEN x.prev_missing THEN 'new'
+		           WHEN x.curr_missing THEN 'removed'
+		           WHEN x.prev_price IS NULL THEN 'price_added'
+		           WHEN x.curr_price IS NULL THEN 'price_removed'
 		           ELSE 'changed'
 		       END AS change_type,
-		       f.low_price_cents AS prev_low,
-		       t.low_price_cents AS curr_low,
-		       CASE WHEN f.low_price_cents IS NOT NULL AND t.low_price_cents IS NOT NULL
-		            THEN t.low_price_cents - f.low_price_cents END AS delta_cents,
-		       CASE WHEN f.low_price_cents IS NOT NULL AND t.low_price_cents IS NOT NULL
-		             AND f.low_price_cents > 0
-		            THEN round(((t.low_price_cents - f.low_price_cents)::numeric
-		                        / f.low_price_cents) * 100, 2) END AS delta_percent
-		FROM (SELECT sku_id, product_id, language_id, printing_id, condition_id,
-		             low_price_cents
-		      FROM sku_price_snapshots WHERE snapshot_at = $1) f
-		FULL OUTER JOIN
-		     (SELECT sku_id, product_id, language_id, printing_id, condition_id,
-		             low_price_cents
-		      FROM sku_price_snapshots WHERE snapshot_at = $2) t
-		  ON f.sku_id = t.sku_id
-		WHERE f.sku_id IS NULL
-		   OR t.sku_id IS NULL
-		   OR f.low_price_cents IS DISTINCT FROM t.low_price_cents`
+		       x.prev_price, x.curr_price,
+		       CASE WHEN x.prev_price IS NOT NULL AND x.curr_price IS NOT NULL
+		            THEN x.curr_price - x.prev_price END AS delta_cents,
+		       CASE WHEN x.prev_price IS NOT NULL AND x.curr_price IS NOT NULL
+		             AND x.prev_price > 0
+		            THEN round(((x.curr_price - x.prev_price)::numeric
+		                        / x.prev_price) * 100, 2) END AS delta_percent
+		FROM (
+		    SELECT COALESCE(t.sku_id, f.sku_id)             AS sku_id,
+		           COALESCE(t.product_id, f.product_id)     AS product_id,
+		           COALESCE(t.language_id, f.language_id)   AS language_id,
+		           COALESCE(t.printing_id, f.printing_id)   AS printing_id,
+		           COALESCE(t.condition_id, f.condition_id) AS condition_id,
+		           (f.sku_id IS NULL) AS prev_missing,
+		           (t.sku_id IS NULL) AS curr_missing,
+		           f.%[1]s AS prev_price,
+		           t.%[1]s AS curr_price
+		    FROM (SELECT sku_id, product_id, language_id, printing_id,
+		                 condition_id, %[1]s
+		          FROM sku_price_snapshots
+		          WHERE snapshot_at = $1 AND %[2]s) f
+		    FULL OUTER JOIN
+		         (SELECT sku_id, product_id, language_id, printing_id,
+		                 condition_id, %[1]s
+		          FROM sku_price_snapshots
+		          WHERE snapshot_at = $2 AND %[2]s) t
+		      ON f.sku_id = t.sku_id
+		) x
+		WHERE x.prev_price IS DISTINCT FROM x.curr_price`
 
 func (h *PriceHandler) Movers(c *gin.Context) {
 	limit, offset := parsePagination(c)
@@ -157,6 +172,15 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 	sortBy := c.DefaultQuery("sort_by", "cents")
 	if sortBy != "cents" && sortBy != "percent" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "sort_by must be 'cents' or 'percent'"})
+		return
+	}
+
+	// Exactly one price field per request, so a SKU can never appear twice in
+	// one response. Accepting a list would allow the same SKU at two different
+	// ranks, which existing callers do not expect.
+	priceType := c.DefaultQuery("price_type", "low")
+	if priceType != "low" && priceType != "market" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "price_type must be 'low' or 'market'"})
 		return
 	}
 
@@ -299,28 +323,47 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 	// deriving the same answer from sku_price_snapshots has no snapshot-scoped
 	// index and scans both snapshots in full. Fall back to the live comparison
 	// for pairs the loader has not stored — non-adjacent 'from'/'to' ranges, and
-	// snapshots that predate the table.
+	// snapshots that predate the table, and price fields it has not computed.
+	// price_type is part of the probe: a pair stored before market prices were
+	// tracked has 'low' rows only, and a market request must still fall back.
 	precomputed := false
 	if err := h.DB.QueryRow(ctx,
 		`SELECT EXISTS(SELECT 1 FROM sku_price_changes
-		 WHERE curr_snapshot_at = $1 AND prev_snapshot_at = $2)`,
-		toSnap, fromSnap).Scan(&precomputed); err != nil {
+		 WHERE curr_snapshot_at = $1 AND prev_snapshot_at = $2
+		   AND price_type = $3)`,
+		toSnap, fromSnap, priceType).Scan(&precomputed); err != nil {
 		precomputed = false
 	}
 
 	queryArgs := []any{fromSnap, toSnap}
 	argN := 3
 
-	// Product/SKU filters applied in the outer WHERE
+	// Only the precomputed path binds price_type; the live path selects the
+	// matching snapshot column instead, so it must not be given the parameter.
+	// The CTE itself is built after the filters, because the live one needs the
+	// product scope pushed into its snapshot scans.
+	priceTypeArg := 0
+	if precomputed {
+		priceTypeArg = argN
+		queryArgs = append(queryArgs, priceType)
+		argN++
+	}
+
+	// Product-level filters are collected unqualified so they can be rendered
+	// twice: once against the products join in the outer WHERE, and once as a
+	// scope pushed down into the live path's snapshot scans. Without the
+	// pushdown the full outer join materialises both entire snapshots before any
+	// product filtering, which turns a narrow group request into a full scan.
+	var productClauses []string
 	var outerClauses []string
 	if eligibleGroups != nil {
-		outerClauses = append(outerClauses, fmt.Sprintf("p.group_id = ANY($%d::bigint[])", argN))
+		productClauses = append(productClauses, fmt.Sprintf("group_id = ANY($%d::bigint[])", argN))
 		queryArgs = append(queryArgs, eligibleGroups)
 		argN++
 	}
 
 	if v := c.Query("is_sealed"); v != "" {
-		outerClauses = append(outerClauses, fmt.Sprintf("p.is_sealed = $%d", argN))
+		productClauses = append(productClauses, fmt.Sprintf("is_sealed = $%d", argN))
 		queryArgs = append(queryArgs, v == "true")
 		argN++
 	}
@@ -328,7 +371,7 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	} else if ok {
-		outerClauses = append(outerClauses, fmt.Sprintf("p.group_id = $%d", argN))
+		productClauses = append(productClauses, fmt.Sprintf("group_id = $%d", argN))
 		queryArgs = append(queryArgs, gid)
 		argN++
 	}
@@ -359,14 +402,34 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 		argN++
 	}
 	if minPrice > 0 {
-		outerClauses = append(outerClauses, fmt.Sprintf("m.prev_low >= $%d AND m.curr_low >= $%d", argN, argN+1))
+		outerClauses = append(outerClauses, fmt.Sprintf("m.prev_price >= $%d AND m.curr_price >= $%d", argN, argN+1))
 		queryArgs = append(queryArgs, int32(minPrice), int32(minPrice))
 		argN += 2
+	}
+
+	// Same placeholders, rendered against the products join for the outer WHERE.
+	for _, clause := range productClauses {
+		outerClauses = append(outerClauses, "p."+clause)
 	}
 
 	outerWhere := ""
 	if len(outerClauses) > 0 {
 		outerWhere = "AND " + strings.Join(outerClauses, " AND ")
+	}
+
+	// Postgres allows a placeholder to be referenced more than once, so the
+	// pushdown reuses the same argument numbers as the outer WHERE.
+	productScope := "TRUE"
+	if len(productClauses) > 0 {
+		productScope = "product_id IN (SELECT product_id FROM products WHERE " +
+			strings.Join(productClauses, " AND ") + ")"
+	}
+
+	var moverSource string
+	if precomputed {
+		moverSource = fmt.Sprintf(precomputedMoverCTE, priceTypeArg)
+	} else {
+		moverSource = fmt.Sprintf(liveMoverCTE, priceColumns[priceType], productScope)
 	}
 
 	orderDir := "DESC"
@@ -384,10 +447,6 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 	// Both sources expose the same columns, so only the CTE differs. The outer
 	// query — filters, ordering, pagination — is shared, which is what keeps the
 	// precomputed and live paths from drifting apart.
-	moverSource := liveMoverCTE
-	if precomputed {
-		moverSource = precomputedMoverCTE
-	}
 
 	// NULLS LAST keeps new/removed and price-availability events in the response
 	// but after every ranked mover. sku_id breaks ties so paging is stable.
@@ -395,7 +454,7 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 	WITH m AS (%s)
 	SELECT m.sku_id, m.product_id, p.name,
 	       l.name, pr.name, co.name,
-	       m.change_type, m.prev_low, m.curr_low,
+	       m.change_type, m.prev_price, m.curr_price,
 	       m.delta_cents, m.delta_percent
 	FROM m
 	JOIN products p ON m.product_id = p.product_id

@@ -39,7 +39,12 @@ func TestMoversLiveSetFilter(t *testing.T) {
 	}
 	cfg.ConnConfig.RuntimeParams["search_path"] = "app,public"
 	cfg.ConnConfig.RuntimeParams["default_transaction_read_only"] = "on"
-	cfg.ConnConfig.RuntimeParams["statement_timeout"] = "60000"
+	// Explicit from/to dates resolve to a non-adjacent pair, which the loader
+	// never precomputes, so the unfiltered cases below take the live path and
+	// compare two whole snapshots. That was measured at 75-100s against
+	// production, well inside the server's 120s write timeout but past the 60s
+	// this test used to allow.
+	cfg.ConnConfig.RuntimeParams["statement_timeout"] = "180000"
 	cfg.ConnConfig.Tracer = integrationQueryTracer{t: t}
 	db, err := pgxpool.NewWithConfig(ctx, cfg)
 	if err != nil {
@@ -100,6 +105,8 @@ func TestMoversLiveSetFilter(t *testing.T) {
 			if len(results) != 20 {
 				t.Fatalf("%s returned %d results, expected full page with representative data", query, len(results))
 			}
+			// These queries omit price_type, so they compare low prices.
+			const priceColumn = "low_price_cents"
 			ids := make([]int64, 0, len(results))
 			skus := make([]int64, 0, len(results))
 			for _, m := range results {
@@ -122,7 +129,7 @@ func TestMoversLiveSetFilter(t *testing.T) {
 			if err := rows.Err(); err != nil {
 				t.Fatal(err)
 			}
-			rows, err = db.Query(ctx, `SELECT f.sku_id,f.low_price_cents,t.low_price_cents FROM sku_price_snapshots f JOIN sku_price_snapshots t USING(sku_id) WHERE f.sku_id=ANY($1) AND f.snapshot_at=$2 AND t.snapshot_at=$3`, skus, from, to)
+			rows, err = db.Query(ctx, `SELECT f.sku_id,f.`+priceColumn+`,t.`+priceColumn+` FROM sku_price_snapshots f JOIN sku_price_snapshots t USING(sku_id) WHERE f.sku_id=ANY($1) AND f.snapshot_at=$2 AND t.snapshot_at=$3`, skus, from, to)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -163,6 +170,59 @@ func TestMoversLiveSetFilter(t *testing.T) {
 			}
 			t.Logf("%s: %d results; first SKU %d, %d -> %d cents", query, len(results), results[0].SKUID, *results[0].PrevLow, *results[0].CurrLow)
 		}
+	})
+
+	t.Run("price type", func(t *testing.T) {
+		// Scoped to one group on purpose. These explicit from/to dates resolve to
+		// a non-adjacent pair, which the loader never stores, so this exercises
+		// the live fallback. Unfiltered that scan takes longer than the 60s
+		// statement timeout set above; a group filter keeps it index-driven.
+		const group = "&group_id=24219&condition_id=1"
+		for _, tc := range []struct{ priceType, column string }{
+			{"low", "low_price_cents"},
+			{"market", "market_price_cents"},
+		} {
+			results := request(t, group+"&price_type="+tc.priceType)
+			if len(results) == 0 {
+				t.Fatalf("price_type=%s returned no rows; need representative data", tc.priceType)
+			}
+			skus := make([]int64, 0, len(results))
+			for _, m := range results {
+				skus = append(skus, m.SKUID)
+			}
+			rows, err := db.Query(ctx, `SELECT f.sku_id,f.`+tc.column+`,t.`+tc.column+
+				` FROM sku_price_snapshots f JOIN sku_price_snapshots t USING(sku_id)`+
+				` WHERE f.sku_id=ANY($1) AND f.snapshot_at=$2 AND t.snapshot_at=$3`, skus, from, to)
+			if err != nil {
+				t.Fatal(err)
+			}
+			prices := map[int64][2]*int32{}
+			for rows.Next() {
+				var sku int64
+				var previous, current *int32
+				if err := rows.Scan(&sku, &previous, &current); err != nil {
+					t.Fatal(err)
+				}
+				prices[sku] = [2]*int32{previous, current}
+			}
+			rows.Close()
+			if err := rows.Err(); err != nil {
+				t.Fatal(err)
+			}
+			for _, m := range results {
+				price, ok := prices[m.SKUID]
+				if !ok {
+					t.Fatalf("price_type=%s: missing database row for SKU %d", tc.priceType, m.SKUID)
+				}
+				// The response must report the price field that was requested,
+				// not whichever one the delta table happened to store.
+				if !equalPtr(m.PrevLow, price[0]) || !equalPtr(m.CurrLow, price[1]) {
+					t.Fatalf("price_type=%s SKU %d: %+v does not match database %v -> %v",
+						tc.priceType, m.SKUID, m, price[0], price[1])
+				}
+			}
+			t.Logf("price_type=%s: verified %d results against %s", tc.priceType, len(results), tc.column)
+		}
 		for _, query := range []string{
 			"&set_released_since=2020&group_id=7",    // old
 			"&set_released_since=2020&group=LEA",     // existing code resolver
@@ -175,4 +235,13 @@ func TestMoversLiveSetFilter(t *testing.T) {
 			}
 		}
 	})
+}
+
+// equalPtr compares two nullable prices, treating null as a distinct value
+// rather than coercing it to zero.
+func equalPtr(a, b *int32) bool {
+	if a == nil || b == nil {
+		return a == nil && b == nil
+	}
+	return *a == *b
 }
