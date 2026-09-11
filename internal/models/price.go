@@ -25,22 +25,31 @@ type PricePoint struct {
 }
 
 type PriceMover struct {
-	SKUID          int64     `json:"sku_id"`
-	ProductID      int64     `json:"product_id"`
-	ProductName    *string   `json:"product_name"`
-	Language       *string   `json:"language"`
-	Printing       *string   `json:"printing"`
-	Condition      *string   `json:"condition"`
-	PrevSnapshotAt time.Time `json:"prev_snapshot_at"`
-	CurrSnapshotAt time.Time `json:"curr_snapshot_at"`
-	ChangeType     string    `json:"change_type"`
+	SKUID       int64   `json:"sku_id"`
+	ProductID   int64   `json:"product_id"`
+	ProductName *string `json:"product_name"`
+	Language    *string `json:"language"`
+	Printing    *string `json:"printing"`
+	Condition   *string `json:"condition"`
+
+	// PriceType names the price field the prices and changes below describe.
+	// It is echoed on every row so a response is self-describing: the same SKU
+	// can move on one price field and not another, and reading a market price
+	// out of a field named "low" was a trap worth closing.
+	PriceType  string `json:"price_type"`
+	ChangeType string `json:"change_type"`
+
+	PreviousSnapshotAt time.Time `json:"previous_snapshot_at"`
+	CurrentSnapshotAt  time.Time `json:"current_snapshot_at"`
+
 	// Nullable by contract: a SKU present in only one snapshot, or whose price
-	// appeared or disappeared, has no defined delta. A missing price is never
-	// coerced to zero, and null deltas sort after defined ones.
-	PrevLow      *int32   `json:"prev_low_price_cents"`
-	CurrLow      *int32   `json:"curr_low_price_cents"`
-	DeltaCents   *int32   `json:"delta_cents"`
-	DeltaPercent *float64 `json:"delta_percent"`
+	// appeared or disappeared, has no defined change. A missing price is never
+	// coerced to zero, and null changes sort after defined ones. Percent is
+	// additionally null when the earlier price is not greater than zero.
+	PreviousPriceCents *int32   `json:"previous_price_cents"`
+	CurrentPriceCents  *int32   `json:"current_price_cents"`
+	PriceChangeCents   *int32   `json:"price_change_cents"`
+	PriceChangePercent *float64 `json:"price_change_percent"`
 }
 
 type BulkPriceRequest struct {

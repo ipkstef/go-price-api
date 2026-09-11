@@ -129,7 +129,7 @@ Or by SKU IDs:
 
 ### Price Movers
 
-SKUs whose price moved between two completed snapshots, ranked by delta. One price field per request, chosen with `price_type`. Each result includes the language, printing, and condition so you can identify the variant.
+SKUs whose price moved between two completed snapshots, ranked by the size of the change. One price field per request, chosen with `price_type`. Each result includes the language, printing, and condition so you can identify the variant.
 
 ```sh
 GET /prices/movers?direction=up&min_price=100&limit=20
@@ -161,12 +161,13 @@ Params:
 
 `max_price` is not implemented and is ignored if supplied.
 
-Response includes `change_type`, `prev_low_price_cents`, `curr_low_price_cents`, `delta_cents`, `delta_percent`, plus `language`, `printing`, and `condition` names. The price fields carry whichever `price_type` was requested.
+Response includes `price_type`, `change_type`, `previous_price_cents`, `current_price_cents`, `price_change_cents`, `price_change_percent`, plus `language`, `printing`, and `condition` names. `price_type` is echoed on every row, so a response says which price field its numbers describe.
 
-Prices and deltas are nullable. A SKU present in only one snapshot, or whose
-price appeared or disappeared, has no defined delta, and a missing price is
-never coerced to zero. `delta_percent` is additionally null when the earlier
-price is not greater than zero. Null deltas sort after every ranked mover, so
+Prices and changes are nullable. A SKU present in only one snapshot, or whose
+price appeared or disappeared, has no defined change, and a missing price is
+never coerced to zero. `price_change_percent` is additionally null when the
+earlier price is not greater than zero. Null changes sort after every ranked
+mover, so
 `new`, `removed`, `price_added` and `price_removed` stay in the response without
 polluting the ranking.
 
@@ -179,7 +180,7 @@ than the SKU as a whole:
 - `price_added` — present in both; this field went from null to a price
 - `price_removed` — present in both; this field went from a price to null
 
-Each result also includes `prev_snapshot_at` and `curr_snapshot_at`: UTC
+Each result also includes `previous_snapshot_at` and `current_snapshot_at`: UTC
 RFC 3339 timestamps identifying the actual snapshots used for the previous and
 current prices. These are snapshot times, not individual listing-change times.
 They reflect the resolved snapshots, which can precede the requested `from` or
@@ -190,8 +191,8 @@ Example timestamp fields (illustrative):
 
 ```json
 {
-  "prev_snapshot_at": "2026-09-08T15:00:13Z",
-  "curr_snapshot_at": "2026-09-09T02:08:56Z"
+  "previous_snapshot_at": "2026-09-08T15:00:13Z",
+  "current_snapshot_at": "2026-09-09T02:08:56Z"
 }
 ```
 

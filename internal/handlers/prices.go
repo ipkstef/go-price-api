@@ -476,14 +476,15 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 	movers := make([]models.PriceMover, 0)
 	for rows.Next() {
 		m := models.PriceMover{
-			PrevSnapshotAt: fromSnap.UTC(),
-			CurrSnapshotAt: toSnap.UTC(),
+			PriceType:          priceType,
+			PreviousSnapshotAt: fromSnap.UTC(),
+			CurrentSnapshotAt:  toSnap.UTC(),
 		}
 		if err := rows.Scan(
 			&m.SKUID, &m.ProductID, &m.ProductName,
 			&m.Language, &m.Printing, &m.Condition,
-			&m.ChangeType, &m.PrevLow, &m.CurrLow,
-			&m.DeltaCents, &m.DeltaPercent,
+			&m.ChangeType, &m.PreviousPriceCents, &m.CurrentPriceCents,
+			&m.PriceChangeCents, &m.PriceChangePercent,
 		); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "scan failed"})
 			return

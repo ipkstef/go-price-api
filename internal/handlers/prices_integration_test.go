@@ -81,8 +81,8 @@ func TestMoversLiveSetFilter(t *testing.T) {
 			t.Fatal(err)
 		}
 		for _, m := range results {
-			if !m.PrevSnapshotAt.Equal(from) || !m.CurrSnapshotAt.Equal(to) {
-				t.Fatalf("SKU %d snapshot dates = %s -> %s, want %s -> %s", m.SKUID, m.PrevSnapshotAt, m.CurrSnapshotAt, from, to)
+			if !m.PreviousSnapshotAt.Equal(from) || !m.CurrentSnapshotAt.Equal(to) {
+				t.Fatalf("SKU %d snapshot dates = %s -> %s, want %s -> %s", m.SKUID, m.PreviousSnapshotAt, m.CurrentSnapshotAt, from, to)
 			}
 		}
 		return results
@@ -92,7 +92,7 @@ func TestMoversLiveSetFilter(t *testing.T) {
 		if len(results) == 0 {
 			t.Fatal("need a nonempty page to verify timestamps")
 		}
-		t.Logf("verified %d results with snapshots %s -> %s", len(results), results[0].PrevSnapshotAt, results[0].CurrSnapshotAt)
+		t.Logf("verified %d results with snapshots %s -> %s", len(results), results[0].PreviousSnapshotAt, results[0].CurrentSnapshotAt)
 	})
 	t.Run("set filters", func(t *testing.T) {
 		cutoff, _ := time.Parse(time.DateOnly, "2020-01-01")
@@ -158,17 +158,17 @@ func TestMoversLiveSetFilter(t *testing.T) {
 				previous, current := price[0], price[1]
 				// Prices and deltas are nullable by contract; this fixture only
 				// selects SKUs priced in both snapshots, so all three must be set.
-				if m.PrevLow == nil || m.CurrLow == nil || m.DeltaCents == nil {
+				if m.PreviousPriceCents == nil || m.CurrentPriceCents == nil || m.PriceChangeCents == nil {
 					t.Fatalf("unexpected null price or delta for SKU %d: %+v", m.SKUID, m)
 				}
-				if *m.PrevLow != previous || *m.CurrLow != current || *m.DeltaCents != current-previous {
+				if *m.PreviousPriceCents != previous || *m.CurrentPriceCents != current || *m.PriceChangeCents != current-previous {
 					t.Fatalf("incorrect prices for SKU %d: %+v; database %d -> %d", m.SKUID, m, previous, current)
 				}
 				if m.ChangeType != "changed" {
 					t.Fatalf("expected change_type 'changed' for SKU %d, got %q", m.SKUID, m.ChangeType)
 				}
 			}
-			t.Logf("%s: %d results; first SKU %d, %d -> %d cents", query, len(results), results[0].SKUID, *results[0].PrevLow, *results[0].CurrLow)
+			t.Logf("%s: %d results; first SKU %d, %d -> %d cents", query, len(results), results[0].SKUID, *results[0].PreviousPriceCents, *results[0].CurrentPriceCents)
 		}
 	})
 
@@ -216,7 +216,7 @@ func TestMoversLiveSetFilter(t *testing.T) {
 				}
 				// The response must report the price field that was requested,
 				// not whichever one the delta table happened to store.
-				if !equalPtr(m.PrevLow, price[0]) || !equalPtr(m.CurrLow, price[1]) {
+				if !equalPtr(m.PreviousPriceCents, price[0]) || !equalPtr(m.CurrentPriceCents, price[1]) {
 					t.Fatalf("price_type=%s SKU %d: %+v does not match database %v -> %v",
 						tc.priceType, m.SKUID, m, price[0], price[1])
 				}
