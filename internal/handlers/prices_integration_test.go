@@ -40,10 +40,13 @@ func TestMoversLiveSetFilter(t *testing.T) {
 	cfg.ConnConfig.RuntimeParams["search_path"] = "app,public"
 	cfg.ConnConfig.RuntimeParams["default_transaction_read_only"] = "on"
 	// Explicit from/to dates resolve to a non-adjacent pair, which the loader
-	// never precomputes, so the unfiltered cases below take the live path and
-	// compare two whole snapshots. That was measured at 75-100s against
-	// production, well inside the server's 120s write timeout but past the 60s
-	// this test used to allow.
+	// never stores as a single row. Such a window is now answered by composing
+	// the adjacent-pair chain in sku_price_changes, so these cases exercise the
+	// chained path rather than the live full-snapshot comparison.
+	//
+	// The live path remains the fallback whenever that chain has a gap, and it
+	// was measured at 75-100s against production. The timeout stays generous
+	// enough to survive a fallback rather than masking one as a failure.
 	cfg.ConnConfig.RuntimeParams["statement_timeout"] = "180000"
 	cfg.ConnConfig.Tracer = integrationQueryTracer{t: t}
 	db, err := pgxpool.NewWithConfig(ctx, cfg)
@@ -174,9 +177,10 @@ func TestMoversLiveSetFilter(t *testing.T) {
 
 	t.Run("price type", func(t *testing.T) {
 		// Scoped to one group on purpose. These explicit from/to dates resolve to
-		// a non-adjacent pair, which the loader never stores, so this exercises
-		// the live fallback. Unfiltered that scan takes longer than the 60s
-		// statement timeout set above; a group filter keeps it index-driven.
+		// a non-adjacent pair, which the loader never stores as a single row, so
+		// this exercises the chained path -- or the live fallback if the chain
+		// has a gap. The group filter matters for the fallback case: unfiltered,
+		// that scan compares two whole snapshots and outruns the timeout.
 		const group = "&group_id=24219&condition_id=1"
 		for _, tc := range []struct{ priceType, column string }{
 			{"low", "low_price_cents"},
