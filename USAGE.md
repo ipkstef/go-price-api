@@ -105,7 +105,7 @@ Params: `interval` (1 hour, 6 hours, 12 hours, 1 day, 7 days, 30 days), `sku_id`
 ### Groups (Sets)
 
 ```sh
-GET /groups?name=alpha&is_current=true&limit=10
+GET /groups?name=alpha&limit=10
 GET /groups/7
 GET /groups/7/products?limit=20
 ```
@@ -291,3 +291,19 @@ sudo systemctl restart go-price-api
 - Prices are in cents (USD). A `market_price_cents` of `4900` is $49.00.
 - Only data from completed ingestion runs is returned. Partial loads are excluded.
 - This API serves Magic: The Gathering data only (`category_id = 1`).
+
+## Catalog contract (2026-09-20)
+
+Group responses contain only `group_id`, `name`, and `abbr`. The former
+`is_current` filter returns HTTP 400 when supplied (including an empty value).
+It did not represent print status and has been removed.
+
+Rarity IDs match TCGplayer: 1 Mythic, 2 Rare, 3 Uncommon, 4 Common, 5 Promo,
+107 Land, 108 Token, 111 Special. Update clients that previously sent local IDs.
+`is_sealed` uses a nonempty UPC or an Unopened SKU (condition 6). To query
+sealed SKU prices/movers, use `condition_id=6` or omit the condition filter.
+Historical movers use current catalog metadata, so their classification
+membership changes after the coordinated catalog migration.
+
+Deploy with replicatemtg migration `202609200001_align_catalog_contract` and
+a fresh full export/load. See that repository's catalog cutover runbook.
