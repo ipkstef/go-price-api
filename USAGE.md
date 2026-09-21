@@ -292,7 +292,7 @@ sudo systemctl restart go-price-api
 - Only data from completed ingestion runs is returned. Partial loads are excluded.
 - This API serves Magic: The Gathering data only (`category_id = 1`).
 
-## Catalog contract (2026-09-20)
+## Catalog contract
 
 Group responses contain only `group_id`, `name`, and `abbr`. The former
 `is_current` filter returns HTTP 400 when supplied (including an empty value).
@@ -300,10 +300,18 @@ It did not represent print status and has been removed.
 
 Rarity IDs match TCGplayer: 1 Mythic, 2 Rare, 3 Uncommon, 4 Common, 5 Promo,
 107 Land, 108 Token, 111 Special. Update clients that previously sent local IDs.
-`is_sealed` uses a nonempty UPC or an Unopened SKU (condition 6). To query
-sealed SKU prices/movers, use `condition_id=6` or omit the condition filter.
-Historical movers use current catalog metadata, so their classification
-membership changes after the coordinated catalog migration.
 
-Deploy with replicatemtg migration `202609200001_align_catalog_contract` and
-a fresh full export/load. See that repository's catalog cutover runbook.
+`is_sealed` remains a query parameter and a response field, but it is no longer a
+stored column: the API derives it from SKU conditions, where condition 6 is
+Unopened. A UPC does not make a product sealed. To query sealed SKU prices or
+movers directly, use `condition_id=6` or omit the condition filter. Historical
+movers use current catalog metadata, so classification reflects the catalog as it
+stands now, not as it stood at the time of the snapshot.
+
+Movers over an arbitrary `from`/`to` range are answered by composing the
+adjacent-snapshot change log rather than comparing two whole snapshots. When that
+chain has a gap the API falls back to the direct comparison, which is correct but
+markedly slower.
+
+Deployment requires the `replicatemtg` schema at `202609210001_initial_schema`
+and a full export/load. See that repository's `docs/database-contract.md`.
