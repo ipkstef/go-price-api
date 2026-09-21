@@ -21,8 +21,9 @@ func (h *GroupHandler) List(c *gin.Context) {
 	limit, offset := parsePagination(c)
 	wb := newWhereBuilder()
 
-	if v := c.Query("is_current"); v != "" {
-		wb.Add("is_current", "=", v == "true")
+	if _, present := c.Request.URL.Query()["is_current"]; present {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "is_current has been removed; omit this parameter"})
+		return
 	}
 	if v := c.Query("name"); v != "" {
 		wb.Add("name", "ILIKE", "%"+v+"%")
@@ -37,7 +38,7 @@ func (h *GroupHandler) List(c *gin.Context) {
 	}
 
 	query := fmt.Sprintf(
-		`SELECT group_id, name, abbr, is_current
+		`SELECT group_id, name, abbr
 		 FROM groups %s
 		 ORDER BY name
 		 LIMIT $%d OFFSET $%d`,
@@ -54,7 +55,7 @@ func (h *GroupHandler) List(c *gin.Context) {
 	groups := make([]models.Group, 0)
 	for rows.Next() {
 		var g models.Group
-		if err := rows.Scan(&g.GroupID, &g.Name, &g.Abbr, &g.IsCurrent); err != nil {
+		if err := rows.Scan(&g.GroupID, &g.Name, &g.Abbr); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "scan failed"})
 			return
 		}
@@ -80,8 +81,8 @@ func (h *GroupHandler) Get(c *gin.Context) {
 
 	var g models.Group
 	err = h.DB.QueryRow(c.Request.Context(),
-		`SELECT group_id, name, abbr, is_current FROM groups WHERE group_id = $1`, id,
-	).Scan(&g.GroupID, &g.Name, &g.Abbr, &g.IsCurrent)
+		`SELECT group_id, name, abbr FROM groups WHERE group_id = $1`, id,
+	).Scan(&g.GroupID, &g.Name, &g.Abbr)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			c.JSON(http.StatusNotFound, gin.H{"error": "group not found"})
@@ -111,12 +112,12 @@ func (h *GroupHandler) Products(c *gin.Context) {
 	}
 
 	rows, err := h.DB.Query(c.Request.Context(),
-		`SELECT product_id, group_id, name, clean_name, image_url, url,
-		        is_sealed, rarity_id, collector_number, subtype
-		 FROM products
-		 WHERE group_id = $1
-		 ORDER BY product_id
-		 LIMIT $2 OFFSET $3`, id, limit, offset,
+		fmt.Sprintf(`SELECT p.product_id, p.group_id, p.name, p.clean_name, p.image_url, p.url,
+		        %s, p.rarity_id, p.collector_number, p.subtype
+		 FROM products p
+		 WHERE p.group_id = $1
+		 ORDER BY p.product_id
+		 LIMIT $2 OFFSET $3`, sealedExpr), id, limit, offset,
 	)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "query failed"})

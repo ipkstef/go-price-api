@@ -85,10 +85,9 @@ func (h *DocsHandler) Index(c *gin.Context) {
 				"auth":        true,
 				"description": "List and search card sets",
 				"params": gin.H{
-					"name":       "search by set name (ILIKE)",
-					"is_current": "true/false",
-					"limit":      "1-200 (default 50)",
-					"offset":     "pagination offset",
+					"name":   "search by set name (ILIKE)",
+					"limit":  "1-200 (default 50)",
+					"offset": "pagination offset",
 				},
 			},
 			{

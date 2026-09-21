@@ -19,6 +19,13 @@ type ProductHandler struct {
 	DB *pgxpool.Pool
 }
 
+// sealedExpr derives is_sealed from SKU conditions instead of reading a stored
+// column, so it can never be stale. Condition 6 is Unopened. Served by
+// skus_condition_product_idx as an index-only probe, so it stays cheap both as
+// a projected column (one probe per returned row) and as a filter.
+const sealedExpr = `EXISTS (SELECT 1 FROM skus sk
+	WHERE sk.product_id = p.product_id AND sk.condition_id = 6)`
+
 func (h *ProductHandler) List(c *gin.Context) {
 	limit, offset := parsePagination(c)
 	wb := newWhereBuilder()
@@ -41,24 +48,24 @@ func (h *ProductHandler) List(c *gin.Context) {
 		wb.Add("subtype", "ILIKE", "%"+v+"%")
 	}
 	if v := c.Query("is_sealed"); v != "" {
-		wb.Add("is_sealed", "=", v == "true")
+		wb.Add(sealedExpr, "=", v == "true")
 	}
 
 	where := wb.SQL()
 
 	var total int
-	if err := h.DB.QueryRow(c.Request.Context(), "SELECT count(*) FROM products "+where, wb.args...).Scan(&total); err != nil {
+	if err := h.DB.QueryRow(c.Request.Context(), "SELECT count(*) FROM products p "+where, wb.args...).Scan(&total); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "query failed"})
 		return
 	}
 
 	query := fmt.Sprintf(
-		`SELECT product_id, group_id, name, clean_name, image_url, url,
-		        is_sealed, rarity_id, collector_number, subtype
-		 FROM products %s
-		 ORDER BY product_id
+		`SELECT p.product_id, p.group_id, p.name, p.clean_name, p.image_url, p.url,
+		        %s, p.rarity_id, p.collector_number, p.subtype
+		 FROM products p %s
+		 ORDER BY p.product_id
 		 LIMIT $%d OFFSET $%d`,
-		where, wb.NextArg(), wb.NextArg()+1,
+		sealedExpr, where, wb.NextArg(), wb.NextArg()+1,
 	)
 
 	rows, err := h.DB.Query(c.Request.Context(), query, wb.Args(limit, offset)...)
@@ -103,12 +110,12 @@ func (h *ProductHandler) Get(c *gin.Context) {
 	var extData *string
 	var presaleDate *time.Time
 	err = h.DB.QueryRow(c.Request.Context(),
-		`SELECT product_id, group_id, name, clean_name, image_url, url, is_sealed,
-		        upc, rarity_id, collector_number, subtype,
-		        oracle_text_raw, oracle_text_plain,
-		        presale_is_presale, presale_released_on,
-		        extended_data, modified_on
-		 FROM products WHERE product_id = $1`, id,
+		fmt.Sprintf(`SELECT p.product_id, p.group_id, p.name, p.clean_name, p.image_url, p.url, %s,
+		        p.upc, p.rarity_id, p.collector_number, p.subtype,
+		        p.oracle_text_raw, p.oracle_text_plain,
+		        p.presale_is_presale, p.presale_released_on,
+		        p.extended_data, p.modified_on
+		 FROM products p WHERE p.product_id = $1`, sealedExpr), id,
 	).Scan(
 		&p.ProductID, &p.GroupID, &p.Name, &p.CleanName,
 		&p.ImageURL, &p.URL, &p.IsSealed,
@@ -141,17 +148,15 @@ func (h *ProductHandler) SKUs(c *gin.Context) {
 		return
 	}
 
+	// A product's SKUs are catalog facts, so this no longer depends on a
+	// snapshot existing: the answer is the same before any prices are loaded.
 	ctx := c.Request.Context()
-	snap, err := latestCompleteSnapshot(ctx, h.DB)
-	if err != nil {
-		c.JSON(http.StatusOK, make([]models.SKU, 0))
-		return
-	}
 
 	rows, err := h.DB.Query(ctx,
-		`SELECT s.sku_id, s.language_id, s.printing_id, s.condition_id
-		 FROM sku_price_snapshots s
-		 WHERE s.snapshot_at = $1 AND s.product_id = $2`, snap, id,
+		`SELECT sk.sku_id, sk.language_id, sk.printing_id, sk.condition_id
+		 FROM skus sk
+		 WHERE sk.product_id = $1
+		 ORDER BY sk.sku_id`, id,
 	)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "query failed"})
@@ -191,12 +196,13 @@ func (h *ProductHandler) Prices(c *gin.Context) {
 	}
 
 	rows, err := h.DB.Query(ctx,
-		`SELECT s.snapshot_at, s.sku_id, s.product_id,
-		        s.language_id, s.printing_id, s.condition_id,
+		`SELECT s.snapshot_at, s.sku_id, sk.product_id,
+		        sk.language_id, sk.printing_id, sk.condition_id,
 		        s.low_price_cents, s.mid_price_cents, s.high_price_cents,
 		        s.market_price_cents, s.direct_low_price_cents
-		 FROM sku_price_snapshots s
-		 WHERE s.snapshot_at = $1 AND s.product_id = $2`, snap, id,
+		 FROM skus sk
+		 JOIN sku_price_snapshots s ON s.sku_id = sk.sku_id
+		 WHERE sk.product_id = $1 AND s.snapshot_at = $2`, id, snap,
 	)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "query failed"})
@@ -247,7 +253,7 @@ func (h *ProductHandler) PriceHistory(c *gin.Context) {
 	}
 
 	wb := newWhereBuilder()
-	wb.Add("s.product_id", "=", id)
+	wb.Add("sk.product_id", "=", id)
 
 	if v := c.Query("sku_id"); v != "" {
 		if skuID, err := strconv.ParseInt(v, 10, 64); err == nil {
@@ -273,7 +279,8 @@ func (h *ProductHandler) PriceHistory(c *gin.Context) {
 		        avg(s.mid_price_cents)    AS avg_mid,
 		        avg(s.high_price_cents)   AS avg_high,
 		        avg(s.market_price_cents) AS avg_market
-		 FROM sku_price_snapshots s
+		 FROM skus sk
+		 JOIN sku_price_snapshots s ON s.sku_id = sk.sku_id
 		 %s
 		   AND s.snapshot_at IN (SELECT snapshot_at FROM ingestion_runs WHERE status = 'complete')
 		 GROUP BY bucket

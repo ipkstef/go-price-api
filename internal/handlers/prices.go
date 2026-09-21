@@ -48,20 +48,25 @@ func (h *PriceHandler) BulkLatest(c *gin.Context) {
 	}
 
 	if len(req.SKUIDs) > 0 {
-		query = `SELECT s.snapshot_at, s.sku_id, s.product_id,
-		            s.language_id, s.printing_id, s.condition_id,
+		// Keyed straight on the fact table's primary key; skus supplies the
+		// identity columns the response carries.
+		query = `SELECT s.snapshot_at, s.sku_id, sk.product_id,
+		            sk.language_id, sk.printing_id, sk.condition_id,
 		            s.low_price_cents, s.mid_price_cents, s.high_price_cents,
 		            s.market_price_cents, s.direct_low_price_cents
 		         FROM sku_price_snapshots s
+		         JOIN skus sk ON sk.sku_id = s.sku_id
 		         WHERE s.snapshot_at = $1 AND s.sku_id = ANY($2)`
 		args = append(args, snap, req.SKUIDs)
 	} else {
-		query = `SELECT s.snapshot_at, s.sku_id, s.product_id,
-		            s.language_id, s.printing_id, s.condition_id,
+		// Resolve products to sku_ids first, then read the fact table by key.
+		query = `SELECT s.snapshot_at, s.sku_id, sk.product_id,
+		            sk.language_id, sk.printing_id, sk.condition_id,
 		            s.low_price_cents, s.mid_price_cents, s.high_price_cents,
 		            s.market_price_cents, s.direct_low_price_cents
-		         FROM sku_price_snapshots s
-		         WHERE s.snapshot_at = $1 AND s.product_id = ANY($2)`
+		         FROM skus sk
+		         JOIN sku_price_snapshots s ON s.sku_id = sk.sku_id
+		         WHERE sk.product_id = ANY($2) AND s.snapshot_at = $1`
 		args = append(args, snap, req.ProductIDs)
 	}
 
@@ -110,20 +115,77 @@ var priceColumns = map[string]string{
 // and price field. Bounded by the number of movers rather than the size of a
 // snapshot. Takes the price_type placeholder number.
 const precomputedMoverCTE = `
-		SELECT sku_id, product_id, language_id, printing_id, condition_id,
-		       change_type,
-		       prev_price_cents AS prev_price,
-		       curr_price_cents AS curr_price,
-		       delta_cents, delta_percent
-		FROM sku_price_changes
-		WHERE prev_snapshot_at = $1 AND curr_snapshot_at = $2
-		  AND price_type = $%d`
+		SELECT c.sku_id, sk.product_id, sk.language_id, sk.printing_id, sk.condition_id,
+		       c.change_type,
+		       c.prev_price_cents AS prev_price,
+		       c.curr_price_cents AS curr_price,
+		       c.delta_cents, c.delta_percent
+		FROM sku_price_changes c
+		JOIN skus sk ON sk.sku_id = c.sku_id
+		WHERE c.prev_snapshot_at = $1 AND c.curr_snapshot_at = $2
+		  AND c.price_type = $%d`
+
+// chainedMoverCTE answers an arbitrary window from the adjacent-pair change log
+// alone, never touching the snapshots table.
+//
+// sku_price_changes holds a row only where a price actually moved between two
+// consecutive snapshots, so it is a change-event log. Within a window (A, B]:
+// a SKU's price at A is the prev_price of its FIRST event after A (nothing
+// moved it between A and that event), and its price at B is the curr_price of
+// its LAST event at or before B. Every SKU with no event in the window has the
+// same price at both ends and is not a mover, so it is correctly absent.
+//
+// This turns "compare two whole snapshots" into "read the events in between",
+// which is a small fraction of the data at realistic churn.
+//
+// Correctness depends on the chain being unbroken across the window; the caller
+// probes for that and falls back to the live path when it is not.
+// Takes the price_type placeholder number, then the sku scope.
+const chainedMoverCTE = `
+		WITH ev AS (
+		    SELECT c.sku_id, c.curr_snapshot_at, c.prev_price_cents,
+		           c.curr_price_cents, c.change_type
+		    FROM sku_price_changes c
+		    WHERE c.price_type = $%[1]d
+		      AND c.prev_snapshot_at >= $1
+		      AND c.curr_snapshot_at <= $2
+		      AND %[2]s
+		),
+		first_ev AS (
+		    SELECT DISTINCT ON (sku_id) sku_id,
+		           prev_price_cents AS prev_price, change_type AS first_type
+		    FROM ev ORDER BY sku_id, curr_snapshot_at ASC
+		),
+		last_ev AS (
+		    SELECT DISTINCT ON (sku_id) sku_id,
+		           curr_price_cents AS curr_price, change_type AS last_type
+		    FROM ev ORDER BY sku_id, curr_snapshot_at DESC
+		)
+		SELECT f.sku_id, sk.product_id, sk.language_id, sk.printing_id, sk.condition_id,
+		       CASE
+		           WHEN f.first_type = 'new' THEN 'new'
+		           WHEN l.last_type = 'removed' THEN 'removed'
+		           WHEN f.prev_price IS NULL THEN 'price_added'
+		           WHEN l.curr_price IS NULL THEN 'price_removed'
+		           ELSE 'changed'
+		       END AS change_type,
+		       f.prev_price, l.curr_price,
+		       CASE WHEN f.prev_price IS NOT NULL AND l.curr_price IS NOT NULL
+		            THEN l.curr_price - f.prev_price END AS delta_cents,
+		       CASE WHEN f.prev_price IS NOT NULL AND l.curr_price IS NOT NULL
+		             AND f.prev_price > 0
+		            THEN round(((l.curr_price - f.prev_price)::numeric
+		                        / f.prev_price) * 100, 2) END AS delta_percent
+		FROM first_ev f
+		JOIN last_ev l ON l.sku_id = f.sku_id
+		JOIN skus sk ON sk.sku_id = f.sku_id
+		WHERE f.prev_price IS DISTINCT FROM l.curr_price`
 
 // liveMoverCTE derives the same rows straight from the snapshots, for pairs the
 // loader has not stored: non-adjacent 'from'/'to' ranges, and snapshots that
 // predate the delta table. It must scan both snapshots in full, so it is slow.
 const liveMoverCTE = `
-		SELECT x.sku_id, x.product_id, x.language_id, x.printing_id, x.condition_id,
+		SELECT x.sku_id, sk.product_id, sk.language_id, sk.printing_id, sk.condition_id,
 		       CASE
 		           WHEN x.prev_missing THEN 'new'
 		           WHEN x.curr_missing THEN 'removed'
@@ -139,26 +201,21 @@ const liveMoverCTE = `
 		            THEN round(((x.curr_price - x.prev_price)::numeric
 		                        / x.prev_price) * 100, 2) END AS delta_percent
 		FROM (
-		    SELECT COALESCE(t.sku_id, f.sku_id)             AS sku_id,
-		           COALESCE(t.product_id, f.product_id)     AS product_id,
-		           COALESCE(t.language_id, f.language_id)   AS language_id,
-		           COALESCE(t.printing_id, f.printing_id)   AS printing_id,
-		           COALESCE(t.condition_id, f.condition_id) AS condition_id,
+		    SELECT COALESCE(t.sku_id, f.sku_id) AS sku_id,
 		           (f.sku_id IS NULL) AS prev_missing,
 		           (t.sku_id IS NULL) AS curr_missing,
 		           f.%[1]s AS prev_price,
 		           t.%[1]s AS curr_price
-		    FROM (SELECT sku_id, product_id, language_id, printing_id,
-		                 condition_id, %[1]s
+		    FROM (SELECT sku_id, %[1]s
 		          FROM sku_price_snapshots
 		          WHERE snapshot_at = $1 AND %[2]s) f
 		    FULL OUTER JOIN
-		         (SELECT sku_id, product_id, language_id, printing_id,
-		                 condition_id, %[1]s
+		         (SELECT sku_id, %[1]s
 		          FROM sku_price_snapshots
 		          WHERE snapshot_at = $2 AND %[2]s) t
 		      ON f.sku_id = t.sku_id
 		) x
+		JOIN skus sk ON sk.sku_id = x.sku_id
 		WHERE x.prev_price IS DISTINCT FROM x.curr_price`
 
 func (h *PriceHandler) Movers(c *gin.Context) {
@@ -336,15 +393,40 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 		precomputed = false
 	}
 
+	// For a window the loader did not store as a single pair, the adjacent-pair
+	// chain can still answer it -- but only if the chain is unbroken. Every
+	// complete snapshot after 'from' up to 'to' must contribute events for this
+	// price field; a gap would leave a SKU's boundary price unknown and produce
+	// a wrong delta rather than a slow one.
+	//
+	// A snapshot in which nothing moved contributes no events and reads as a
+	// gap. That is a false negative: it costs a fallback to the live path, which
+	// is correct, so the check stays conservative on purpose.
+	chained := false
+	if !precomputed {
+		var linked, expected int
+		if err := h.DB.QueryRow(ctx,
+			`SELECT count(DISTINCT curr_snapshot_at) FROM sku_price_changes
+			 WHERE price_type = $3 AND prev_snapshot_at >= $1 AND curr_snapshot_at <= $2`,
+			fromSnap, toSnap, priceType).Scan(&linked); err == nil {
+			if err := h.DB.QueryRow(ctx,
+				`SELECT count(*) FROM ingestion_runs
+				 WHERE status = 'complete' AND snapshot_at > $1 AND snapshot_at <= $2`,
+				fromSnap, toSnap).Scan(&expected); err == nil {
+				chained = expected > 0 && linked == expected
+			}
+		}
+	}
+
 	queryArgs := []any{fromSnap, toSnap}
 	argN := 3
 
-	// Only the precomputed path binds price_type; the live path selects the
-	// matching snapshot column instead, so it must not be given the parameter.
+	// The precomputed and chained paths bind price_type; the live path selects
+	// the matching snapshot column instead, so it must not be given the parameter.
 	// The CTE itself is built after the filters, because the live one needs the
 	// product scope pushed into its snapshot scans.
 	priceTypeArg := 0
-	if precomputed {
+	if precomputed || chained {
 		priceTypeArg = argN
 		queryArgs = append(queryArgs, priceType)
 		argN++
@@ -364,7 +446,9 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 	}
 
 	if v := c.Query("is_sealed"); v != "" {
-		productClauses = append(productClauses, fmt.Sprintf("is_sealed = $%d", argN))
+		productClauses = append(productClauses, fmt.Sprintf(
+			"EXISTS (SELECT 1 FROM skus sealed_sk WHERE sealed_sk.product_id = p.product_id "+
+				"AND sealed_sk.condition_id = 6) = $%d", argN))
 		queryArgs = append(queryArgs, v == "true")
 		argN++
 	}
@@ -408,9 +492,19 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 		argN += 2
 	}
 
-	// Same placeholders, rendered against the products join for the outer WHERE.
-	for _, clause := range productClauses {
-		outerClauses = append(outerClauses, "p."+clause)
+	// One definition of "which products are in scope", used twice. Postgres
+	// allows a placeholder to be referenced more than once, so the pushdown
+	// reuses the same argument numbers as the outer WHERE.
+	productScope := "TRUE"
+	if len(productClauses) > 0 {
+		matching := "SELECT p.product_id FROM products p WHERE " +
+			strings.Join(productClauses, " AND ")
+		// Outer: the mover's product is in scope.
+		outerClauses = append(outerClauses, "m.product_id IN ("+matching+")")
+		// Pushed into the live path's snapshot scans, in sku_id terms, so the
+		// full outer join never materialises two whole snapshots.
+		productScope = "sku_id IN (SELECT scope_sk.sku_id FROM skus scope_sk " +
+			"WHERE scope_sk.product_id IN (" + matching + "))"
 	}
 
 	outerWhere := ""
@@ -418,18 +512,13 @@ func (h *PriceHandler) Movers(c *gin.Context) {
 		outerWhere = "AND " + strings.Join(outerClauses, " AND ")
 	}
 
-	// Postgres allows a placeholder to be referenced more than once, so the
-	// pushdown reuses the same argument numbers as the outer WHERE.
-	productScope := "TRUE"
-	if len(productClauses) > 0 {
-		productScope = "product_id IN (SELECT product_id FROM products WHERE " +
-			strings.Join(productClauses, " AND ") + ")"
-	}
-
 	var moverSource string
-	if precomputed {
+	switch {
+	case precomputed:
 		moverSource = fmt.Sprintf(precomputedMoverCTE, priceTypeArg)
-	} else {
+	case chained:
+		moverSource = fmt.Sprintf(chainedMoverCTE, priceTypeArg, productScope)
+	default:
 		moverSource = fmt.Sprintf(liveMoverCTE, priceColumns[priceType], productScope)
 	}
 
