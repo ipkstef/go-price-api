@@ -127,6 +127,45 @@ Or by SKU IDs:
 {"sku_ids": [14602, 14603, 14604]}
 ```
 
+Up to 1,000 ids per request. The response is a JSON array.
+
+#### Streaming large batches
+
+Repricing a spreadsheet means asking about far more than 1,000 SKUs. Set
+`"stream": true` to raise the limit to 50,000 and receive newline-delimited JSON
+instead — one price object per line, written as rows are read, so neither side
+holds the whole result in memory:
+
+```sh
+POST /prices/latest
+Content-Type: application/json
+
+{"sku_ids": [14602, 14603, ...], "stream": true}
+```
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/x-ndjson
+Transfer-Encoding: chunked
+
+{"snapshot_at":"...","sku_id":14602,"low_price_cents":150,...}
+{"snapshot_at":"...","sku_id":14603,"low_price_cents":90,...}
+```
+
+The rows are identical to the buffered form; only the framing differs. The
+practical ceiling is the 1 MB request body, which 50,000 ids fit inside.
+
+**Errors after the first row cannot use an HTTP status**, because 200 has already
+been sent. They arrive as a final line carrying an `error` key:
+
+```
+{"error":"query interrupted"}
+```
+
+Treat any line containing `error` as a failed request. Do not infer success from
+a stream simply ending — a truncated connection and a complete response look the
+same until you check.
+
 ### Price Movers
 
 SKUs whose price moved between two completed snapshots, ranked by the size of the change. One price field per request, chosen with `price_type`. Each result includes the language, printing, and condition so you can identify the variant.

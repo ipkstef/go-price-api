@@ -55,6 +55,12 @@ type PriceMover struct {
 type BulkPriceRequest struct {
 	ProductIDs []int64 `json:"product_ids,omitempty"`
 	SKUIDs     []int64 `json:"sku_ids,omitempty"`
+	// Stream switches the response to newline-delimited JSON, one SKUPrice per
+	// line, and raises the id limit. Repricing a whole CSV is the reason this
+	// endpoint exists, and buffering tens of thousands of rows to serialise them
+	// in one array costs memory on a small host for no benefit to the caller,
+	// who is reading them one at a time anyway.
+	Stream bool `json:"stream,omitempty"`
 }
 
 type SKU struct {
