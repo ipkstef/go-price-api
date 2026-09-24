@@ -58,7 +58,6 @@ func Setup(pool *pgxpool.Pool, jwtSecret string, jwtExpiry time.Duration, catalo
 		api.GET("/groups/:id/products", groups.Products)
 
 		api.POST("/prices/latest", prices.BulkLatest)
-		api.GET("/prices/movers", prices.Movers)
 
 		api.GET("/conditions", reference.Conditions)
 		api.GET("/languages", reference.Languages)

@@ -24,34 +24,6 @@ type PricePoint struct {
 	AvgMarketPriceCents *float64  `json:"avg_market_price_cents,omitempty"`
 }
 
-type PriceMover struct {
-	SKUID       int64   `json:"sku_id"`
-	ProductID   int64   `json:"product_id"`
-	ProductName *string `json:"product_name"`
-	Language    *string `json:"language"`
-	Printing    *string `json:"printing"`
-	Condition   *string `json:"condition"`
-
-	// PriceType names the price field the prices and changes below describe.
-	// It is echoed on every row so a response is self-describing: the same SKU
-	// can move on one price field and not another, and reading a market price
-	// out of a field named "low" was a trap worth closing.
-	PriceType  string `json:"price_type"`
-	ChangeType string `json:"change_type"`
-
-	PreviousSnapshotAt time.Time `json:"previous_snapshot_at"`
-	CurrentSnapshotAt  time.Time `json:"current_snapshot_at"`
-
-	// Nullable by contract: a SKU present in only one snapshot, or whose price
-	// appeared or disappeared, has no defined change. A missing price is never
-	// coerced to zero, and null changes sort after defined ones. Percent is
-	// additionally null when the earlier price is not greater than zero.
-	PreviousPriceCents *int32   `json:"previous_price_cents"`
-	CurrentPriceCents  *int32   `json:"current_price_cents"`
-	PriceChangeCents   *int32   `json:"price_change_cents"`
-	PriceChangePercent *float64 `json:"price_change_percent"`
-}
-
 type BulkPriceRequest struct {
 	ProductIDs []int64 `json:"product_ids,omitempty"`
 	SKUIDs     []int64 `json:"sku_ids,omitempty"`
@@ -61,6 +33,9 @@ type BulkPriceRequest struct {
 	// in one array costs memory on a small host for no benefit to the caller,
 	// who is reading them one at a time anyway.
 	Stream bool `json:"stream,omitempty"`
+	// AsOf selects the newest complete snapshot at or before this instant,
+	// accepting YYYY-MM-DD or RFC3339. Empty means the latest snapshot.
+	AsOf string `json:"as_of,omitempty"`
 }
 
 type SKU struct {

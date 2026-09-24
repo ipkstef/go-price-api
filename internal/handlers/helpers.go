@@ -18,6 +18,37 @@ func latestCompleteSnapshot(ctx context.Context, db *pgxpool.Pool) (time.Time, e
 	return t, err
 }
 
+// resolveSnapshot picks the snapshot instant a price read is answered from.
+// Empty asOf means the newest complete run. Otherwise it is the newest complete
+// run at or before the given instant, so a caller asking for a date gets the
+// last observation on or before it rather than nothing.
+func resolveSnapshot(ctx context.Context, db *pgxpool.Pool, asOf string) (time.Time, error) {
+	if asOf == "" {
+		return latestCompleteSnapshot(ctx, db)
+	}
+
+	var cutoff time.Time
+	if t, err := time.Parse(time.RFC3339, asOf); err == nil {
+		cutoff = t
+	} else if d, err := time.Parse("2006-01-02", asOf); err == nil {
+		// A bare date means the end of that day, so the last snapshot taken on
+		// it is included rather than only ones before midnight.
+		cutoff = d.AddDate(0, 0, 1)
+	} else {
+		return time.Time{}, fmt.Errorf("invalid as_of, use YYYY-MM-DD or RFC3339")
+	}
+
+	var t time.Time
+	err := db.QueryRow(ctx,
+		`SELECT snapshot_at FROM ingestion_runs
+		 WHERE status = 'complete' AND snapshot_at <= $1
+		 ORDER BY snapshot_at DESC LIMIT 1`, cutoff).Scan(&t)
+	if err != nil {
+		return time.Time{}, fmt.Errorf("no completed snapshot at or before %s", asOf)
+	}
+	return t, nil
+}
+
 func resolveGroupID(c *gin.Context, db *pgxpool.Pool) (int64, bool, error) {
 	if v := c.Query("group_id"); v != "" {
 		gid, err := strconv.ParseInt(v, 10, 64)
