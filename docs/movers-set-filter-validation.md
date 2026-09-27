@@ -1,5 +1,11 @@
 # Movers set release filter validation
 
+> **Historical only, 2026-09-27.** The movers endpoint and `app.sku_price_changes`
+> were both removed. Price movement is now computed client-side from two
+> `POST /prices/latest` calls using `as_of`. Nothing below describes current
+> behaviour; it is kept for the measurements, which are the reason the design was
+> abandoned rather than tuned further.
+
 > **Superseded, 2026-09-10.** This records the set-release filter as shipped on
 > 2026-09-08, when movers derived every comparison from `sku_price_snapshots` at
 > request time. The measurements below (41-47s recent, 19-24s compressed) are

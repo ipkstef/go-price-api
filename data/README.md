@@ -50,15 +50,20 @@ request timeout. No scheduled refresh or database writes are configured.
 
 The catalog is embedded in the Go server binary and parsed once at startup.
 Refresh the JSON, then rebuild and restart the server to activate new metadata.
-Startup fails if the bundled metadata is invalid. Each filtered movers request
-scans the 349 in-memory group dates and passes eligible IDs to one SQL query;
-there are no per-request metadata file reads or network requests. There
-is no hot/archived split for this metadata file; it represents the latest
-fetched metadata, not a historical series.
+Startup fails if the bundled metadata is invalid. There is no hot/archived split
+for this metadata file; it represents the latest fetched metadata, not a
+historical series.
 
-`set_released_since` excludes unmapped groups and uses the earliest release
-date for groups with multiple sets. It accepts `YYYY` (January 1) or
-`YYYY-MM-DD`, inclusively. The filter runs before ranking and pagination and
-does not change requests that omit it. See [USAGE.md](../USAGE.md) for examples
-and errors, and [movers validation](../docs/movers-set-filter-validation.md)
-for access assumptions and database measurements.
+> **No consumer as of 2026-09-27.** `set_released_since` existed only on
+> `GET /prices/movers`, which was removed along with the handler code that read
+> this catalog. The package is still loaded and passed to `PriceHandler`, but
+> nothing reads it. Keep it only if a set-release filter is coming back on
+> another endpoint; otherwise this package, `cmd/update-sets`, and the
+> `SetCatalog` field are all removable.
+
+`set_released_since` excluded unmapped groups and used the earliest release date
+for groups with multiple sets, accepting `YYYY` (January 1) or `YYYY-MM-DD`
+inclusively. It is no longer exposed by any endpoint. The historical measurements
+behind it are in
+[movers validation](../docs/movers-set-filter-validation.md), kept as a record of
+why the movers design changed twice.

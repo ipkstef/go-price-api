@@ -112,7 +112,9 @@ GET /groups/7/products?limit=20
 
 ### Bulk Price Lookup
 
-Get the latest prices for multiple products or SKUs in one request. Max 500 IDs.
+Get prices for multiple products or SKUs in one request. Up to 1,000 ids buffered,
+or 50,000 streamed. Reads one snapshot: the latest by default, or any earlier one
+with `as_of`.
 
 ```sh
 POST /prices/latest
@@ -166,91 +168,52 @@ Treat any line containing `error` as a failed request. Do not infer success from
 a stream simply ending — a truncated connection and a complete response look the
 same until you check.
 
-### Price Movers
+### Price Movement
 
-SKUs whose price moved between two completed snapshots, ranked by the size of the change. One price field per request, chosen with `price_type`. Each result includes the language, printing, and condition so you can identify the variant.
+There is no movers endpoint. You compute movement yourself from two price reads,
+which is why `POST /prices/latest` accepts `as_of`.
 
 ```sh
-GET /prices/movers?direction=up&min_price=100&limit=20
-GET /prices/movers?direction=up&is_sealed=false&language_id=1&printing_id=1&condition_id=1&min_price=500
-GET /prices/movers?direction=down&group_id=7&limit=10
-GET /prices/movers?group=LTR&direction=up
-GET /prices/movers?set_released_since=2020&limit=20
-GET /prices/movers?set_released_since=2020-06-01&direction=up
-GET /prices/movers?price_type=market&sort_by=percent
-GET /prices/movers?change_type=new,price_added&limit=100
+# prices now
+POST /prices/latest
+{"sku_ids": [2249, 2255, 2279]}
+
+# the same SKUs three days earlier
+POST /prices/latest
+{"sku_ids": [2249, 2255, 2279], "as_of": "2026-09-24"}
 ```
 
-Params:
-- `from` / `to` — YYYY-MM-DD, resolves to the latest completed snapshot at or before this date
-- `direction` — `up` (default) or `down`
-- `price_type` — `low` (default) or `market`. Exactly one value; a list is rejected so a SKU can never occupy two ranks in one response.
-- `sort_by` — `cents` (default) or `percent`
-- `change_type` — comma-separated subset of `changed`, `new`, `removed`, `price_added`, `price_removed`. Omit for all.
-- `min_price` — minimum price on both sides, in cents (filters out noise)
-- `is_sealed` — `true`/`false`
-- `group_id` — filter to a specific set by TCGplayer group ID
-- `group` — filter to a specific set by code, e.g. `LTR` (case-insensitive)
-- `set_released_since` — inclusive set release cutoff, `YYYY` or `YYYY-MM-DD`; a year means January 1. Separate from the price snapshot `from` / `to` dates.
-- `language_id` — filter to a specific language
-- `printing_id` — filter to a specific printing (1=Normal, 2=Foil)
-- `condition_id` — filter to a specific condition (1=Near Mint, 2=Lightly Played, etc.)
-- `limit` — 1-200 (default 50)
-- `offset` — pagination offset (default 0)
+Diff the two responses on whichever price field you care about. Both reads are
+keyed on `(sku_id, snapshot_at)`, so cost scales with the number of ids you ask
+about, not with the size of the price history.
 
-`max_price` is not implemented and is ignored if supplied.
+`as_of` accepts `YYYY-MM-DD` or RFC3339 and resolves to the **newest complete
+snapshot at or before** that instant:
 
-Response includes `price_type`, `change_type`, `previous_price_cents`, `current_price_cents`, `price_change_cents`, `price_change_percent`, plus `language`, `printing`, and `condition` names. `price_type` is echoed on every row, so a response says which price field its numbers describe.
+- A bare date is end-of-day, so `2026-09-24` includes a snapshot taken at
+  `2026-09-24T20:05:58Z`.
+- A future instant resolves to the latest snapshot.
+- Nothing at or before the instant returns HTTP `400`
+  (`no completed snapshot at or before 2020-01-01`).
+- An unparseable value returns HTTP `400`
+  (`invalid as_of, use YYYY-MM-DD or RFC3339`).
 
-Prices and changes are nullable. A SKU present in only one snapshot, or whose
-price appeared or disappeared, has no defined change, and a missing price is
-never coerced to zero. `price_change_percent` is additionally null when the
-earlier price is not greater than zero. Null changes sort after every ranked
-mover, so
-`new`, `removed`, `price_added` and `price_removed` stay in the response without
-polluting the ranking.
+Every row echoes its `snapshot_at`, so you always know which instant you were
+served. `as_of` works with `"stream": true` as well.
 
-`change_type` values, each a statement about the requested price field rather
-than the SKU as a whole:
+Two snapshots are taken per day, so consecutive instants are roughly 12 hours
+apart. Movement is unavailable until at least two complete snapshots exist.
 
-- `changed` — present in both snapshots with two distinct non-null prices
-- `new` — present only in the later snapshot, with a price for this field
-- `removed` — present only in the earlier snapshot, with a price for this field
-- `price_added` — present in both; this field went from null to a price
-- `price_removed` — present in both; this field went from a price to null
+#### What this does not do
 
-Each result also includes `previous_snapshot_at` and `current_snapshot_at`: UTC
-RFC 3339 timestamps identifying the actual snapshots used for the previous and
-current prices. These are snapshot times, not individual listing-change times.
-They reflect the resolved snapshots, which can precede the requested `from` or
-`to` date. All results in one response share the same comparison timestamps.
-The response remains an array; an empty result is still `[]`.
+Ranking movement across the whole catalog — "the top 20 gainers in Magic today" —
+is not available. That requires the server to compare every SKU in two snapshots,
+which is the expensive operation this design removes. You can only diff SKUs you
+name.
 
-Example timestamp fields (illustrative):
-
-```json
-{
-  "previous_snapshot_at": "2026-09-08T15:00:13Z",
-  "current_snapshot_at": "2026-09-09T02:08:56Z"
-}
-```
-
-When `set_released_since` is provided, groups missing from the bundled Scryfall
-catalog are excluded. If multiple Scryfall sets share a TCGplayer group, its
-earliest release date determines eligibility. The cutoff combines with the
-other filters before ranking and pagination. No eligible results returns `[]`.
-Omitting the parameter preserves the existing behavior. Future releases can
-qualify if their products have prices in both comparison snapshots.
-
-Empty, repeated, malformed, or impossible cutoff values return HTTP `400`:
-
-```json
-{"error":"invalid set_released_since: use YYYY or YYYY-MM-DD with a valid date (years 0001-9999); YYYY means January 1"}
-```
-
-For example, `2020` and `2020-01-01` are equivalent; `2020-01`, `2023-02-29`, and
-`0000` are invalid. Refresh the catalog with `go run ./cmd/update-sets`, then
-rebuild and restart the server to use the new embedded metadata.
+If you need a ranked list, hold your own set of ids and rank locally. Filtering by
+set, rarity, language, printing, condition or sealed status is available on
+`GET /products`, so build your id set there first, then price it.
 
 ### Reference Data
 
@@ -342,15 +305,15 @@ Rarity IDs match TCGplayer: 1 Mythic, 2 Rare, 3 Uncommon, 4 Common, 5 Promo,
 
 `is_sealed` remains a query parameter and a response field, but it is no longer a
 stored column: the API derives it from SKU conditions, where condition 6 is
-Unopened. A UPC does not make a product sealed. To query sealed SKU prices or
-movers directly, use `condition_id=6` or omit the condition filter. Historical
-movers use current catalog metadata, so classification reflects the catalog as it
-stands now, not as it stood at the time of the snapshot.
+Unopened. A UPC does not make a product sealed. To find sealed SKUs, use
+`condition_id=6` or omit the condition filter. Catalog metadata is always current,
+so classification reflects the catalog as it stands now, not as it stood at the
+time of a historical snapshot.
 
-Movers over an arbitrary `from`/`to` range are answered by composing the
-adjacent-snapshot change log rather than comparing two whole snapshots. When that
-chain has a gap the API falls back to the direct comparison, which is correct but
-markedly slower.
+`GET /prices/movers` was removed on 2026-09-27, along with the precomputed delta
+table behind it. Compute movement from two `POST /prices/latest` calls using
+`as_of`; see **Price Movement** above. Clients calling the old endpoint receive
+HTTP `404`.
 
 Deployment requires the `replicatemtg` schema at `202609210001_initial_schema`
 and a full export/load. See that repository's `docs/database-contract.md`.
