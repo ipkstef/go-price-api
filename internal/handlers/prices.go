@@ -9,7 +9,6 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	setcatalog "go-price-api/data"
 	"go-price-api/internal/models"
 )
 
@@ -21,8 +20,7 @@ const (
 )
 
 type PriceHandler struct {
-	DB         *pgxpool.Pool
-	SetCatalog *setcatalog.Catalog
+	DB *pgxpool.Pool
 }
 
 func (h *PriceHandler) BulkLatest(c *gin.Context) {

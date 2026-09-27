@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	setcatalog "go-price-api/data"
 	"go-price-api/internal/handlers"
 	"go-price-api/internal/middleware"
 )
@@ -21,7 +20,7 @@ func maxBodySize(n int64) gin.HandlerFunc {
 	}
 }
 
-func Setup(pool *pgxpool.Pool, jwtSecret string, jwtExpiry time.Duration, catalog *setcatalog.Catalog) *gin.Engine {
+func Setup(pool *pgxpool.Pool, jwtSecret string, jwtExpiry time.Duration) *gin.Engine {
 	r := gin.Default()
 	r.MaxMultipartMemory = 1 << 20 // 1 MB
 	r.Use(maxBodySize(1 << 20))    // 1 MB
@@ -29,7 +28,7 @@ func Setup(pool *pgxpool.Pool, jwtSecret string, jwtExpiry time.Duration, catalo
 	auth := &handlers.AuthHandler{DB: pool, JWTSecret: jwtSecret, JWTExpiry: jwtExpiry}
 	products := &handlers.ProductHandler{DB: pool}
 	groups := &handlers.GroupHandler{DB: pool}
-	prices := &handlers.PriceHandler{DB: pool, SetCatalog: catalog}
+	prices := &handlers.PriceHandler{DB: pool}
 	reference := &handlers.ReferenceHandler{DB: pool}
 	ingestion := &handlers.IngestionHandler{DB: pool}
 	docs := &handlers.DocsHandler{}
